@@ -87,9 +87,8 @@ namespace Pac_Man
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
-
-            
+            // TODO: Add your drawing code herefor (int x = 0; x < 10; x++)
+           
 
             base.Draw(gameTime);
         }
