@@ -1,4 +1,5 @@
 ﻿#region Using Statements
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -21,6 +22,7 @@ namespace jogojogo
         byte[,] piece2 = { { 1, 0, 0 }, { 1, 1, 1 } };
         byte[,] piece3 = { { 1, 1, 0 }, { 1, 1, 0 } };
         byte[,] piece4 = { { 0, 1, 1 }, { 1, 1, 0 } };
+        byte[,] piece5 = { { 1, 1, 1, 1 }, { 0, 0, 0, 0 } };
         int pX = 4, pY = -2;
         float lastAutomaticMove = 0f;
         float lastHumanMove = 0f;
@@ -126,6 +128,7 @@ namespace jogojogo
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
+           
             GraphicsDevice.Clear(Color.CornflowerBlue);
             
             // TODO: Add your drawing code here
