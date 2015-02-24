@@ -18,7 +18,7 @@ namespace Pac_Man
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        byte[,] board = new byte [26, 30]; // x y
+        byte[,] board = new byte [52, 60]; // x y
         Texture2D dot;
         public Game1()
             : base()
@@ -87,10 +87,14 @@ namespace Pac_Man
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code herefor (int x = 0; x < 10; x++)
+            // TODO: Add your drawing code here
+            
+            spriteBatch.Begin();
            
+            spriteBatch.End();
+           base.Draw(gameTime);
 
-            base.Draw(gameTime);
+            
         }
     }
 }

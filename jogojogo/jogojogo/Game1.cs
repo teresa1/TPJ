@@ -17,15 +17,14 @@ namespace jogojogo
         SpriteBatch spriteBatch;
         Texture2D box;
         byte[,] board = new byte[22, 10];
-        byte[,] piece = {{0,1,0},{1,1,1}};
-        byte[,] piece1 = { { 0, 0, 1 }, { 1, 1, 1 } };
-        byte[,] piece2 = { { 1, 0, 0 }, { 1, 1, 1 } };
-        byte[,] piece3 = { { 1, 1, 0 }, { 1, 1, 0 } };
-        byte[,] piece4 = { { 0, 1, 1 }, { 1, 1, 0 } };
-        byte[,] piece5 = { { 1, 1, 1, 1 }, { 0, 0, 0, 0 } };
+        Piece piece;
+        Color[] colors = { Color.Orange, Color.Red, Color.MintCream, Color.Lime, Color.LightBlue, Color.Yellow, Color.DimGray };
+
         int pX = 4, pY = -2;
         float lastAutomaticMove = 0f;
         float lastHumanMove = 0f;
+        bool spacePressed = false;
+
 
         public Game1()
             : base()
@@ -46,7 +45,7 @@ namespace jogojogo
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            piece = new Piece();
             base.Initialize();
         }
 
@@ -95,33 +94,48 @@ namespace jogojogo
                     pY++;
                     lastAutomaticMove = 0;
                 }
-                else
-                {
-                    freeze();
-                    pY = 0;
-                }
+                else newPiece();
+                
             }
             if (lastHumanMove >= 1f / 20f)
             {//verificar se a seta para baixo foi pressionada
                 lastHumanMove = 0f;
 
-                if (Keyboard.GetState().IsKeyDown(Keys.Down))
+                if (Keyboard.GetState().IsKeyDown(Keys.Down) && (canGoDown()))
                 {
-                    if (canGoDown()) pY++;
+                     pY++;
                 }
 
-                if (Keyboard.GetState().IsKeyDown(Keys.Right))
+                if (Keyboard.GetState().IsKeyDown(Keys.Right) && (canGoRight()))
                 {
-                    if (canGoRight()) pX++;
+                     pX++;
                 }
-                if (Keyboard.GetState().IsKeyDown(Keys.Left))
+                if (Keyboard.GetState().IsKeyDown(Keys.Left) && (canGoLeft()))
                 {
-                    if (canGoLeft()) pX--;
+                     pX--;
                 }
+                if (Keyboard.GetState().IsKeyUp(Keys.Space)) spacePressed = false;
+                else if (spacePressed == false && Keyboard.GetState().IsKeyDown(Keys.Space))
+                {
+                    while (canGoDown())
+                    { pY++; }
+                    newPiece();
+                    spacePressed = true;
+                }
+               
                 base.Update(gameTime);
             }
         }
 
+        private void newPiece()
+        {
+            {
+                freeze();
+                pY = -2;
+                piece = new Piece();
+                pX = ((10 - piece.width) / 2);
+            }
+        }
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
@@ -138,11 +152,11 @@ namespace jogojogo
                 for (int y = 0; y < 20; y++)
                 {
                     if(board[y+2, x] != 0) // ver peças mortas
-                                spriteBatch.Draw(box, new Vector2(x*30, y*30), Color.White);
-                    if(y >= pY && x>=pX && y<pY +piece.GetLength(0) && x<pX + piece.GetLength(1)) // desenhar a peça que está a cair
+                                spriteBatch.Draw(box, new Vector2(x*30, y*30), colors[board[y+2,x]-1]);
+                    if(y >= pY && x>=pX && y<pY +piece.height && x<pX + piece.width) // desenhar a peça que está a cair
                          {
-                             if (piece[y - pY, x - pX] != 0)
-                                 spriteBatch.Draw(box, new Vector2(x*30, y*30), Color.White);
+                             if (piece.GetBlock(y - pY, x - pX) != 0)
+                                 spriteBatch.Draw(box, new Vector2(x * 30, y * 30), colors[piece.GetBlock(y-pY,x-pX)-1]);
                          }
                 }
             }
@@ -154,7 +168,7 @@ namespace jogojogo
 
         private bool canGoDown()
         {
-            if(pY + piece.GetLength(0) >= 20)
+            if(pY + piece.height >= 20)
                 return false;
             else 
                 return canGo(pX, pY+1);
@@ -163,11 +177,11 @@ namespace jogojogo
         private bool canGo(int dx, int dy)
         {
             //supondo que é possivel...
-            for (int x = 0; x < piece.GetLength(1); x++)
+            for (int x = 0; x < piece.width; x++)
             {
-                for (int y = 0; y < piece.GetLength(0); y++)
+                for (int y = 0; y < piece.height; y++)
                 {
-                    if (piece[y, x] != 0 && board[dy + y +2 , dx + x] != 0)
+                    if (piece.GetBlock(y, x) != 0 && board[dy + y +2 , dx + x] != 0)
                         return false;
                 }
             }
@@ -181,18 +195,18 @@ namespace jogojogo
         }
         private bool canGoRight()
         {
-            if (pX + piece.GetLength(1) == 10) return false;
+            if (pX + piece.width == 10) return false;
             else return canGo(pX + 1, pY);
         }
         private  void freeze()
         {
-            for (int x = 0; x < piece.GetLength(1); x++)
+            for (int x = 0; x < piece.width; x++)
             {
-                for (int y = 0; y < piece.GetLength(0); y++)
+                for (int y = 0; y < piece.height; y++)
                 {
-                    if(piece[y,x] != 0)
+                    if (piece.GetBlock(y, x) != 0)
                     {
-                        board[pY + y + 2, pX + x] = piece[y, x];
+                        board[pY + y + 2, pX + x] = piece.GetBlock(y, x);
                     }
                 }
             }
