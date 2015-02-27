@@ -20,16 +20,51 @@ namespace jogojogo
        public int width { get; private set; }
        public int height { get; private set; }
 
+       byte[,] instance;
+
         public Piece()
        {
-           selectedPiece = (new Random().Next(models.Length));
-           width = models[selectedPiece].GetLength(1);
-           height = models[selectedPiece].GetLength(0);
+          
+           selectedPiece = (new Random().Next(models.Length)); instance = models[selectedPiece];
+           width = instance.GetLength(1);
+           height = instance.GetLength(0);
        }
 
         public byte GetBlock(int y, int x)
         {
-            return (models[selectedPiece][y, x]);
+            return (instance[y, x]);
+        }
+
+        public void Rotate()
+        {
+            byte[,] rotated = new byte[width, height];
+            for (int y = 0; y < height; y++)
+            {for (int x = 0; x < width; x++)
+                {
+                     
+                rotated[x, height - y - 1] = instance[y, x];
+                 }
+             }
+            instance = rotated;
+            width = instance.GetLength(1);
+            height = instance.GetLength(0);
+           
+        }
+        public void Unrotate()
+        {
+            byte[,] rotated = new byte[width, height];
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+
+                    rotated[x,y] = instance[y, width - x - 1];
+                }
+            }
+            instance = rotated;
+            width = instance.GetLength(1);
+            height = instance.GetLength(0);
+
         }
     }
 }
