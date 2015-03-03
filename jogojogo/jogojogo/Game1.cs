@@ -18,14 +18,17 @@ namespace jogojogo
             Gameplay,
             Freeze,
             Highlight,
+            GameOver,
         };
         GameStatus status;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Texture2D box;
+        Texture2D pixel;
         byte[,] board = new byte[22, 10];
         Piece piece;
-        Color[] colors = { Color.Orange, Color.Red, Color.MintCream, Color.Lime, Color.LightBlue, Color.Yellow, Color.DimGray, Color.Black };
+        Color[] colors = { Color.Orange, Color.Red, Color.MintCream, Color.Lime, Color.LightBlue, Color.Yellow, Color.DeepPink, Color.Black };
+        SpriteFont font;
 
         float hightlightTime;
         int pX = 4, pY = -2;
@@ -40,8 +43,8 @@ namespace jogojogo
         {
             graphics = new GraphicsDeviceManager(this);
             graphics.IsFullScreen = false;
-            graphics.PreferredBackBufferHeight = 600;
-            graphics.PreferredBackBufferWidth = 300;
+            graphics.PreferredBackBufferHeight = 620;
+            graphics.PreferredBackBufferWidth = 320;
             Content.RootDirectory = "Content";
         }
 
@@ -68,6 +71,8 @@ namespace jogojogo
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             box = Content.Load <Texture2D>("box");
+            font = Content.Load<SpriteFont>("SpriteFont1");
+            pixel = Content.Load<Texture2D>("pixel");
             // TODO: use this.Content to load your game content here
         }
 
@@ -161,7 +166,11 @@ namespace jogojogo
                             piece = new Piece();
                             pY = -2;
                             pX = (10 - piece.width) / 2;
-                            status = GameStatus.Gameplay;
+                            if (canGo(pX, pY))
+                            {
+                                status = GameStatus.Gameplay;
+                            }
+                            else status = GameStatus.GameOver;
                         }
                     }
                     hightlightTime += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
@@ -181,6 +190,15 @@ namespace jogojogo
                     pY = -2;
                     piece = new Piece();
                     pX = ((10 - piece.width) / 2);
+
+                    if(canGo(pX,pY))
+                    {
+                        status = GameStatus.Gameplay;
+                    }
+                    else
+                    {
+                        status = GameStatus.GameOver;
+                    }
                 }
                 else
                 {
@@ -214,12 +232,26 @@ namespace jogojogo
                          }
                 }
             }
+
+            DrawRectangle(new Rectangle(10, 10, 300, 600),Color.White);
+
+            if(status == GameStatus.GameOver)
+            {
+                spriteBatch.DrawString(font, "Game Over!!!", new Vector2(10, 250), Color.White);
+            }
+
             spriteBatch.End();
 
             base.Draw(gameTime);
 
         }
-
+        private void DrawRectangle(Rectangle r, Color c)
+        {
+            spriteBatch.Draw(pixel, new Rectangle(r.X, r.Y,  r.Width, 1), Color.White);
+            spriteBatch.Draw(pixel, new Rectangle(r.X, r.Y, 1, r.Height), Color.White);
+            spriteBatch.Draw(pixel, new Rectangle(r.X, r.Y +r.Height-1, r.Width, 1), Color.White);
+            spriteBatch.Draw(pixel, new Rectangle(r.X+r.Width-1, r.Y, 1 , r.Height), Color.White);
+        }
         private bool canGoDown()
         {
             if(pY + piece.height >= 20)
