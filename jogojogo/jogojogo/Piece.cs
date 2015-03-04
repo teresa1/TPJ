@@ -22,10 +22,13 @@ namespace jogojogo
 
        byte[,] instance;
 
+       static Random rand = null;
+
         public Piece()
        {
-          
-           selectedPiece = (new Random().Next(models.Length)); instance = models[selectedPiece];
+          if(rand == null) rand = new Random();
+          selectedPiece = rand.Next(models.Length);
+           instance = models[selectedPiece];
            width = instance.GetLength(1);
            height = instance.GetLength(0);
        }

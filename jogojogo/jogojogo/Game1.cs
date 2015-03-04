@@ -1,5 +1,6 @@
 ﻿#region Using Statements
 using System;
+using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -27,8 +28,11 @@ namespace jogojogo
         Texture2D pixel;
         byte[,] board = new byte[22, 10];
         Piece piece;
+        Piece nextPiece;
         Color[] colors = { Color.Orange, Color.Red, Color.MintCream, Color.Lime, Color.LightBlue, Color.Yellow, Color.DeepPink, Color.Black };
         SpriteFont font;
+
+        Song cocaine;
 
         float hightlightTime;
         int pX = 4, pY = -2;
@@ -60,6 +64,7 @@ namespace jogojogo
         {
             // TODO: Add your initialization logic here
             piece = new Piece();
+            nextPiece = new Piece();
             status = GameStatus.Gameplay;
             base.Initialize();
         }
@@ -75,6 +80,7 @@ namespace jogojogo
             box = Content.Load <Texture2D>("box");
             font = Content.Load<SpriteFont>("SpriteFont1");
             pixel = Content.Load<Texture2D>("pixel");
+            cocaine = Content.Load<Song>("Nomy- Cocain (with lyrics)");
             // TODO: use this.Content to load your game content here
         }
 
@@ -165,7 +171,8 @@ namespace jogojogo
                         }
                         else
                         {
-                            piece = new Piece();
+                            piece = nextPiece;
+                            nextPiece = new Piece();
                             pY = -2;
                             pX = (10 - piece.width) / 2;
                             if (canGo(pX, pY))
@@ -188,9 +195,10 @@ namespace jogojogo
                 freeze();
                 if (completeLine == 0)
                 {
+                    piece = nextPiece;
                     status = GameStatus.Gameplay;
                     pY = -2;
-                    piece = new Piece();
+                    nextPiece = new Piece();
                     pX = ((10 - piece.width) / 2);
 
                     if(canGo(pX,pY))
@@ -244,9 +252,9 @@ namespace jogojogo
             }
 
             spriteBatch.DrawString(font, "Score: " + score, new Vector2(330, 100), Color.White);
-
+            DrawNextPiece();
             spriteBatch.End();
-
+          
             base.Draw(gameTime);
 
         }
@@ -341,6 +349,25 @@ namespace jogojogo
                 for (int x = 0; x < 10; x++)
                 {
                     board[y, x] = board[y - 1, x];
+                }
+            }
+        }
+
+        private void DrawNextPiece()
+        {
+            int posX = 350;
+            int posY = 150;
+
+            for (int x = 0; x < nextPiece.width; x++)
+            {
+                for (int y = 0; y < nextPiece.height; y++)
+                {
+                    byte c = nextPiece.GetBlock(y, x);
+
+                    if(c!= 0)
+                    {
+                        spriteBatch.Draw(box, new Vector2(posX + x*30, posY + y*30),  colors[c-1]);
+                    }
                 }
             }
         }
