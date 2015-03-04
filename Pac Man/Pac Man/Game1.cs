@@ -18,8 +18,32 @@ namespace Pac_Man
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        byte[,] board = new byte [21, 30]; // x y
+        /*            0-parede    1- comida    2-vazio           */
+        byte[,] board = {{2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2}, //linha 0
+                         {2,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,2}, //linha 1
+                         {2,0,1,0,0,1,0,0,0,1,0,1,0,0,0,1,0,0,1,0,2}, //linha 2
+                         {2,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,2}, //linha 3
+                         {2,0,1,0,0,1,0,1,0,0,0,0,0,1,0,1,0,0,1,0,2}, //linha 4
+                         {2,0,1,1,1,1,0,1,1,1,0,1,1,1,0,1,1,1,1,0,2}, //linha 5
+                         {2,0,0,0,0,1,0,0,0,2,0,2,0,0,0,1,0,0,0,0,2}, //linha 6
+                         {2,2,2,2,0,1,0,2,2,2,2,2,2,2,0,1,0,2,2,2,2}, //linha 7
+                         {0,0,0,0,0,1,0,2,0,0,0,0,0,2,0,1,0,0,0,0,0}, //linha 8
+                         {2,2,2,2,2,1,2,2,0,2,2,2,0,2,2,1,2,2,2,2,2}, //linha 9
+                         {0,0,0,0,0,1,0,2,0,0,0,0,0,2,0,1,0,0,0,0,0}, //linha 10
+                         {2,2,2,2,0,1,0,2,2,2,2,2,2,2,0,1,0,2,2,2,2}, //linha 11
+                         {2,0,0,0,0,1,0,2,0,0,0,0,0,2,0,1,0,0,0,0,2}, //linha 12
+                         {2,0,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,0,2}, //linha 13
+                         {2,0,1,0,0,1,0,0,0,1,0,1,0,0,0,1,0,0,1,0,2}, //linha 14
+                         {2,0,1,1,0,1,1,1,1,1,2,1,1,1,1,1,0,1,1,0,2}, //linha 15
+                         {2,0,0,1,0,1,0,1,0,0,0,0,0,1,0,1,0,1,0,0,2}, //linha 16
+                         {2,0,1,1,1,1,0,1,1,1,0,1,1,1,0,1,1,1,1,0,2}, //linha 17
+                         {2,0,1,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,1,0,2}, //linha 18
+                         {2,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,2}, //linha 19
+                         {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2}}; //linha 20
+
+
         Texture2D dot;
+        Texture2D parede;
         public Game1()
             : base()
         {
@@ -51,7 +75,8 @@ namespace Pac_Man
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            //dot = Content.Load<Texture2D>("dot.png");
+            dot = Content.Load<Texture2D>("dot");
+            parede = Content.Load<Texture2D>("parede");
             // TODO: use this.Content to load your game content here
         }
 
@@ -62,6 +87,7 @@ namespace Pac_Man
         protected override void UnloadContent()
         {
             // TODO: Unload any non ContentManager content here
+            dot.Dispose();
         }
 
         /// <summary>
@@ -85,14 +111,25 @@ namespace Pac_Man
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
-          
+        spriteBatch.Begin();
+            for (int x = 0; x < 20; x++)
+            {
+                for (int y = 0; y < 21; y++)
+                {
+                    if (board[x, y] == 1) // ver comida
+                        spriteBatch.Draw(dot, new Vector2(x * 30, y * 30), Color.White);
 
+                   if (board[x, y] == 0) // ver comida
+                       spriteBatch.Draw(parede, new Vector2(x * 5000, x * 5000), Color.White);
+                  
+                }
+            }
 
             
-            spriteBatch.Begin();
+           
            
             spriteBatch.End();
            base.Draw(gameTime);
