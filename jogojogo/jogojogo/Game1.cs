@@ -38,13 +38,15 @@ namespace jogojogo
         bool upPressed = false;
         int completeLine;
 
+        int score = 0;
+
         public Game1()
             : base()
         {
             graphics = new GraphicsDeviceManager(this);
             graphics.IsFullScreen = false;
-            graphics.PreferredBackBufferHeight = 620;
-            graphics.PreferredBackBufferWidth = 320;
+            graphics.PreferredBackBufferHeight = 650;
+            graphics.PreferredBackBufferWidth = 450;
             Content.RootDirectory = "Content";
         }
 
@@ -219,26 +221,29 @@ namespace jogojogo
             
             // TODO: Add your drawing code here
             spriteBatch.Begin();
+            DrawRectangle(new Rectangle(25, 25, 302, 602), Color.White);
+
             for (int x = 0; x < 10; x++)
             {
                 for (int y = 0; y < 20; y++)
                 {
                     if(board[y+2, x] != 0) // ver peças mortas
-                                spriteBatch.Draw(box, new Vector2(x*30, y*30), colors[board[y+2,x]-1]);
+                                spriteBatch.Draw(box, new Vector2(x*30+25, y*30+25), colors[board[y+2,x]-1]);
                     if(status == GameStatus.Gameplay && y >= pY && x>=pX && y<pY +piece.height && x<pX + piece.width) // desenhar a peça que está a cair
                          {
                              if (piece.GetBlock(y - pY, x - pX) != 0)
-                                 spriteBatch.Draw(box, new Vector2(x * 30, y * 30), colors[piece.GetBlock(y-pY,x-pX)-1]);
+                                 spriteBatch.Draw(box, new Vector2(x * 30+25, y * 30+25), colors[piece.GetBlock(y-pY,x-pX)-1]);
                          }
                 }
             }
 
-            DrawRectangle(new Rectangle(10, 10, 300, 600),Color.White);
 
             if(status == GameStatus.GameOver)
             {
                 spriteBatch.DrawString(font, "Game Over!!!", new Vector2(10, 250), Color.White);
             }
+
+            spriteBatch.DrawString(font, "Score: " + score, new Vector2(330, 100), Color.White);
 
             spriteBatch.End();
 
@@ -279,7 +284,7 @@ namespace jogojogo
 
         private bool canGoLeft()
         {
-            if (pX == 0) return false;
+            if (pX == 10) return false;
             else return canGo(pX - 1, pY);
         }
         private bool canGoRight()
@@ -302,6 +307,7 @@ namespace jogojogo
             status = GameStatus.Freeze;
             DetectCompleteLine();
             hightlightTime = 0f;
+            score++;
         }
         
         private void highlightLine(int l)
@@ -310,6 +316,7 @@ namespace jogojogo
             {
                 board[l, x] = 8; // cor para highlight
             }
+            score = score + 5;
         }
 
         private void DetectCompleteLine()
