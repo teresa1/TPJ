@@ -18,7 +18,8 @@ namespace Pac_Man
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        /*            0-parede    1- comida    2-vazio           */
+
+        /*            0-parede    1- comida    2-vazio      3 - pac man :D     */
         byte[,] board = {{2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2}, //linha 0
                          {2,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,2}, //linha 1
                          {2,0,1,0,0,1,0,0,0,1,0,1,0,0,0,1,0,0,1,0,2}, //linha 2
@@ -34,16 +35,18 @@ namespace Pac_Man
                          {2,0,0,0,0,1,0,2,0,0,0,0,0,2,0,1,0,0,0,0,2}, //linha 12
                          {2,0,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,0,2}, //linha 13
                          {2,0,1,0,0,1,0,0,0,1,0,1,0,0,0,1,0,0,1,0,2}, //linha 14
-                         {2,0,1,1,0,1,1,1,1,1,2,1,1,1,1,1,0,1,1,0,2}, //linha 15
+                         {2,0,1,1,0,1,1,1,1,1,3,1,1,1,1,1,0,1,1,0,2}, //linha 15
                          {2,0,0,1,0,1,0,1,0,0,0,0,0,1,0,1,0,1,0,0,2}, //linha 16
                          {2,0,1,1,1,1,0,1,1,1,0,1,1,1,0,1,1,1,1,0,2}, //linha 17
                          {2,0,1,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,1,0,2}, //linha 18
                          {2,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,2}, //linha 19
-                         {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2}}; //linha 20
+                         {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2}};//linha 20
 
-
+        // Variaveis
         Texture2D dot;
         Texture2D parede;
+        Texture2D pacMan;
+
         public Game1()
             : base()
         {
@@ -77,6 +80,7 @@ namespace Pac_Man
             spriteBatch = new SpriteBatch(GraphicsDevice);
             dot = Content.Load<Texture2D>("dot");
             parede = Content.Load<Texture2D>("parede");
+            pacMan = Content.Load<Texture2D>("pac man1");
             // TODO: use this.Content to load your game content here
         }
 
@@ -102,6 +106,9 @@ namespace Pac_Man
 
             // TODO: Add your update logic here
 
+           
+
+
             base.Update(gameTime);
         }
 
@@ -124,6 +131,9 @@ namespace Pac_Man
 
                    if (board[x, y] == 0) // ver parede
                        spriteBatch.Draw(parede, new Vector2(x * parede.Width , y * parede.Height), Color.White);
+
+                   if (board[x, y] == 3) // ver parede
+                       spriteBatch.Draw(pacMan, new Vector2(x * parede.Width + 2, y * parede.Height), Color.White);
                 
                 }
             }
