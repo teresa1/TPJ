@@ -50,7 +50,7 @@ namespace Pac_Man
             graphics = new GraphicsDeviceManager(this);
             graphics.IsFullScreen = false;
             graphics.PreferredBackBufferHeight = 640;
-            graphics.PreferredBackBufferWidth = 640;
+            graphics.PreferredBackBufferWidth = 850;
             Content.RootDirectory = "Content";
         }
 
@@ -115,16 +115,16 @@ namespace Pac_Man
 
             // TODO: Add your drawing code here
         spriteBatch.Begin();
-            for (int x = 0; x < 20; x++)
+            for (int x = 0; x < 21; x++)
             {
                 for (int y = 0; y < 21; y++)
                 {
                     if (board[x, y] == 1) // ver comida
-                        spriteBatch.Draw(dot, new Vector2(x * 30, y * 30), Color.White);
+                        spriteBatch.Draw(dot, new Vector2(x * parede.Width , y * parede.Height ), Color.White);
 
-                   if (board[x, y] == 0) // ver comida
-                       spriteBatch.Draw(parede, new Vector2(x * 5000, x * 5000), Color.White);
-                  
+                   if (board[x, y] == 0) // ver parede
+                       spriteBatch.Draw(parede, new Vector2(x * parede.Width , y * parede.Height), Color.White);
+                
                 }
             }
 
