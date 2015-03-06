@@ -47,6 +47,8 @@ namespace Pac_Man
         Pacman pacMano;
         int yPac = 13, xPac = 9;
         float lastHumanMove;
+        SpriteFont font;
+        int score = 0;
 
         public Game1()
             : base()
@@ -71,6 +73,7 @@ namespace Pac_Man
             dot = Content.Load<Texture2D>("dot");
             parede = Content.Load<Texture2D>("parede");
             pacMan = Content.Load<Texture2D>("pac man1");
+            font = Content.Load<SpriteFont>("SpriteFont1");
         }
 
         protected override void UnloadContent()
@@ -94,7 +97,7 @@ namespace Pac_Man
         {
             KeyboardState keyState = Keyboard.GetState(); //Simplifica a escrita da função dos botões
             GamePadState gamepadState = GamePad.GetState(PlayerIndex.One); //Simplifica a escrita da função dos botões do comando
-                if (lastHumanMove >= 1f / 10f )
+                if (lastHumanMove >= 1f / 5f )
                 {
                     lastHumanMove = 0f;
                     if ((keyState.IsKeyDown(Keys.Down) || gamepadState.IsButtonDown(Buttons.DPadDown)))
@@ -154,6 +157,7 @@ namespace Pac_Man
                     }
                 }
             spriteBatch.Draw(pacMan, new Vector2(xPac * 30, yPac*30), Color.White);
+            spriteBatch.DrawString(font, "Score: " + score, new Vector2(670, 100), Color.White);
             spriteBatch.End();
             base.Draw(gameTime);
 
@@ -170,7 +174,10 @@ namespace Pac_Man
         private void Comer(int xPac, int yPac)
         {
             if (board[xPac, yPac] == 1)
+            {
                 board[xPac, yPac] = 2;
+                score++;
+            }
         }
 
         
