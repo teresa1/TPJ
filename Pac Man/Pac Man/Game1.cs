@@ -35,7 +35,7 @@ namespace Pac_Man
                          {2,0,0,0,0,1,0,2,0,0,0,0,0,2,0,1,0,0,0,0,2}, //linha 12
                          {2,0,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,0,2}, //linha 13
                          {2,0,1,0,0,1,0,0,0,1,0,1,0,0,0,1,0,0,1,0,2}, //linha 14
-                         {2,0,1,1,0,1,1,1,1,1,3,1,1,1,1,1,0,1,1,0,2}, //linha 15
+                         {2,0,1,1,0,1,1,1,1,1,/*-->*/2,1,1,1,1,1,0,1,1,0,2}, //linha 15
                          {2,0,0,1,0,1,0,1,0,0,0,0,0,1,0,1,0,1,0,0,2}, //linha 16
                          {2,0,1,1,1,1,0,1,1,1,0,1,1,1,0,1,1,1,1,0,2}, //linha 17
                          {2,0,1,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,1,0,2}, //linha 18
@@ -46,6 +46,9 @@ namespace Pac_Man
         Texture2D dot;
         Texture2D parede;
         Texture2D pacMan;
+        Pacman pacMano;
+        int yPac = 30, xPac=20;
+        float lastHumanMove;
 
         public Game1()
             : base()
@@ -92,6 +95,8 @@ namespace Pac_Man
         {
             // TODO: Unload any non ContentManager content here
             dot.Dispose();
+            parede.Dispose();
+            pacMan.Dispose();
         }
 
         /// <summary>
@@ -99,6 +104,8 @@ namespace Pac_Man
         /// checking for collisions, gathering input, and playing audio.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        /// 
+       
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -106,9 +113,29 @@ namespace Pac_Man
 
             // TODO: Add your update logic here
 
-           
+            lastHumanMove += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (lastHumanMove >= 1f / 100)
+            {
+             //   pacMano = new Pacman();
+                lastHumanMove = 0f;
+                if (Keyboard.GetState().IsKeyDown(Keys.Down))
+                {
+                    yPac ++;
+                }
+                if (Keyboard.GetState().IsKeyDown(Keys.Up))
+                {
+                    yPac--;
+                }
+                if (Keyboard.GetState().IsKeyDown(Keys.Left))
+                {
+                    xPac--;
+                }
+                if (Keyboard.GetState().IsKeyDown(Keys.Right))
+                {
+                    xPac++;
+                }
 
-
+            }
             base.Update(gameTime);
         }
 
@@ -132,19 +159,15 @@ namespace Pac_Man
                    if (board[x, y] == 0) // ver parede
                        spriteBatch.Draw(parede, new Vector2(x * parede.Width , y * parede.Height), Color.White);
 
-                   if (board[x, y] == 3) // ver parede
-                       spriteBatch.Draw(pacMan, new Vector2(x * parede.Width + 2, y * parede.Height), Color.White);
-                
+                 
+                 spriteBatch.Draw(pacMan, new Vector2(xPac, yPac), Color.White);
                 }
             }
-
-            
-           
-           
             spriteBatch.End();
            base.Draw(gameTime);
 
             
         }
+       
     }
 }

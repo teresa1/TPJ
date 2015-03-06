@@ -50,7 +50,7 @@ namespace jogojogo
             graphics = new GraphicsDeviceManager(this);
             graphics.IsFullScreen = false;
             graphics.PreferredBackBufferHeight = 650;
-            graphics.PreferredBackBufferWidth = 450;
+            graphics.PreferredBackBufferWidth = 500;
             Content.RootDirectory = "Content";
         }
 
@@ -80,7 +80,7 @@ namespace jogojogo
             box = Content.Load <Texture2D>("box");
             font = Content.Load<SpriteFont>("SpriteFont1");
             pixel = Content.Load<Texture2D>("pixel");
-            cocaine = Content.Load<Song>("Nomy- Cocain (with lyrics)");
+            //cocaine = Content.Load<Song>("Nomy- Cocain (with lyrics)");
             // TODO: use this.Content to load your game content here
         }
 
