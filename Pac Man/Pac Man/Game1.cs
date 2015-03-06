@@ -15,12 +15,9 @@ namespace Pac_Man
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Rectangle pacmanBound;
-        Vector2 pacmanPosition;
-        Rectangle wallBound;
-        Vector2 wallPosition;
+        
 
-        /*            0-parede    1- comida    2-vazio      3 - pac man :D     */
+        /*            0-parede    1- comida    2-vazio         */
         byte[,] board = {{2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2}, //linha 0
                          {2,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,2}, //linha 1
                          {2,0,1,0,0,1,0,0,0,1,0,1,0,0,0,1,0,0,1,0,2}, //linha 2
@@ -36,7 +33,7 @@ namespace Pac_Man
                          {2,0,0,0,0,1,0,2,0,0,0,0,0,2,0,1,0,0,0,0,2}, //linha 12
                          {2,0,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,0,2}, //linha 13
                          {2,0,1,0,0,1,0,0,0,1,0,1,0,0,0,1,0,0,1,0,2}, //linha 14
-                         {2,0,1,1,0,1,1,1,1,1,/*-->*/2,1,1,1,1,1,0,1,1,0,2}, //linha 15
+                         {2,0,1,1,0,1,1,1,1,1,1,1,1,1,1,1,0,1,1,0,2}, //linha 15
                          {2,0,0,1,0,1,0,1,0,0,0,0,0,1,0,1,0,1,0,0,2}, //linha 16
                          {2,0,1,1,1,1,0,1,1,1,0,1,1,1,0,1,1,1,1,0,2}, //linha 17
                          {2,0,1,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,1,0,2}, //linha 18
@@ -48,7 +45,7 @@ namespace Pac_Man
         Texture2D parede;
         Texture2D pacMan;
         Pacman pacMano;
-        float yPac = 390, xPac=330;
+        int yPac = 13, xPac = 9;
         float lastHumanMove;
 
         public Game1()
@@ -56,7 +53,7 @@ namespace Pac_Man
         {
             graphics = new GraphicsDeviceManager(this);
             graphics.IsFullScreen = false;
-            graphics.PreferredBackBufferHeight = 640;
+            graphics.PreferredBackBufferHeight = 630;
             graphics.PreferredBackBufferWidth = 850;
             Content.RootDirectory = "Content";
         }
@@ -64,15 +61,8 @@ namespace Pac_Man
         protected override void Initialize()
         {
             base.Initialize();
-            pacmanPosition = new Vector2(yPac, xPac);
-            for (int x = 0; x < 21; x++)
-            {
-                for (int y = 0; y < 21; y++)
-                {
-                    if (board[x, y] == 2) // ver comida
-                        wallPosition = new Vector2(x * parede.Width, y * parede.Height);
-                }
-            }
+           
+           
         }
 
         protected override void LoadContent()
@@ -81,8 +71,6 @@ namespace Pac_Man
             dot = Content.Load<Texture2D>("dot");
             parede = Content.Load<Texture2D>("parede");
             pacMan = Content.Load<Texture2D>("pac man1");
-            pacmanBound = new Rectangle ((int)(pacmanPosition.X-pacMan.Width/2),(int)(pacmanPosition.Y-pacMan.Height/2),pacMan.Width,pacMan.Height);
-            wallBound = new Rectangle((int)(wallPosition.X - parede.Width / 2), (int)(wallPosition.Y - parede.Height / 2), parede.Width, parede.Height);
         }
 
         protected override void UnloadContent()
@@ -106,24 +94,43 @@ namespace Pac_Man
         {
             KeyboardState keyState = Keyboard.GetState(); //Simplifica a escrita da função dos botões
             GamePadState gamepadState = GamePad.GetState(PlayerIndex.One); //Simplifica a escrita da função dos botões do comando
-                if (lastHumanMove >= 1f / 100f)
+                if (lastHumanMove >= 1f / 10f )
                 {
                     lastHumanMove = 0f;
                     if ((keyState.IsKeyDown(Keys.Down) || gamepadState.IsButtonDown(Buttons.DPadDown)))
                     {
-                        yPac = yPac + 1.5f;
+                        if(xPac == 9 && yPac == 20)
+                        {
+                            yPac = 0;
+                        }
+                        else if (canGo(xPac, yPac + 1))
+                        {
+                            yPac++;
+                            Comer(xPac, yPac);
+                        }
+                        
                     }
-                    if (keyState.IsKeyDown(Keys.Up) || gamepadState.IsButtonDown(Buttons.DPadUp))
+                    else if (keyState.IsKeyDown(Keys.Up) || gamepadState.IsButtonDown(Buttons.DPadUp))
                     {
-                        yPac = yPac - 1.5f;
+                        if(xPac==9 && yPac == 0)
+                        {
+                            yPac = 21;
+                        }
+                        if (canGo(xPac, yPac - 1))
+                        yPac--;
+                        Comer(xPac, yPac);
                     }
-                    if (keyState.IsKeyDown(Keys.Left) || gamepadState.IsButtonDown(Buttons.DPadLeft))
+                    else if (keyState.IsKeyDown(Keys.Left) || gamepadState.IsButtonDown(Buttons.DPadLeft))
                     {
-                        xPac = xPac - 1.5f;
+                        if (canGo(xPac -1, yPac))
+                        xPac--;
+                        Comer(xPac, yPac);
                     }
-                    if (keyState.IsKeyDown(Keys.Right) || gamepadState.IsButtonDown(Buttons.DPadRight))
+                    else if (keyState.IsKeyDown(Keys.Right) || gamepadState.IsButtonDown(Buttons.DPadRight))
                     {
-                        xPac = xPac + 1.5f;
+                        if (canGo(xPac+1, yPac))
+                        xPac++;
+                        Comer(xPac, yPac);
                     }
                 } 
               
@@ -143,15 +150,29 @@ namespace Pac_Man
                        if (board[x, y] == 0) // ver parede
                            spriteBatch.Draw(parede, new Vector2(x * parede.Width , y * parede.Height), Color.White);
 
-                 
-                     spriteBatch.Draw(pacMan, new Vector2(xPac, yPac), Color.White);
+                     
                     }
                 }
+            spriteBatch.Draw(pacMan, new Vector2(xPac * 30, yPac*30), Color.White);
             spriteBatch.End();
             base.Draw(gameTime);
 
             
         }
        
+        private bool canGo(int xPac,int yPac)
+        {
+            if (board[xPac, yPac] != 0)
+                return true;
+            else return false;
+        }
+
+        private void Comer(int xPac, int yPac)
+        {
+            if (board[xPac, yPac] == 1)
+                board[xPac, yPac] = 2;
+        }
+
+        
     }
 }
