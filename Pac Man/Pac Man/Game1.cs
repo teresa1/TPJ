@@ -11,13 +11,14 @@ using Microsoft.Xna.Framework.GamerServices;
 
 namespace Pac_Man
 {
-    /// <summary>
-    /// This is the main type for your game
-    /// </summary>
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        Rectangle pacmanBound;
+        Vector2 pacmanPosition;
+        Rectangle wallBound;
+        Vector2 wallPosition;
 
         /*            0-parede    1- comida    2-vazio      3 - pac man :D     */
         byte[,] board = {{2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2}, //linha 0
@@ -47,7 +48,7 @@ namespace Pac_Man
         Texture2D parede;
         Texture2D pacMan;
         Pacman pacMano;
-        int yPac = 30, xPac=20;
+        float yPac = 390, xPac=330;
         float lastHumanMove;
 
         public Game1()
@@ -60,111 +61,94 @@ namespace Pac_Man
             Content.RootDirectory = "Content";
         }
 
-        /// <summary>
-        /// Allows the game to perform any initialization it needs to before starting to run.
-        /// This is where it can query for any required services and load any non-graphic
-        /// related content.  Calling base.Initialize will enumerate through any components
-        /// and initialize them as well.
-        /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-
             base.Initialize();
+            pacmanPosition = new Vector2(yPac, xPac);
+            for (int x = 0; x < 21; x++)
+            {
+                for (int y = 0; y < 21; y++)
+                {
+                    if (board[x, y] == 2) // ver comida
+                        wallPosition = new Vector2(x * parede.Width, y * parede.Height);
+                }
+            }
         }
 
-        /// <summary>
-        /// LoadContent will be called once per game and is the place to load
-        /// all of your content.
-        /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             dot = Content.Load<Texture2D>("dot");
             parede = Content.Load<Texture2D>("parede");
             pacMan = Content.Load<Texture2D>("pac man1");
-            // TODO: use this.Content to load your game content here
+            pacmanBound = new Rectangle ((int)(pacmanPosition.X-pacMan.Width/2),(int)(pacmanPosition.Y-pacMan.Height/2),pacMan.Width,pacMan.Height);
+            wallBound = new Rectangle((int)(wallPosition.X - parede.Width / 2), (int)(wallPosition.Y - parede.Height / 2), parede.Width, parede.Height);
         }
 
-        /// <summary>
-        /// UnloadContent will be called once per game and is the place to unload
-        /// all content.
-        /// </summary>
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
             dot.Dispose();
             parede.Dispose();
             pacMan.Dispose();
         }
 
-        /// <summary>
-        /// Allows the game to run logic such as updating the world,
-        /// checking for collisions, gathering input, and playing audio.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        /// 
-       
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
-            // TODO: Add your update logic here
-
             lastHumanMove += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (lastHumanMove >= 1f / 100)
-            {
-             //   pacMano = new Pacman();
-                lastHumanMove = 0f;
-                if (Keyboard.GetState().IsKeyDown(Keys.Down))
-                {
-                    yPac ++;
-                }
-                if (Keyboard.GetState().IsKeyDown(Keys.Up))
-                {
-                    yPac--;
-                }
-                if (Keyboard.GetState().IsKeyDown(Keys.Left))
-                {
-                    xPac--;
-                }
-                if (Keyboard.GetState().IsKeyDown(Keys.Right))
-                {
-                    xPac++;
-                }
-
-            }
+            //pacMano = new Pacman();
+                UpdateInput();          
             base.Update(gameTime);
         }
 
-        /// <summary>
-        /// This is called when the game should draw itself.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        private void UpdateInput()//Controlos
+        {
+            KeyboardState keyState = Keyboard.GetState(); //Simplifica a escrita da função dos botões
+            GamePadState gamepadState = GamePad.GetState(PlayerIndex.One); //Simplifica a escrita da função dos botões do comando
+                if (lastHumanMove >= 1f / 100f)
+                {
+                    lastHumanMove = 0f;
+                    if ((keyState.IsKeyDown(Keys.Down) || gamepadState.IsButtonDown(Buttons.DPadDown)))
+                    {
+                        yPac = yPac + 1.5f;
+                    }
+                    if (keyState.IsKeyDown(Keys.Up) || gamepadState.IsButtonDown(Buttons.DPadUp))
+                    {
+                        yPac = yPac - 1.5f;
+                    }
+                    if (keyState.IsKeyDown(Keys.Left) || gamepadState.IsButtonDown(Buttons.DPadLeft))
+                    {
+                        xPac = xPac - 1.5f;
+                    }
+                    if (keyState.IsKeyDown(Keys.Right) || gamepadState.IsButtonDown(Buttons.DPadRight))
+                    {
+                        xPac = xPac + 1.5f;
+                    }
+                } 
+              
+        }
+
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
-
-            // TODO: Add your drawing code here
-        spriteBatch.Begin();
-            for (int x = 0; x < 21; x++)
-            {
-                for (int y = 0; y < 21; y++)
+            spriteBatch.Begin();
+                for (int x = 0; x < 21; x++)
                 {
-                    if (board[x, y] == 1) // ver comida
-                        spriteBatch.Draw(dot, new Vector2(x * parede.Width , y * parede.Height ), Color.White);
+                    for (int y = 0; y < 21; y++)
+                    {
+                        if (board[x, y] == 1) // ver comida
+                            spriteBatch.Draw(dot, new Vector2(x * parede.Width , y * parede.Height ), Color.White);
 
-                   if (board[x, y] == 0) // ver parede
-                       spriteBatch.Draw(parede, new Vector2(x * parede.Width , y * parede.Height), Color.White);
+                       if (board[x, y] == 0) // ver parede
+                           spriteBatch.Draw(parede, new Vector2(x * parede.Width , y * parede.Height), Color.White);
 
                  
-                 spriteBatch.Draw(pacMan, new Vector2(xPac, yPac), Color.White);
+                     spriteBatch.Draw(pacMan, new Vector2(xPac, yPac), Color.White);
+                    }
                 }
-            }
             spriteBatch.End();
-           base.Draw(gameTime);
+            base.Draw(gameTime);
 
             
         }
