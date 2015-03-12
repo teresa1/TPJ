@@ -80,7 +80,7 @@ namespace jogojogo
             box = Content.Load <Texture2D>("box");
             font = Content.Load<SpriteFont>("SpriteFont1");
             pixel = Content.Load<Texture2D>("pixel");
-            cocaine = Content.Load<Song>("Nomy- Cocaine (with lyrics)");
+            //cocaine = Content.Load<Song>("Nomy- Cocaine (with lyrics)");
             // TODO: use this.Content to load your game content here
         }
 

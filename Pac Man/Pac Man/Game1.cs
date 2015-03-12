@@ -26,7 +26,7 @@ namespace Pac_Man
                          {2,0,1,1,1,1,0,1,1,1,0,1,1,1,0,1,1,1,1,0,2}, //linha 5
                          {2,0,0,0,0,1,0,0,0,2,0,2,0,0,0,1,0,0,0,0,2}, //linha 6
                          {2,2,2,2,0,1,0,2,2,2,2,2,2,2,0,1,0,2,2,2,2}, //linha 7
-                         {0,0,0,0,0,1,0,2,0,0,0,0,0,2,0,1,0,0,0,0,0}, //linha 8
+                         {0,0,0,0,0,1,0,2,0,0,2,0,0,2,0,1,0,0,0,0,0}, //linha 8
                          {2,2,2,2,2,1,2,2,0,2,2,2,0,2,2,1,2,2,2,2,2}, //linha 9
                          {0,0,0,0,0,1,0,2,0,0,0,0,0,2,0,1,0,0,0,0,0}, //linha 10
                          {2,2,2,2,0,1,0,2,2,2,2,2,2,2,0,1,0,2,2,2,2}, //linha 11
@@ -45,6 +45,9 @@ namespace Pac_Man
         Texture2D parede;
         Texture2D pacMan;
         Texture2D blinky;
+        float ticker;
+        KeyboardState keyStatus;
+        GamePadState gamepadState;
        // Pacman pacMano;
         int yPac = 13, xPac = 9;
         int xBlink = 9, yBlink = 10;
@@ -92,19 +95,25 @@ namespace Pac_Man
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             lastHumanMove += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            Blinky();
-                UpdateInput();          
+            ticker += gameTime.ElapsedGameTime.Milliseconds;
+
+            MoveIt();
+
+                if (ticker >= 1000)
+                {
+                    ticker -= 1000;
+                    LerTeclas();
+
+                }
             base.Update(gameTime);
         }
 
-        private void UpdateInput()//Controlos
+        private void MoveIt()
         {
-            KeyboardState keyState = Keyboard.GetState(); //Simplifica a escrita da função dos botões
-            GamePadState gamepadState = GamePad.GetState(PlayerIndex.One); //Simplifica a escrita da função dos botões do comando
-                if (lastHumanMove >= 1f / 25f )
+                if (lastHumanMove >= 1f / 5f )
                 {
                     lastHumanMove = 0f;
-                    if ((keyState.IsKeyDown(Keys.Down) || gamepadState.IsButtonDown(Buttons.DPadDown)))
+                    if ((keyStatus.IsKeyDown(Keys.Down) || gamepadState.IsButtonDown(Buttons.DPadDown)))
                     {
                         if(xPac == 9 && yPac == 20)
                         {
@@ -117,7 +126,7 @@ namespace Pac_Man
                         }
                         
                     }
-                    else if (keyState.IsKeyDown(Keys.Up) || gamepadState.IsButtonDown(Buttons.DPadUp))
+                    else if (keyStatus.IsKeyDown(Keys.Up) || gamepadState.IsButtonDown(Buttons.DPadUp))
                     {
                         if(xPac==9 && yPac == 0)
                         {
@@ -127,13 +136,13 @@ namespace Pac_Man
                         yPac--;
                         Comer(xPac, yPac);
                     }
-                    else if (keyState.IsKeyDown(Keys.Left) || gamepadState.IsButtonDown(Buttons.DPadLeft))
+                    else if (keyStatus.IsKeyDown(Keys.Left) || gamepadState.IsButtonDown(Buttons.DPadLeft))
                     {
                         if (canGo(xPac -1, yPac))
                         xPac--;
                         Comer(xPac, yPac);
                     }
-                    else if (keyState.IsKeyDown(Keys.Right) || gamepadState.IsButtonDown(Buttons.DPadRight))
+                    else if (keyStatus.IsKeyDown(Keys.Right) || gamepadState.IsButtonDown(Buttons.DPadRight))
                     {
                         if (canGo(xPac+1, yPac))
                         xPac++;
@@ -143,6 +152,11 @@ namespace Pac_Man
               
         }
 
+        private void LerTeclas()
+        {
+            keyStatus = Keyboard.GetState(); //Simplifica a escrita da função dos botões
+            gamepadState = GamePad.GetState(PlayerIndex.One); //Simplifica a escrita da função dos botões do comando
+        }
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
@@ -160,8 +174,9 @@ namespace Pac_Man
                      
                     }
                 }
-            spriteBatch.Draw(pacMan, new Vector2(xPac * 30, yPac*30), Color.White);
-            spriteBatch.Draw(blinky, new Vector2(xBlink * 30, yBlink * 30), Color.White);
+            spriteBatch.Draw(pacMan,Matrix2Screen( new Vector2(xPac, yPac)), Color.White);
+            spriteBatch.Draw(blinky, Matrix2Screen( new Vector2(xBlink, yBlink)), Color.White);
+            //spriteBatch.Draw(blinky, new Rectangle(xBlink * 30, yBlink*30, 30, 30), Color.Red);
             spriteBatch.DrawString(font, "Score: " + score, new Vector2(670, 100), Color.White);
             spriteBatch.End();
             base.Draw(gameTime);
@@ -185,14 +200,19 @@ namespace Pac_Man
             }
         }
 
-        private void Blinky()
+     
+        private void Blinky(int xBlink, int yBlink)
         {
-           if(canGo(xBlink,yBlink))
-           {
-               yBlink++;
-           }
+            xBlink--;
         }
-
         
+        private Vector2 Matrix2Screen(Vector2 matrixPosition)
+        {
+            return (matrixPosition * 30);
+        }
+        private Vector2 Screen2Matrix(Vector2 screenPosition)
+        {
+            return (screenPosition / 30);
+        }
     }
 }
