@@ -44,8 +44,10 @@ namespace Pac_Man
         Texture2D dot;
         Texture2D parede;
         Texture2D pacMan;
-        Pacman pacMano;
+        Texture2D blinky;
+       // Pacman pacMano;
         int yPac = 13, xPac = 9;
+        int xBlink = 9, yBlink = 10;
         float lastHumanMove;
         SpriteFont font;
         int score = 0;
@@ -74,6 +76,7 @@ namespace Pac_Man
             parede = Content.Load<Texture2D>("parede");
             pacMan = Content.Load<Texture2D>("pac man1");
             font = Content.Load<SpriteFont>("SpriteFont1");
+            blinky = Content.Load<Texture2D>("blinky");
         }
 
         protected override void UnloadContent()
@@ -81,6 +84,7 @@ namespace Pac_Man
             dot.Dispose();
             parede.Dispose();
             pacMan.Dispose();
+            blinky.Dispose();
         }
 
         protected override void Update(GameTime gameTime)
@@ -88,7 +92,7 @@ namespace Pac_Man
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             lastHumanMove += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            //pacMano = new Pacman();
+            Blinky();
                 UpdateInput();          
             base.Update(gameTime);
         }
@@ -97,7 +101,7 @@ namespace Pac_Man
         {
             KeyboardState keyState = Keyboard.GetState(); //Simplifica a escrita da função dos botões
             GamePadState gamepadState = GamePad.GetState(PlayerIndex.One); //Simplifica a escrita da função dos botões do comando
-                if (lastHumanMove >= 1f / 5f )
+                if (lastHumanMove >= 1f / 25f )
                 {
                     lastHumanMove = 0f;
                     if ((keyState.IsKeyDown(Keys.Down) || gamepadState.IsButtonDown(Buttons.DPadDown)))
@@ -157,6 +161,7 @@ namespace Pac_Man
                     }
                 }
             spriteBatch.Draw(pacMan, new Vector2(xPac * 30, yPac*30), Color.White);
+            spriteBatch.Draw(blinky, new Vector2(xBlink * 30, yBlink * 30), Color.White);
             spriteBatch.DrawString(font, "Score: " + score, new Vector2(670, 100), Color.White);
             spriteBatch.End();
             base.Draw(gameTime);
@@ -178,6 +183,14 @@ namespace Pac_Man
                 board[xPac, yPac] = 2;
                 score++;
             }
+        }
+
+        private void Blinky()
+        {
+           if(canGo(xBlink,yBlink))
+           {
+               yBlink++;
+           }
         }
 
         
