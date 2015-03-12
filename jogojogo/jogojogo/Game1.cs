@@ -22,7 +22,6 @@ namespace jogojogo
             GameOver,
         };
         GameStatus status;
-        
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Texture2D box;
