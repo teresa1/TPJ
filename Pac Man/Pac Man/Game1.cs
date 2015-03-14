@@ -97,9 +97,9 @@ namespace Pac_Man
 
             MovePac();
 
-                if (ticker >= 1000)
+                if (ticker >= 10)
                 {
-                    ticker -= 1000;
+                    ticker -= 10;
                     LerTeclas();
 
                 }
