@@ -68,8 +68,6 @@ namespace Pac_Man
         protected override void Initialize()
         {
             base.Initialize();
-           
-           
         }
 
         protected override void LoadContent()
@@ -97,7 +95,7 @@ namespace Pac_Man
             lastHumanMove += (float)gameTime.ElapsedGameTime.TotalSeconds;
             ticker += gameTime.ElapsedGameTime.Milliseconds;
 
-            MoveIt();
+            MovePac();
 
                 if (ticker >= 10)
                 {
@@ -108,48 +106,47 @@ namespace Pac_Man
             base.Update(gameTime);
         }
 
-        private void MoveIt()
+        private void MovePac()
         {
                 if (lastHumanMove >= 1f / 5f )
                 {
                     lastHumanMove = 0f;
+
+                    // Baixo
                     if ((keyStatus.IsKeyDown(Keys.Down) || gamepadState.IsButtonDown(Buttons.DPadDown)))
                     {
+                        // Warp em baixo
                         if(xPac == 9 && yPac == 20)
-                        {
                             yPac = 0;
-                        }
-                        else if (canGo(xPac, yPac + 1))
-                        {
+                        else if (CanGo(xPac, yPac + 1))
                             yPac++;
-                            Comer(xPac, yPac);
-                        }
-                        
+                        Comer(xPac, yPac);
                     }
+                    // Cima
                     else if (keyStatus.IsKeyDown(Keys.Up) || gamepadState.IsButtonDown(Buttons.DPadUp))
                     {
+                        // Warp em cima
                         if(xPac==9 && yPac == 0)
-                        {
                             yPac = 21;
-                        }
-                        if (canGo(xPac, yPac - 1))
-                        yPac--;
+                        if (CanGo(xPac, yPac - 1))
+                            yPac--;
                         Comer(xPac, yPac);
                     }
+                    // Esquerda
                     else if (keyStatus.IsKeyDown(Keys.Left) || gamepadState.IsButtonDown(Buttons.DPadLeft))
                     {
-                        if (canGo(xPac -1, yPac))
-                        xPac--;
+                        if (CanGo(xPac -1, yPac))
+                            xPac--;
                         Comer(xPac, yPac);
                     }
+                    // Direita
                     else if (keyStatus.IsKeyDown(Keys.Right) || gamepadState.IsButtonDown(Buttons.DPadRight))
                     {
-                        if (canGo(xPac+1, yPac))
-                        xPac++;
+                        if (CanGo(xPac+1, yPac))
+                            xPac++;
                         Comer(xPac, yPac);
                     }
                 } 
-              
         }
 
         private void LerTeclas()
@@ -166,10 +163,10 @@ namespace Pac_Man
                     for (int y = 0; y < 21; y++)
                     {
                         if (board[x, y] == 1) // ver comida
-                            spriteBatch.Draw(dot, new Vector2(x * parede.Width , y * parede.Height ), Color.White);
+                            spriteBatch.Draw(dot, new Vector2(y * parede.Height, x * parede.Width), Color.White);
 
                        if (board[x, y] == 0) // ver parede
-                           spriteBatch.Draw(parede, new Vector2(x * parede.Width , y * parede.Height), Color.White);
+                           spriteBatch.Draw(parede, new Vector2(y * parede.Height, x * parede.Width), Color.White);
 
                      
                     }
@@ -184,7 +181,7 @@ namespace Pac_Man
             
         }
        
-        private bool canGo(int xPac,int yPac)
+        private bool CanGo(int xPac,int yPac)
         {
             if (board[xPac, yPac] != 0)
                 return true;
