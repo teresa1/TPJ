@@ -35,6 +35,8 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Auxiliares.cs" />
+    <Compile Include="Fantasmas.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Pacman.cs" />
     <Compile Include="Program.cs" />

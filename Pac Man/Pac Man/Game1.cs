@@ -15,6 +15,7 @@ namespace Pac_Man
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        Random random;
         
 
         /*            0-parede    1- comida    2-vazio         */
@@ -54,7 +55,8 @@ namespace Pac_Man
         float lastHumanMove;
         SpriteFont font;
         int score = 0;
-
+        List<Fantasma> Fantasmas;
+        
         public Game1()
             : base()
         {
@@ -67,7 +69,11 @@ namespace Pac_Man
 
         protected override void Initialize()
         {
-            base.Initialize();
+
+            Fantasmas = new List<Fantasma>();
+            random = new Random();
+
+           base.Initialize();
            
            
         }
@@ -79,7 +85,11 @@ namespace Pac_Man
             parede = Content.Load<Texture2D>("parede");
             pacMan = Content.Load<Texture2D>("pac man1");
             font = Content.Load<SpriteFont>("SpriteFont1");
-            blinky = Content.Load<Texture2D>("blinky");
+            Fantasma fantasma1 = new Fantasma(new Vector2(14, 15), "blinky", Content);
+            Fantasma fantasma2 = new Fantasma(new Vector2(5, 10), "blinky", Content);
+            Fantasmas.Add(fantasma1);
+            Fantasmas.Add(fantasma2);
+            
         }
 
         protected override void UnloadContent()
@@ -87,7 +97,10 @@ namespace Pac_Man
             dot.Dispose();
             parede.Dispose();
             pacMan.Dispose();
-            blinky.Dispose();
+            foreach (var fantasma in Fantasmas)
+            {
+                fantasma.Dispose();
+            }
         }
 
         protected override void Update(GameTime gameTime)
@@ -97,14 +110,22 @@ namespace Pac_Man
             lastHumanMove += (float)gameTime.ElapsedGameTime.TotalSeconds;
             ticker += gameTime.ElapsedGameTime.Milliseconds;
 
-            MoveIt();
-
-                if (ticker >= 10)
-                {
-                    ticker -= 10;
                     LerTeclas();
 
+                if (ticker >= 200)
+                {
+                    ticker -= 200;
+            MoveIt();
+
+                    foreach (var fantasma in Fantasmas)
+                    {
+                        fantasma.Update(board, random);
+                    }
+
                 }
+
+                
+
             base.Update(gameTime);
         }
 
@@ -119,7 +140,7 @@ namespace Pac_Man
                         {
                             yPac = 0;
                         }
-                        else if (canGo(xPac, yPac + 1))
+                        else if (Auxiliares.canGo(xPac, yPac + 1, board))
                         {
                             yPac++;
                             Comer(xPac, yPac);
@@ -132,19 +153,19 @@ namespace Pac_Man
                         {
                             yPac = 21;
                         }
-                        if (canGo(xPac, yPac - 1))
+                        if (Auxiliares.canGo(xPac, yPac - 1, board))
                         yPac--;
                         Comer(xPac, yPac);
                     }
                     else if (keyStatus.IsKeyDown(Keys.Left) || gamepadState.IsButtonDown(Buttons.DPadLeft))
                     {
-                        if (canGo(xPac -1, yPac))
+                        if (Auxiliares.canGo(xPac -1, yPac, board))
                         xPac--;
                         Comer(xPac, yPac);
                     }
                     else if (keyStatus.IsKeyDown(Keys.Right) || gamepadState.IsButtonDown(Buttons.DPadRight))
                     {
-                        if (canGo(xPac+1, yPac))
+                        if (Auxiliares.canGo(xPac+1, yPac, board))
                         xPac++;
                         Comer(xPac, yPac);
                     }
@@ -165,37 +186,39 @@ namespace Pac_Man
                 {
                     for (int y = 0; y < 21; y++)
                     {
-                        if (board[x, y] == 1) // ver comida
+                        if (board[y, x] == 1) // ver comida
                             spriteBatch.Draw(dot, new Vector2(x * parede.Width , y * parede.Height ), Color.White);
 
-                       if (board[x, y] == 0) // ver parede
+                       if (board[y, x] == 0) // ver parede
                            spriteBatch.Draw(parede, new Vector2(x * parede.Width , y * parede.Height), Color.White);
 
                      
                     }
                 }
-            spriteBatch.Draw(pacMan,Matrix2Screen( new Vector2(xPac, yPac)), Color.White);
-            spriteBatch.Draw(blinky, Matrix2Screen( new Vector2(xBlink, yBlink)), Color.White);
-            //spriteBatch.Draw(blinky, new Rectangle(xBlink * 30, yBlink*30, 30, 30), Color.Red);
+            spriteBatch.Draw(pacMan,Auxiliares.Matrix2Screen( new Vector2(xPac, yPac)), Color.White);
+            
             spriteBatch.DrawString(font, "Score: " + score, new Vector2(670, 100), Color.White);
+            foreach (var fantasma in Fantasmas)
+            {
+                fantasma.Draw(spriteBatch);
+            }
+
+
             spriteBatch.End();
+
+
             base.Draw(gameTime);
 
             
         }
        
-        private bool canGo(int xPac,int yPac)
-        {
-            if (board[xPac, yPac] != 0)
-                return true;
-            else return false;
-        }
+        
 
         private void Comer(int xPac, int yPac)
         {
-            if (board[xPac, yPac] == 1)
+            if (board[yPac, xPac] == 1)
             {
-                board[xPac, yPac] = 2;
+                board[yPac, xPac] = 2;
                 score++;
             }
         }
@@ -206,13 +229,7 @@ namespace Pac_Man
             xBlink--;
         }
         
-        private Vector2 Matrix2Screen(Vector2 matrixPosition)
-        {
-            return (matrixPosition * 30);
-        }
-        private Vector2 Screen2Matrix(Vector2 screenPosition)
-        {
-            return (screenPosition / 30);
-        }
+       
+       
     }
 }
