@@ -17,7 +17,6 @@ namespace Pac_Man
         SpriteBatch spriteBatch;
         Random random;
         
-
         /*            0-parede    1- comida    2-vazio         */
         byte[,] board = {{2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2}, //linha 0
                          {2,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,2}, //linha 1
@@ -43,18 +42,19 @@ namespace Pac_Man
 
         // Variaveis
         Texture2D dot;
-        Texture2D parede;
+        Texture2D wall;
         Texture2D pacMan;
-        Texture2D blinky;
-        float ticker;
-        KeyboardState keyStatus;
+
+        KeyboardState keyState;
         GamePadState gamepadState;
-       // Pacman pacMano;
+
         int yPac = 13, xPac = 9;
-        int xBlink = 9, yBlink = 10;
+
         float lastHumanMove;
-        SpriteFont font;
+        float ticker;
         int score = 0;
+
+        SpriteFont font;
         List<Fantasma> fantasmas;
         
         public Game1()
@@ -69,17 +69,21 @@ namespace Pac_Man
 
         protected override void Initialize()
         {
-           fantasmas = new List<Fantasma>();
-           random = new Random();
+            fantasmas = new List<Fantasma>();
+            random = new Random();
 
-           base.Initialize();
+            // Simplifica a escrita da função dos botões do teclado e comando
+            keyState = Keyboard.GetState();
+            gamepadState = GamePad.GetState(PlayerIndex.One);
+            
+            base.Initialize();
         }
 
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             dot = Content.Load<Texture2D>("dot");
-            parede = Content.Load<Texture2D>("parede");
+            wall = Content.Load<Texture2D>("parede");
             pacMan = Content.Load<Texture2D>("pac man1");
             font = Content.Load<SpriteFont>("SpriteFont1");
             Fantasma fantasma1 = new Fantasma(new Vector2(14, 15), "blinky", Content);
@@ -91,7 +95,7 @@ namespace Pac_Man
         protected override void UnloadContent()
         {
             dot.Dispose();
-            parede.Dispose();
+            wall.Dispose();
             pacMan.Dispose();
             foreach (var fantasma in fantasmas)
                 fantasma.Dispose();
@@ -105,7 +109,6 @@ namespace Pac_Man
             lastHumanMove += (float)gameTime.ElapsedGameTime.TotalSeconds;
             ticker += gameTime.ElapsedGameTime.Milliseconds;
 
-            LerTeclas();
 
             // Movimento dos fantasmas e do jogador
             if (ticker >= 200)
@@ -120,25 +123,54 @@ namespace Pac_Man
             base.Update(gameTime);
         }
 
+        protected override void Draw(GameTime gameTime)
+        {
+            GraphicsDevice.Clear(Color.Black);
+
+            spriteBatch.Begin();
+                for (int x = 0; x < 21; x++)
+                {
+                    for (int y = 0; y < 21; y++)
+                    {
+                        // Comida
+                        if (board[y, x] == 1)
+                            spriteBatch.Draw(dot, new Vector2(x * wall.Width , y * wall.Height), Color.White);
+                        // Paredes
+                        if (board[y, x] == 0)
+                           spriteBatch.Draw(wall, new Vector2(x * wall.Width , y * wall.Height), Color.White);
+                    }
+                }
+            // Pacman e Fantamas 
+            spriteBatch.Draw(pacMan, Auxiliares.Matrix2Screen(new Vector2(xPac, yPac)), Color.White);
+            foreach (var fantasma in fantasmas)
+                fantasma.Draw(spriteBatch);
+            // Score
+            spriteBatch.DrawString(font, "Score: " + score, new Vector2(670, 100), Color.White);
+
+            spriteBatch.End();
+
+            base.Draw(gameTime);
+        }
+
         // Movimento do jogador
         private void Move()
         {
-            if (lastHumanMove >= 1f / 5f )
+            if (lastHumanMove >= 1f / 5f)
             {
                 lastHumanMove = 0f;
 
                 // Baixo
-                if ((keyStatus.IsKeyDown(Keys.Down) || gamepadState.IsButtonDown(Buttons.DPadDown)))
+                if ((keyState.IsKeyDown(Keys.Down) || gamepadState.IsButtonDown(Buttons.DPadDown)))
                 {
                     if (Auxiliares.canGo(xPac, yPac + 1, board))
                     {
                         yPac++;
                         Comer(xPac, yPac);
                     }
-                        
+
                 }
                 // Cima
-                else if (keyStatus.IsKeyDown(Keys.Up) || gamepadState.IsButtonDown(Buttons.DPadUp))
+                else if (keyState.IsKeyDown(Keys.Up) || gamepadState.IsButtonDown(Buttons.DPadUp))
                 {
                     if (Auxiliares.canGo(xPac, yPac - 1, board))
                     {
@@ -147,7 +179,7 @@ namespace Pac_Man
                     }
                 }
                 // Esquerda
-                else if (keyStatus.IsKeyDown(Keys.Left) || gamepadState.IsButtonDown(Buttons.DPadLeft))
+                else if (keyState.IsKeyDown(Keys.Left) || gamepadState.IsButtonDown(Buttons.DPadLeft))
                 {
                     // Warp da esquerda para a direita
                     if (xPac == 0 && yPac == 9)
@@ -160,7 +192,7 @@ namespace Pac_Man
                     }
                 }
                 // Direita
-                else if (keyStatus.IsKeyDown(Keys.Right) || gamepadState.IsButtonDown(Buttons.DPadRight))
+                else if (keyState.IsKeyDown(Keys.Right) || gamepadState.IsButtonDown(Buttons.DPadRight))
                 {
                     // Warp da direita para a esquerda
                     if (xPac == 20 && yPac == 9)
@@ -172,48 +204,10 @@ namespace Pac_Man
                         Comer(xPac, yPac);
                     }
                 }
-            }  
-        }
-
-        //Simplifica a escrita da função dos botões do teclado e comando
-        private void LerTeclas()
-        {
-            keyStatus = Keyboard.GetState();
-            gamepadState = GamePad.GetState(PlayerIndex.One);
-        }
-
-        protected override void Draw(GameTime gameTime)
-        {
-            GraphicsDevice.Clear(Color.Black);
-            spriteBatch.Begin();
-                for (int x = 0; x < 21; x++)
-                {
-                    for (int y = 0; y < 21; y++)
-                    {
-                        if (board[y, x] == 1) // ver comida
-                            spriteBatch.Draw(dot, new Vector2(x * parede.Width , y * parede.Height ), Color.White);
-
-                       if (board[y, x] == 0) // ver parede
-                           spriteBatch.Draw(parede, new Vector2(x * parede.Width , y * parede.Height), Color.White);
-
-                     
-                    }
-                }
-            spriteBatch.Draw(pacMan,Auxiliares.Matrix2Screen( new Vector2(xPac, yPac)), Color.White);
-            
-            spriteBatch.DrawString(font, "Score: " + score, new Vector2(670, 100), Color.White);
-            foreach (var fantasma in fantasmas)
-            {
-                fantasma.Draw(spriteBatch);
             }
-
-
-            spriteBatch.End();
-
-
-            base.Draw(gameTime);
         }
-       
+
+        // Faz pacman comer dots
         private void Comer(int xPac, int yPac)
         {
             if (board[yPac, xPac] == 1)
