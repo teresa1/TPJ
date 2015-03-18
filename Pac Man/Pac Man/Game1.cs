@@ -71,10 +71,6 @@ namespace Pac_Man
         {
             fantasmas = new List<Fantasma>();
             random = new Random();
-
-            // Simplifica a escrita da função dos botões do teclado e comando
-            keyState = Keyboard.GetState();
-            gamepadState = GamePad.GetState(PlayerIndex.One);
             
             base.Initialize();
         }
@@ -109,6 +105,7 @@ namespace Pac_Man
             lastHumanMove += (float)gameTime.ElapsedGameTime.TotalSeconds;
             ticker += gameTime.ElapsedGameTime.Milliseconds;
 
+            LerTeclas();
 
             // Movimento dos fantasmas e do jogador
             if (ticker >= 200)
@@ -150,6 +147,13 @@ namespace Pac_Man
             spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        // Simplifica a escrita da função dos botões do teclado e comando
+        private void LerTeclas()
+        {
+            keyState = Keyboard.GetState();
+            gamepadState = GamePad.GetState(PlayerIndex.One);
         }
 
         // Movimento do jogador
