@@ -55,7 +55,7 @@ namespace Pac_Man
         float lastHumanMove;
         SpriteFont font;
         int score = 0;
-        List<Fantasma> Fantasmas;
+        List<Fantasma> fantasmas;
         
         public Game1()
             : base()
@@ -69,13 +69,10 @@ namespace Pac_Man
 
         protected override void Initialize()
         {
-
-            Fantasmas = new List<Fantasma>();
-            random = new Random();
+           fantasmas = new List<Fantasma>();
+           random = new Random();
 
            base.Initialize();
-           
-           
         }
 
         protected override void LoadContent()
@@ -87,9 +84,8 @@ namespace Pac_Man
             font = Content.Load<SpriteFont>("SpriteFont1");
             Fantasma fantasma1 = new Fantasma(new Vector2(14, 15), "blinky", Content);
             Fantasma fantasma2 = new Fantasma(new Vector2(5, 10), "blinky", Content);
-            Fantasmas.Add(fantasma1);
-            Fantasmas.Add(fantasma2);
-            
+            fantasmas.Add(fantasma1);
+            fantasmas.Add(fantasma2);
         }
 
         protected override void UnloadContent()
@@ -97,87 +93,95 @@ namespace Pac_Man
             dot.Dispose();
             parede.Dispose();
             pacMan.Dispose();
-            foreach (var fantasma in Fantasmas)
-            {
+            foreach (var fantasma in fantasmas)
                 fantasma.Dispose();
-            }
         }
 
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+
             lastHumanMove += (float)gameTime.ElapsedGameTime.TotalSeconds;
             ticker += gameTime.ElapsedGameTime.Milliseconds;
 
-                    LerTeclas();
+            LerTeclas();
 
-                if (ticker >= 200)
-                {
-                    ticker -= 200;
-            MoveIt();
+            // Movimento dos fantasmas e do jogador
+            if (ticker >= 200)
+            {
+                ticker -= 200;
+                Move();
 
-                    foreach (var fantasma in Fantasmas)
-                    {
-                        fantasma.Update(board, random);
-                    }
-
-                }
-
-                
+                foreach (var fantasma in fantasmas)
+                    fantasma.Update(board, random);
+            }
 
             base.Update(gameTime);
         }
 
-        private void MoveIt()
+        // Movimento do jogador
+        private void Move()
         {
-                if (lastHumanMove >= 1f / 5f )
+            if (lastHumanMove >= 1f / 5f )
+            {
+                lastHumanMove = 0f;
+
+                // Baixo
+                if ((keyStatus.IsKeyDown(Keys.Down) || gamepadState.IsButtonDown(Buttons.DPadDown)))
                 {
-                    lastHumanMove = 0f;
-                    if ((keyStatus.IsKeyDown(Keys.Down) || gamepadState.IsButtonDown(Buttons.DPadDown)))
+                    if (Auxiliares.canGo(xPac, yPac + 1, board))
                     {
-                        if(xPac == 9 && yPac == 20)
-                        {
-                            yPac = 0;
-                        }
-                        else if (Auxiliares.canGo(xPac, yPac + 1, board))
-                        {
-                            yPac++;
-                            Comer(xPac, yPac);
-                        }
-                        
+                        yPac++;
+                        Comer(xPac, yPac);
                     }
-                    else if (keyStatus.IsKeyDown(Keys.Up) || gamepadState.IsButtonDown(Buttons.DPadUp))
+                        
+                }
+                // Cima
+                else if (keyStatus.IsKeyDown(Keys.Up) || gamepadState.IsButtonDown(Buttons.DPadUp))
+                {
+                    if (Auxiliares.canGo(xPac, yPac - 1, board))
                     {
-                        if(xPac==9 && yPac == 0)
-                        {
-                            yPac = 21;
-                        }
-                        if (Auxiliares.canGo(xPac, yPac - 1, board))
                         yPac--;
                         Comer(xPac, yPac);
                     }
-                    else if (keyStatus.IsKeyDown(Keys.Left) || gamepadState.IsButtonDown(Buttons.DPadLeft))
+                }
+                // Esquerda
+                else if (keyStatus.IsKeyDown(Keys.Left) || gamepadState.IsButtonDown(Buttons.DPadLeft))
+                {
+                    // Warp da esquerda para a direita
+                    if (xPac == 0 && yPac == 9)
+                        xPac = 21;
+
+                    if (Auxiliares.canGo(xPac - 1, yPac, board))
                     {
-                        if (Auxiliares.canGo(xPac -1, yPac, board))
                         xPac--;
                         Comer(xPac, yPac);
                     }
-                    else if (keyStatus.IsKeyDown(Keys.Right) || gamepadState.IsButtonDown(Buttons.DPadRight))
+                }
+                // Direita
+                else if (keyStatus.IsKeyDown(Keys.Right) || gamepadState.IsButtonDown(Buttons.DPadRight))
+                {
+                    // Warp da direita para a esquerda
+                    if (xPac == 20 && yPac == 9)
+                        xPac = -1;
+
+                    if (Auxiliares.canGo(xPac + 1, yPac, board))
                     {
-                        if (Auxiliares.canGo(xPac+1, yPac, board))
                         xPac++;
                         Comer(xPac, yPac);
                     }
-                } 
-              
+                }
+            }  
         }
 
+        //Simplifica a escrita da função dos botões do teclado e comando
         private void LerTeclas()
         {
-            keyStatus = Keyboard.GetState(); //Simplifica a escrita da função dos botões
-            gamepadState = GamePad.GetState(PlayerIndex.One); //Simplifica a escrita da função dos botões do comando
+            keyStatus = Keyboard.GetState();
+            gamepadState = GamePad.GetState(PlayerIndex.One);
         }
+
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
@@ -198,7 +202,7 @@ namespace Pac_Man
             spriteBatch.Draw(pacMan,Auxiliares.Matrix2Screen( new Vector2(xPac, yPac)), Color.White);
             
             spriteBatch.DrawString(font, "Score: " + score, new Vector2(670, 100), Color.White);
-            foreach (var fantasma in Fantasmas)
+            foreach (var fantasma in fantasmas)
             {
                 fantasma.Draw(spriteBatch);
             }
@@ -208,12 +212,8 @@ namespace Pac_Man
 
 
             base.Draw(gameTime);
-
-            
         }
        
-        
-
         private void Comer(int xPac, int yPac)
         {
             if (board[yPac, xPac] == 1)
@@ -222,14 +222,5 @@ namespace Pac_Man
                 score++;
             }
         }
-
-     
-        private void Blinky(int xBlink, int yBlink)
-        {
-            xBlink--;
-        }
-        
-       
-       
     }
 }
