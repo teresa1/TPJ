@@ -8,9 +8,9 @@ using System.Text;
 
 namespace Pac_Man
 {
-    class Fantasma
+    public class Fantasma
     {
-        Vector2 ghostCoords;
+        public Vector2 ghostCoords;
         Texture2D Ghost;
 
         public Fantasma(Vector2 ghostCoords, string textureName, ContentManager Content)
@@ -44,7 +44,10 @@ namespace Pac_Man
                 case 1:
                     if(Auxiliares.canGo((int)ghostCoords.X + 1, (int)ghostCoords.Y, board))
                     {
-                        ghostCoords.X++;
+                        if (ghostCoords.X == 20 && ghostCoords.Y == 9)
+                            ghostCoords.X = -1;
+                        else ghostCoords.X++;
+                        
                     }
                     break;
                       
@@ -58,7 +61,9 @@ namespace Pac_Man
                 case 3:
                     if (Auxiliares.canGo((int)ghostCoords.X - 1, (int)ghostCoords.Y, board))
                     {
-                        ghostCoords.X--;
+                        if (ghostCoords.X == 0 && ghostCoords.Y == 9)
+                            ghostCoords.X = 21;
+                        else ghostCoords.X--;
                     }
                     break;
 
@@ -67,7 +72,7 @@ namespace Pac_Man
                     {
                         ghostCoords.Y--;
                     }
-                    break;
+                    break; 
             }
 
         }

@@ -19,7 +19,7 @@ namespace Pac_Man
         
         /*            0-parede    1- comida    2-vazio         */
         byte[,] board = {{2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2}, //linha 0
-                         {2,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,2}, //linha 1
+                         {2,0,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,0,2}, //linha 1
                          {2,0,1,0,0,1,0,0,0,1,0,1,0,0,0,1,0,0,1,0,2}, //linha 2
                          {2,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,2}, //linha 3
                          {2,0,1,0,0,1,0,1,0,0,0,0,0,1,0,1,0,0,1,0,2}, //linha 4
@@ -48,10 +48,11 @@ namespace Pac_Man
         KeyboardState keyState;
         GamePadState gamepadState;
 
-        int yPac = 13, xPac = 9;
+        int yPac = 9, xPac = 10;
 
         float lastHumanMove;
         float ticker;
+       
         int score = 0;
 
         SpriteFont font;
@@ -82,10 +83,12 @@ namespace Pac_Man
             wall = Content.Load<Texture2D>("parede");
             pacMan = Content.Load<Texture2D>("pac man1");
             font = Content.Load<SpriteFont>("SpriteFont1");
-            Fantasma fantasma1 = new Fantasma(new Vector2(14, 15), "blinky", Content);
-            Fantasma fantasma2 = new Fantasma(new Vector2(5, 10), "blinky", Content);
+            Fantasma fantasma1 = new Fantasma(new Vector2(18, 2), "blinky", Content);
+            Fantasma fantasma2 = new Fantasma(new Vector2(3, 2), "blinky", Content);
+            Fantasma fantasma3 = new Fantasma(new Vector2(3, 20), "blinky", Content);
             fantasmas.Add(fantasma1);
             fantasmas.Add(fantasma2);
+            fantasmas.Add(fantasma3);
         }
 
         protected override void UnloadContent()
@@ -102,16 +105,17 @@ namespace Pac_Man
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            Colidir(xPac, yPac, ghostCoords);
             lastHumanMove += (float)gameTime.ElapsedGameTime.TotalSeconds;
             ticker += gameTime.ElapsedGameTime.Milliseconds;
 
             LerTeclas();
-
+           
             // Movimento dos fantasmas e do jogador
             if (ticker >= 200)
             {
                 ticker -= 200;
-                Move();
+                MoveIt();
 
                 foreach (var fantasma in fantasmas)
                     fantasma.Update(board, random);
@@ -144,6 +148,7 @@ namespace Pac_Man
             // Score
             spriteBatch.DrawString(font, "Score: " + score, new Vector2(670, 100), Color.White);
 
+
             spriteBatch.End();
 
             base.Draw(gameTime);
@@ -157,10 +162,11 @@ namespace Pac_Man
         }
 
         // Movimento do jogador
-        private void Move()
+        private void MoveIt()
         {
-            if (lastHumanMove >= 1f / 5f)
+            if (lastHumanMove >= 1f / 50f)
             {
+                
                 lastHumanMove = 0f;
 
                 // Baixo
@@ -218,6 +224,20 @@ namespace Pac_Man
             {
                 board[yPac, xPac] = 2;
                 score++;
+            }
+        }
+
+        // Colisão Pac Man - Fantasmas
+        private void Colidir(int xPac, int yPac, Vector2 ghostCoords)
+        {
+            if(xPac== ghostCoords.X && yPac == ghostCoords.Y)
+            {
+                //---
+                yPac = 9;
+                xPac = 10;
+
+                spriteBatch.DrawString(font, "Morreste ahah Tenta de novo! :D", new Vector2(670, 100), Color.Red);
+
             }
         }
     }
