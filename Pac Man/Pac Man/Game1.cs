@@ -52,7 +52,9 @@ namespace Pac_Man
 
         float lastHumanMove;
         float ticker;
-       
+
+        float timer = 0;
+
         int score = 0;
 
         SpriteFont font;
@@ -109,6 +111,8 @@ namespace Pac_Man
             lastHumanMove += (float)gameTime.ElapsedGameTime.TotalSeconds;
             ticker += gameTime.ElapsedGameTime.Milliseconds;
 
+            timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
             LerTeclas();
            
             // Movimento dos fantasmas e do jogador
@@ -148,6 +152,8 @@ namespace Pac_Man
             // Score
             spriteBatch.DrawString(font, "Score: " + score, new Vector2(670, 100), Color.White);
 
+
+            spriteBatch.DrawString(font, "Time: " + timer, new Vector2(650, 500), Color.White);
 
             spriteBatch.End();
 
