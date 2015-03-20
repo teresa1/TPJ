@@ -38,7 +38,7 @@
     <Compile Include="Auxiliares.cs" />
     <Compile Include="Fantasmas.cs" />
     <Compile Include="Game1.cs" />
-    <Compile Include="Pacman.cs" />
+    <Compile Include="PacMan.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -56,7 +56,7 @@
     <Content Include="Content\dot.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\pac man1.png">
+    <Content Include="Content\PacMan.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\parede.png">

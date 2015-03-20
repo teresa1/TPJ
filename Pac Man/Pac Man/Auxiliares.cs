@@ -18,11 +18,11 @@ namespace Pac_Man
             return (screenPosition / 30);
         }
 
-        public static bool CanGo(int xPac, int yPac, byte[,] board)
+        public static bool CanGo(int x, int y, byte[,] board)
         {
-            if (xPac > 21 || yPac > 20)
+            if (x > 21 || y > 20)
                 return false;
-            if (board[yPac, xPac] != 0)
+            if (board[y, x] != 0)
                 return true;
             else return false;
         }
