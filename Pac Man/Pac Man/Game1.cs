@@ -172,7 +172,7 @@ namespace Pac_Man
                 // Baixo
                 if ((keyState.IsKeyDown(Keys.Down) || gamepadState.IsButtonDown(Buttons.DPadDown)))
                 {
-                    if (Auxiliares.canGo(xPac, yPac + 1, board))
+                    if (Auxiliares.CanGo(xPac, yPac + 1, board))
                     {
                         yPac++;
                         Comer(xPac, yPac);
@@ -182,7 +182,7 @@ namespace Pac_Man
                 // Cima
                 else if (keyState.IsKeyDown(Keys.Up) || gamepadState.IsButtonDown(Buttons.DPadUp))
                 {
-                    if (Auxiliares.canGo(xPac, yPac - 1, board))
+                    if (Auxiliares.CanGo(xPac, yPac - 1, board))
                     {
                         yPac--;
                         Comer(xPac, yPac);
@@ -195,7 +195,7 @@ namespace Pac_Man
                     if (xPac == 0 && yPac == 9)
                         xPac = 21;
 
-                    if (Auxiliares.canGo(xPac - 1, yPac, board))
+                    if (Auxiliares.CanGo(xPac - 1, yPac, board))
                     {
                         xPac--;
                         Comer(xPac, yPac);
@@ -208,7 +208,7 @@ namespace Pac_Man
                     if (xPac == 20 && yPac == 9)
                         xPac = -1;
 
-                    if (Auxiliares.canGo(xPac + 1, yPac, board))
+                    if (Auxiliares.CanGo(xPac + 1, yPac, board))
                     {
                         xPac++;
                         Comer(xPac, yPac);

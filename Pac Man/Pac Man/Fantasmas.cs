@@ -10,67 +10,63 @@ namespace Pac_Man
 {
     public class Fantasma
     {
-        public Vector2 ghostCoords;
-        Texture2D Ghost;
+        // Variáveis
+        private Vector2 position;
+        private Texture2D sprite;
+        private int direction;
 
-        public Fantasma(Vector2 ghostCoords, string textureName, ContentManager Content)
+        // Construtor
+        public Fantasma(Vector2 position, string textureName, ContentManager content)
         {
-            this.ghostCoords = ghostCoords;
-            Ghost = Content.Load<Texture2D>(textureName);
+            this.position = position;
+            sprite = content.Load<Texture2D>(textureName);
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Ghost, Auxiliares.Matrix2Screen(ghostCoords), Color.White);
+            spriteBatch.Draw(sprite, Auxiliares.Matrix2Screen(position), Color.White);
         }
 
         public void Dispose()
         {
-            Ghost.Dispose();
+            sprite.Dispose();
         }
 
-
-         int direcao;
         public void Update(byte[,] board, Random random)
         {
+            direction = random.Next(1, 5);
 
-            
-            direcao = random.Next(1, 5);
-
-
-            switch (direcao)
+            switch (direction)
             {
-
                 case 1:
-                    if(Auxiliares.canGo((int)ghostCoords.X + 1, (int)ghostCoords.Y, board))
+                    if(Auxiliares.CanGo((int)position.X + 1, (int)position.Y, board))
                     {
-                        if (ghostCoords.X == 20 && ghostCoords.Y == 9)
-                            ghostCoords.X = -1;
-                        else ghostCoords.X++;
-                        
+                        if (position.X == 20 && position.Y == 9)
+                            position.X = -1;
+                        else position.X++;
                     }
                     break;
                       
                 case 2:
-                    if(Auxiliares.canGo((int)ghostCoords.X, (int)ghostCoords.Y + 1, board))
+                    if(Auxiliares.CanGo((int)position.X, (int)position.Y + 1, board))
                     {
-                        ghostCoords.Y++;
+                        position.Y++;
                     }
                     break;
 
                 case 3:
-                    if (Auxiliares.canGo((int)ghostCoords.X - 1, (int)ghostCoords.Y, board))
+                    if (Auxiliares.CanGo((int)position.X - 1, (int)position.Y, board))
                     {
-                        if (ghostCoords.X == 0 && ghostCoords.Y == 9)
-                            ghostCoords.X = 20;
-                        else ghostCoords.X--;
+                        if (position.X == 0 && position.Y == 9)
+                            position.X = 20;
+                        else position.X--;
                     }
                     break;
 
                 case 4:
-                    if (Auxiliares.canGo((int)ghostCoords.X, (int)ghostCoords.Y - 1, board))
+                    if (Auxiliares.CanGo((int)position.X, (int)position.Y - 1, board))
                     {
-                        ghostCoords.Y--;
+                        position.Y--;
                     }
                     break; 
             }

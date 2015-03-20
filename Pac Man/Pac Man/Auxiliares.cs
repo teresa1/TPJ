@@ -18,7 +18,7 @@ namespace Pac_Man
             return (screenPosition / 30);
         }
 
-        public static bool canGo(int xPac, int yPac, byte[,] board)
+        public static bool CanGo(int xPac, int yPac, byte[,] board)
         {
             if (xPac > 21 || yPac > 20)
                 return false;
