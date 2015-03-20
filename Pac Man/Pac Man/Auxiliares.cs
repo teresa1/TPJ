@@ -20,6 +20,8 @@ namespace Pac_Man
 
         public static bool canGo(int xPac, int yPac, byte[,] board)
         {
+            if (xPac > 21 || yPac > 20)
+                return false;
             if (board[yPac, xPac] != 0)
                 return true;
             else return false;

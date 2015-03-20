@@ -62,7 +62,7 @@ namespace Pac_Man
                     if (Auxiliares.canGo((int)ghostCoords.X - 1, (int)ghostCoords.Y, board))
                     {
                         if (ghostCoords.X == 0 && ghostCoords.Y == 9)
-                            ghostCoords.X = 21;
+                            ghostCoords.X = 20;
                         else ghostCoords.X--;
                     }
                     break;

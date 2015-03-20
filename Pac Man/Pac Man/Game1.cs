@@ -105,7 +105,7 @@ namespace Pac_Man
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            Colidir(xPac, yPac, ghostCoords);
+           // Colidir(xPac, yPac, ghostCoords);
             lastHumanMove += (float)gameTime.ElapsedGameTime.TotalSeconds;
             ticker += gameTime.ElapsedGameTime.Milliseconds;
 
