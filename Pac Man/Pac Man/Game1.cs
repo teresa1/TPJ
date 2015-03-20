@@ -43,6 +43,9 @@ namespace Pac_Man
         // Variaveis
         Texture2D dot, wall;
         PacMan pacMan, pacWoman;
+        Fantasma blinky, pinky, inky, clyde;
+        List<Fantasma> fantasmas;
+        List<PacMan> jogadores;
 
         KeyboardState keyState;
         GamePadState gamepadState;
@@ -50,13 +53,9 @@ namespace Pac_Man
         float lastHumanMove;
         float ticker;
         float timer = 0;
-
         int score = 0;
 
         SpriteFont font;
-
-        List<Fantasma> fantasmas;
-        List<PacMan> jogadores;
         
         public Game1()
             : base()
@@ -70,8 +69,8 @@ namespace Pac_Man
 
         protected override void Initialize()
         {
-            fantasmas = new List<Fantasma>();
             jogadores = new List<PacMan>();
+            fantasmas = new List<Fantasma>();
             random = new Random();
             
             base.Initialize();
@@ -91,12 +90,14 @@ namespace Pac_Man
             jogadores.Add(pacWoman);
 
             // Criação de Fantasmas
-            Fantasma fantasma1 = new Fantasma(new Vector2(18, 2), "blinky", Content);
-            Fantasma fantasma2 = new Fantasma(new Vector2(3, 2), "blinky", Content);
-            Fantasma fantasma3 = new Fantasma(new Vector2(3, 20), "blinky", Content);
-            fantasmas.Add(fantasma1);
-            fantasmas.Add(fantasma2);
-            fantasmas.Add(fantasma3);
+            blinky = new Fantasma(new Vector2(18, 2), "blinky", Content);
+            pinky = new Fantasma(new Vector2(3, 20), "blinky", Content);
+            inky = new Fantasma(new Vector2(3, 2), "blinky", Content);
+            clyde = new Fantasma(new Vector2(3, 2), "blinky", Content);
+            fantasmas.Add(blinky);
+            fantasmas.Add(pinky);
+            fantasmas.Add(inky);
+            fantasmas.Add(clyde);
         }
 
         protected override void UnloadContent()
