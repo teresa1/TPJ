@@ -14,8 +14,14 @@ using Microsoft.Xna.Framework.Net;
 
 namespace Pac_Man
 {
-    class Pacman
+    class PacMan
     {
-        
+        private Vector2 postion;
+        private Texture2D sprite;
+
+        public PacMan()
+        {
+
+        }   
     }
 }

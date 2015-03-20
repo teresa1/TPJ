@@ -39,16 +39,16 @@ namespace Pac_Man
             switch (direction)
             {
                 case 1:
-                    if(Auxiliares.CanGo((int)position.X + 1, (int)position.Y, board))
+                    if (Auxiliares.CanGo((int)position.X + 1, (int)position.Y, board))
                     {
                         if (position.X == 20 && position.Y == 9)
                             position.X = -1;
                         else position.X++;
                     }
                     break;
-                      
+
                 case 2:
-                    if(Auxiliares.CanGo((int)position.X, (int)position.Y + 1, board))
+                    if (Auxiliares.CanGo((int)position.X, (int)position.Y + 1, board))
                     {
                         position.Y++;
                     }
@@ -68,9 +68,15 @@ namespace Pac_Man
                     {
                         position.Y--;
                     }
-                    break; 
+                    break;
             }
 
+        }
+
+        // Métodos get/set
+        public Vector2 Position
+        {
+            get { return position; }
         }
 
     }

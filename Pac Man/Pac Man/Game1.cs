@@ -107,7 +107,7 @@ namespace Pac_Man
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-           // Colidir(xPac, yPac, ghostCoords);
+            Collide(xPac, yPac);
             lastHumanMove += (float)gameTime.ElapsedGameTime.TotalSeconds;
             ticker += gameTime.ElapsedGameTime.Milliseconds;
 
@@ -234,16 +234,16 @@ namespace Pac_Man
         }
 
         // Colisão Pac Man - Fantasmas
-        private void Colidir(int xPac, int yPac, Vector2 ghostCoords)
+        private void Collide(int xPac, int yPac)
         {
-            if(xPac== ghostCoords.X && yPac == ghostCoords.Y)
+            foreach (Fantasma fantasma in fantasmas)
             {
-                //---
-                yPac = 9;
-                xPac = 10;
-
-                spriteBatch.DrawString(font, "Morreste ahah Tenta de novo! :D", new Vector2(670, 100), Color.Red);
-
+                if ((xPac == (int)fantasma.Position.X) && (yPac == (int)fantasma.Position.Y))
+                {
+                    yPac = 9;
+                    xPac = 10;
+                    //spriteBatch.DrawString(font, "Morreste ahah Tenta de novo! :D", new Vector2(670, 100), Color.Red);
+                }
             }
         }
     }
