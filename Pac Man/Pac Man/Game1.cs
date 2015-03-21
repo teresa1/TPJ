@@ -84,8 +84,8 @@ namespace Pac_Man
             font = Content.Load<SpriteFont>("SpriteFont1");
 
             // Ciação de Pac Mans
-            pacMan = new PacMan(new Vector2(9, 10), "PacMan", Content);
-            pacWoman = new PacMan(new Vector2(9, 10), "PacMan", Content);
+            pacMan = new PacMan(new Vector2(9, 9), "PacMan", Content);
+            pacWoman = new PacMan(new Vector2(11, 9), "PacMan", Content);
             jogadores.Add(pacMan);
             jogadores.Add(pacWoman);
 
@@ -157,7 +157,7 @@ namespace Pac_Man
                 pacMan.Draw(spriteBatch);
             foreach (var fantasma in fantasmas)
                 fantasma.Draw(spriteBatch);
-
+            
             // Score e Time
             spriteBatch.DrawString(font, "Score: " + score, new Vector2(670, 100), Color.White);
             spriteBatch.DrawString(font, "Time: " + timer, new Vector2(650, 500), Color.White);
@@ -284,21 +284,11 @@ namespace Pac_Man
             {
                 board[yPac, xPac] = 2;
                 score++;
+                
             }
         }
 
-        // Colisão Pac Man - Fantasmas
-        private void Collide(int xPac, int yPac)
-        {
-            foreach (Fantasma fantasma in fantasmas)
-            {
-                if ((xPac == (int)fantasma.Position.X) && (yPac == (int)fantasma.Position.Y))
-                {
-                    yPac = 9;
-                    xPac = 10;
-                    //spriteBatch.DrawString(font, "Morreste ahah Tenta de novo! :D", new Vector2(670, 100), Color.Red);
-                }
-            }
-        }
+        
+        
     }
 }
