@@ -83,7 +83,7 @@ namespace Pac_Man
             wall = Content.Load<Texture2D>("parede");
             font = Content.Load<SpriteFont>("SpriteFont1");
 
-            // Ciação de Pac Mans
+            // Criação de Pac Mans
             pacMan = new PacMan(new Vector2(9, 9), "PacMan", Content);
             pacWoman = new PacMan(new Vector2(11, 9), "PacMan", Content);
             jogadores.Add(pacMan);
