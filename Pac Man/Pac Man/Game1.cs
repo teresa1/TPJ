@@ -85,7 +85,7 @@ namespace Pac_Man
 
             // Criação de Pac Mans
             pacMan = new PacMan(new Vector2(9, 9), "PacMan", Content);
-            pacWoman = new PacMan(new Vector2(11, 9), "PacMan", Content);
+            pacWoman = new PacMan(new Vector2(11, 9), "PacWoman", Content);
             jogadores.Add(pacMan);
             jogadores.Add(pacWoman);
 

@@ -59,6 +59,9 @@
     <Content Include="Content\PacMan.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\PacWoman.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\parede.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
