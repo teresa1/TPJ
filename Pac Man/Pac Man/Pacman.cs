@@ -47,5 +47,29 @@ namespace Pac_Man
                 score++;
             }
         }
+
+
+        private void Collide(List<Fantasma> fantasmas)
+        {
+          
+            int x;
+            int y;
+            int distancia;
+            foreach (Fantasma fantasma in fantasmas)
+            {
+               
+                    x = (int)position.X - (int)fantasma.Position.X;
+                    y = (int)position.Y - (int)fantasma.Position.Y;
+                    
+                    distancia = (int)Math.Sqrt(x * x + y * y);
+
+                    
+                    if(distancia < 0.5)
+                    {
+                        
+                    }
+                
+            }
+        }
     }
 }
