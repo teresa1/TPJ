@@ -84,8 +84,8 @@ namespace Pac_Man
             font = Content.Load<SpriteFont>("SpriteFont1");
 
             // Ciação de Pac Mans
-            pacMan = new PacMan(new Vector2(9, 10), "PacMan", Content);
-            pacWoman = new PacMan(new Vector2(9, 10), "PacMan", Content);
+            pacMan = new PacMan(new Vector2(9, 9), "PacMan", Content);
+            pacWoman = new PacMan(new Vector2(11, 9), "PacMan", Content);
             jogadores.Add(pacMan);
             jogadores.Add(pacWoman);
 
