@@ -51,24 +51,14 @@ namespace Pac_Man
 
         public bool Collide(List<Fantasma> fantasmas)
         {
-          
-            int x;
-            int y;
-            int distancia;
             foreach (Fantasma fantasma in fantasmas)
             {
-               
-                    
-                    distancia = (int)(position-fantasma.Position).Length();
-
-
-                    if (distancia < 1)
+                    if (position.X == fantasma.Position.X && position.Y == fantasma.Position.Y)
                     {
                         Console.WriteLine("mnham mnahm");
                         return true;
                     }
-                    else return false;
-                
+              
             }   return false;
         }
     }
