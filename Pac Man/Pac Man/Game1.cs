@@ -16,9 +16,9 @@ namespace Pac_Man
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Random random;
-        
+
         /*            0-parede    1- comida    2-vazio         */
-        byte[,] board = {{2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2}, //linha 0
+        byte[,] board = {{2,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,2}, //linha 0
                          {2,0,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,0,2}, //linha 1
                          {2,0,1,0,0,1,0,0,0,1,0,1,0,0,0,1,0,0,1,0,2}, //linha 2
                          {2,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,2}, //linha 3
@@ -38,10 +38,10 @@ namespace Pac_Man
                          {2,0,1,1,1,1,0,1,1,1,0,1,1,1,0,1,1,1,1,0,2}, //linha 17
                          {2,0,1,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,1,0,2}, //linha 18
                          {2,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,2}, //linha 19
-                         {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2}};//linha 20
+                         {2,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,2}};//linha 20
 
         // Variaveis
-        Texture2D dot, wall;
+        Texture2D dot, wall, wallTop;
         PacMan pacMan, pacWoman;
         Fantasma blinky, pinky, inky, clyde;
         List<Fantasma> fantasmas;
@@ -52,11 +52,11 @@ namespace Pac_Man
 
         float lastHumanMove;
         float ticker;
-        float timer = 0;
+        int timer = 0;
         int score = 0;
 
         SpriteFont font;
-        
+
         public Game1()
             : base()
         {
@@ -72,7 +72,7 @@ namespace Pac_Man
             jogadores = new List<PacMan>();
             fantasmas = new List<Fantasma>();
             random = new Random();
-            
+
             base.Initialize();
         }
 
@@ -80,18 +80,13 @@ namespace Pac_Man
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             dot = Content.Load<Texture2D>("dot");
-            wall = Content.Load<Texture2D>("parede");
+            wall = Content.Load<Texture2D>("wall");
+            wallTop = Content.Load<Texture2D>("wallTop");
             font = Content.Load<SpriteFont>("SpriteFont1");
 
-<<<<<<< HEAD
-            // Ciação de Pac Mans
-            pacMan = new PacMan(new Vector2(9, 9), "PacMan", Content);
-            pacWoman = new PacMan(new Vector2(11, 9), "PacMan", Content);
-=======
             // Criação de Pac Mans
-            pacMan = new PacMan(new Vector2(9, 9), "PacMan", Content);
+            pacMan = new PacMan(new Vector2(9, 7), "PacMan", Content);
             pacWoman = new PacMan(new Vector2(11, 9), "PacWoman", Content);
->>>>>>> origin/master
             jogadores.Add(pacMan);
             jogadores.Add(pacWoman);
 
@@ -121,20 +116,19 @@ namespace Pac_Man
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            //Collide(xPac, yPac);
             lastHumanMove += (float)gameTime.ElapsedGameTime.TotalSeconds;
             ticker += gameTime.ElapsedGameTime.Milliseconds;
 
-            timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            timer += (int)(gameTime.ElapsedGameTime.TotalSeconds + 0.5f);
 
             LerTeclas();
-           
+            Move();
+
             // Movimento dos fantasmas e do jogador
-            if (ticker >= 200)
+            if (ticker >= 100)
             {
                 ticker -= 200;
                 Move();
-
                 foreach (var fantasma in fantasmas)
                     fantasma.Update(board, random);
             }
@@ -147,23 +141,25 @@ namespace Pac_Man
             GraphicsDevice.Clear(Color.Black);
 
             spriteBatch.Begin();
-                for (int x = 0; x < 21; x++)
-                    for (int y = 0; y < 21; y++)
-                    {
-                        // Comida
-                        if (board[y, x] == 1)
-                            spriteBatch.Draw(dot, new Vector2(x * wall.Width , y * wall.Height), Color.White);
-                        // Paredes
-                        if (board[y, x] == 0)
-                           spriteBatch.Draw(wall, new Vector2(x * wall.Width , y * wall.Height), Color.White);
-                    }
+            for (int x = 0; x < 21; x++)
+                for (int y = 0; y < 21; y++)
+                {
+                    // Comida
+                    if (board[y, x] == 1)
+                        spriteBatch.Draw(dot, new Vector2(x * wall.Width, y * wall.Height), Color.White);
+                    // Paredes
+                    if (board[y, x] == 0)
+                        spriteBatch.Draw(wall, new Vector2(x * wall.Width, y * wall.Height), Color.White);
+                    if (board[y, x] == 3)
+                        spriteBatch.Draw(wallTop, new Vector2(x * wall.Width, y * wall.Height), Color.White);
+                }
 
             // Pac Man's e Fantamas 
             foreach (var pacMan in jogadores)
                 pacMan.Draw(spriteBatch);
             foreach (var fantasma in fantasmas)
                 fantasma.Draw(spriteBatch);
-            
+
             // Score e Time
             spriteBatch.DrawString(font, "Score: " + score, new Vector2(670, 100), Color.White);
             spriteBatch.DrawString(font, "Time: " + timer, new Vector2(650, 500), Color.White);
@@ -191,18 +187,18 @@ namespace Pac_Man
                 // Baixo
                 if ((keyState.IsKeyDown(Keys.Down) || gamepadState.IsButtonDown(Buttons.DPadDown)))
                 {
-                    if (Auxiliares.CanGo((int)pacMan.position.X, (int)pacMan.position.Y + 1, board))
+                    if (Auxiliares.CanGo(pacMan.rPosition.X, pacMan.rPosition.Y + Auxiliares.Matrix2Screen(1), board))
                     {
-                        pacMan.position.Y++;
+                        pacMan.rPosition.Y += 3f;
                         pacMan.Comer(board);
                     }
                 }
                 // Cima
                 else if (keyState.IsKeyDown(Keys.Up) || gamepadState.IsButtonDown(Buttons.DPadUp))
                 {
-                    if (Auxiliares.CanGo((int)pacMan.position.X, (int)pacMan.position.Y - 1, board))
+                    if (Auxiliares.CanGo(pacMan.rPosition.X, pacMan.rPosition.Y - Auxiliares.Matrix2Screen(1), board))
                     {
-                        pacMan.position.Y--;
+                        pacMan.rPosition.Y -= 3f;
                         pacMan.Comer(board);
                     }
                 }
@@ -210,12 +206,12 @@ namespace Pac_Man
                 else if (keyState.IsKeyDown(Keys.Left) || gamepadState.IsButtonDown(Buttons.DPadLeft))
                 {
                     // Warp da esquerda para a direita
-                    if (pacMan.position.X == 0 && pacMan.position.Y == 9)
-                        pacMan.position.X = 21;
+                    if (pacMan.vPosition.X == 0 && pacMan.vPosition.Y == 9)
+                        pacMan.vPosition.X = 21;
 
-                    if (Auxiliares.CanGo((int)pacMan.position.X - 1, (int)pacMan.position.Y, board))
+                    if (Auxiliares.CanGo(pacMan.rPosition.X - Auxiliares.Matrix2Screen(1), pacMan.rPosition.Y, board))
                     {
-                        pacMan.position.X--;
+                        pacMan.rPosition.X -= 4f;
                         pacMan.Comer(board);
                     }
                 }
@@ -223,12 +219,12 @@ namespace Pac_Man
                 else if (keyState.IsKeyDown(Keys.Right) || gamepadState.IsButtonDown(Buttons.DPadRight))
                 {
                     // Warp da direita para a esquerda
-                    if (pacMan.position.X == 20 && pacMan.position.Y == 9)
-                        pacMan.position.X = -1;
+                    if (pacMan.vPosition.X == 20 && pacMan.vPosition.Y == 9)
+                        pacMan.vPosition.X = -1;
 
-                    if (Auxiliares.CanGo((int)pacMan.position.X + 1, (int)pacMan.position.Y, board))
+                    if (Auxiliares.CanGo(pacMan.rPosition.X + Auxiliares.Matrix2Screen(1), pacMan.rPosition.Y, board))
                     {
-                        pacMan.position.X++;
+                        pacMan.rPosition.X += 4f;
                         pacMan.Comer(board);
                     }
                 }
@@ -238,18 +234,18 @@ namespace Pac_Man
                 // Baixo
                 if ((keyState.IsKeyDown(Keys.S) || gamepadState.IsButtonDown(Buttons.DPadDown)))
                 {
-                    if (Auxiliares.CanGo((int)pacWoman.position.X, (int)pacWoman.position.Y + 1, board))
+                    if (Auxiliares.CanGo((int)pacWoman.vPosition.X, (int)pacWoman.vPosition.Y + 1, board))
                     {
-                        pacWoman.position.Y++;
+                        pacWoman.vPosition.Y++;
                         pacWoman.Comer(board);
                     }
                 }
                 // Cima
                 else if (keyState.IsKeyDown(Keys.W) || gamepadState.IsButtonDown(Buttons.DPadUp))
                 {
-                    if (Auxiliares.CanGo((int)pacWoman.position.X, (int)pacWoman.position.Y - 1, board))
+                    if (Auxiliares.CanGo((int)pacWoman.vPosition.X, (int)pacWoman.vPosition.Y - 1, board))
                     {
-                        pacWoman.position.Y--;
+                        pacWoman.vPosition.Y--;
                         pacWoman.Comer(board);
                     }
                 }
@@ -257,12 +253,12 @@ namespace Pac_Man
                 else if (keyState.IsKeyDown(Keys.A) || gamepadState.IsButtonDown(Buttons.DPadLeft))
                 {
                     // Warp da esquerda para a direita
-                    if (pacWoman.position.X == 0 && pacWoman.position.Y == 9)
-                        pacWoman.position.X = 21;
+                    if (pacWoman.vPosition.X == 0 && pacWoman.vPosition.Y == 9)
+                        pacWoman.vPosition.X = 21;
 
-                    if (Auxiliares.CanGo((int)pacWoman.position.X - 1, (int)pacWoman.position.Y, board))
+                    if (Auxiliares.CanGo((int)pacWoman.vPosition.X - 1, (int)pacWoman.vPosition.Y, board))
                     {
-                        pacWoman.position.X--;
+                        pacWoman.vPosition.X--;
                         pacWoman.Comer(board);
                     }
                 }
@@ -270,31 +266,17 @@ namespace Pac_Man
                 else if (keyState.IsKeyDown(Keys.D) || gamepadState.IsButtonDown(Buttons.DPadRight))
                 {
                     // Warp da direita para a esquerda
-                    if (pacWoman.position.X == 20 && pacWoman.position.Y == 9)
-                        pacWoman.position.X = -1;
+                    if (pacWoman.vPosition.X == 20 && pacWoman.vPosition.Y == 9)
+                        pacWoman.vPosition.X = -1;
 
-                    if (Auxiliares.CanGo((int)pacWoman.position.X + 1, (int)pacWoman.position.Y, board))
+                    if (Auxiliares.CanGo((int)pacWoman.vPosition.X + 1, (int)pacWoman.vPosition.Y, board))
                     {
-                        pacWoman.position.X++;
+                        pacWoman.vPosition.X++;
                         pacWoman.Comer(board);
                     }
                 }
                 #endregion
             }
         }
-
-        // Faz pacman comer dots
-        private void Comer(int xPac, int yPac)
-        {
-            if (board[yPac, xPac] == 1)
-            {
-                board[yPac, xPac] = 2;
-                score++;
-                
-            }
-        }
-
-        
-        
     }
 }

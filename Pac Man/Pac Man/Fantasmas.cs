@@ -39,7 +39,7 @@ namespace Pac_Man
             switch (direction)
             {
                 case 1:
-                    if (Auxiliares.CanGo((int)position.X + 1, (int)position.Y, board))
+                    if (Auxiliares.CanGo(position.X + 1, position.Y, board))
                     {
                         if (position.X == 20 && position.Y == 9)
                             position.X = -1;
@@ -48,14 +48,14 @@ namespace Pac_Man
                     break;
 
                 case 2:
-                    if (Auxiliares.CanGo((int)position.X, (int)position.Y + 1, board))
+                    if (Auxiliares.CanGo(position.X, position.Y + 1, board))
                     {
                         position.Y++;
                     }
                     break;
 
                 case 3:
-                    if (Auxiliares.CanGo((int)position.X - 1, (int)position.Y, board))
+                    if (Auxiliares.CanGo(position.X - 1, position.Y, board))
                     {
                         if (position.X == 0 && position.Y == 9)
                             position.X = 20;
@@ -64,7 +64,7 @@ namespace Pac_Man
                     break;
 
                 case 4:
-                    if (Auxiliares.CanGo((int)position.X, (int)position.Y - 1, board))
+                    if (Auxiliares.CanGo(position.X, position.Y - 1, board))
                     {
                         position.Y--;
                     }

@@ -17,37 +17,41 @@ namespace Pac_Man
     class PacMan
     {
         // Variáveis
-        public Vector2 position;
+        public Vector2 vPosition;
+        public Vector2 rPosition;
         private Texture2D sprite;
         private int score;
 
         // Construtor
         public PacMan(Vector2 position, string textureName, ContentManager content)
         {
-            this.position = position;
+            this.vPosition = position;
+            this.rPosition = Auxiliares.Matrix2Screen(position);
             sprite = content.Load<Texture2D>(textureName);
             score = 0;
-
         }
+
+        // Draw
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(sprite, Auxiliares.Matrix2Screen(position), Color.White);
+            spriteBatch.Draw(sprite, rPosition, Color.White);
         }
 
+        // Dispose
         public void Dispose()
         {
             sprite.Dispose();
         }
 
+        // Faz o Pac Man comer as pellets
         public void Comer(byte[,] board)
         {
-            if (board[(int)(position.Y + 0.5f), (int)(position.X + 0.5f)] == 1)
+            if (board[Auxiliares.Screen2Matrix(rPosition.Y), Auxiliares.Screen2Matrix(rPosition.X)] == 1)
             {
-                board[(int)(position.Y + 0.5f), (int)(position.X + 0.5f)] = 2;
+                board[Auxiliares.Screen2Matrix(rPosition.Y), Auxiliares.Screen2Matrix(rPosition.X)] = 2;
                 score++;
             }
         }
-
 
         private void Collide(List<Fantasma> fantasmas)
         {
@@ -58,8 +62,8 @@ namespace Pac_Man
             foreach (Fantasma fantasma in fantasmas)
             {
                
-                    x = (int)position.X - (int)fantasma.Position.X;
-                    y = (int)position.Y - (int)fantasma.Position.Y;
+                    x = (int)vPosition.X - (int)fantasma.Position.X;
+                    y = (int)vPosition.Y - (int)fantasma.Position.Y;
                     
                     distancia = (int)Math.Sqrt(x * x + y * y);
 
