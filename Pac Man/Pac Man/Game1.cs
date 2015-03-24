@@ -53,7 +53,7 @@ namespace Pac_Man
         float lastHumanMove;
         float ticker;
         float timer = 0;
-        int score = 0;
+        bool isGameOver = false;
 
         SpriteFont font;
         
@@ -121,24 +121,27 @@ namespace Pac_Man
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            //Collide(xPac, yPac);
-            lastHumanMove += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            ticker += gameTime.ElapsedGameTime.Milliseconds;
-
-            timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-            LerTeclas();
-           
-            // Movimento dos fantasmas e do jogador
-            if (ticker >= 200)
+            if (!isGameOver)
             {
-                ticker -= 200;
-                Move();
+                //Collide(xPac, yPac);
+                lastHumanMove += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                ticker += gameTime.ElapsedGameTime.Milliseconds;
 
-                foreach (var fantasma in fantasmas)
-                    fantasma.Update(board, random);
+                timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                LerTeclas();
+                 GameOver();
+                // Movimento dos fantasmas e do jogador
+                if (ticker >= 200)
+                {
+                    ticker -= 200;
+                    Move();
+
+                    foreach (var fantasma in fantasmas)
+                        fantasma.Update(board, random);
+                }
+               
             }
-
             base.Update(gameTime);
         }
 
@@ -159,19 +162,31 @@ namespace Pac_Man
                     }
 
             // Pac Man's e Fantamas 
-            foreach (var pacMan in jogadores)
-                pacMan.Draw(spriteBatch);
-            foreach (var fantasma in fantasmas)
-                fantasma.Draw(spriteBatch);
+            foreach (var pac in jogadores)
+                pac.Draw(spriteBatch);
+            foreach (var fanta in fantasmas)
+                fanta.Draw(spriteBatch);
             
             // Score e Time
             spriteBatch.DrawString(font, "Score: " + (this.pacMan.score + pacWoman.score), new Vector2(670, 100), Color.White);
             spriteBatch.DrawString(font, "Time: " + timer.ToString("0.00"), new Vector2(650, 500), Color.White);
 
+
+            if (isGameOver)
+                spriteBatch.DrawString(font, "Hahah Morreste :D Tenta de novo!!", new Vector2(200, 250), Color.Red);
             spriteBatch.End();
 
             base.Draw(gameTime);
         }
+
+        private void GameOver()
+        {
+           if(pacMan.Collide(fantasmas) || pacWoman.Collide(fantasmas))
+           {
+               isGameOver = true;
+           }
+        }
+
 
         // Simplifica a escrita da função dos botões do teclado e comando
         private void LerTeclas()
@@ -283,16 +298,7 @@ namespace Pac_Man
             }
         }
 
-        // Faz pacman comer dots
-        private void Comer(int xPac, int yPac)
-        {
-            if (board[yPac, xPac] == 1)
-            {
-                board[yPac, xPac] = 2;
-                score++;
-                
-            }
-        }
+
 
         
         

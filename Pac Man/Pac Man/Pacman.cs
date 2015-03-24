@@ -20,7 +20,7 @@ namespace Pac_Man
         public Vector2 position;
         private Texture2D sprite;
         public int score;
-
+        
         // Construtor
         public PacMan(Vector2 position, string textureName, ContentManager content)
         {
@@ -49,7 +49,7 @@ namespace Pac_Man
         }
 
 
-        private void Collide(List<Fantasma> fantasmas)
+        public bool Collide(List<Fantasma> fantasmas)
         {
           
             int x;
@@ -58,18 +58,18 @@ namespace Pac_Man
             foreach (Fantasma fantasma in fantasmas)
             {
                
-                    x = (int)position.X - (int)fantasma.Position.X;
-                    y = (int)position.Y - (int)fantasma.Position.Y;
                     
-                    distancia = (int)Math.Sqrt(x * x + y * y);
+                    distancia = (int)(position-fantasma.Position).Length();
 
-                    
-                    if(distancia < 0.5)
+
+                    if (distancia < 1)
                     {
-                        
+                        Console.WriteLine("mnham mnahm");
+                        return true;
                     }
+                    else return false;
                 
-            }
+            }   return false;
         }
     }
 }
