@@ -19,7 +19,7 @@ namespace Pac_Man
         // Variáveis
         public Vector2 position;
         private Texture2D sprite;
-        private int score;
+        public int score;
 
         // Construtor
         public PacMan(Vector2 position, string textureName, ContentManager content)
