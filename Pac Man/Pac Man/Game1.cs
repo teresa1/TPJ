@@ -20,7 +20,7 @@ namespace Pac_Man
         /*            0-parede    1- comida    2-vazio         */
         byte[,] board = {{2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2}, // Linha 0
                          {2,0,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,0,2}, // Linha 1
-                         {2,0,1,0,0,1,0,0,0,1,0,1,0,0,0,1,0,0,1,0,2}, // Linha 2
+                         {2,0,3,0,0,1,0,0,0,1,0,1,0,0,0,1,0,0,3,0,2}, // Linha 2
                          {2,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,2}, // Linha 3
                          {2,0,1,0,0,1,0,1,0,0,0,0,0,1,0,1,0,0,1,0,2}, // Linha 4
                          {2,0,1,1,1,1,0,1,1,1,0,1,1,1,0,1,1,1,1,0,2}, // Linha 5
@@ -33,7 +33,7 @@ namespace Pac_Man
                          {2,0,0,0,0,1,0,2,0,0,0,0,0,2,0,1,0,0,0,0,2}, //linha 12
                          {2,0,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,0,2}, //linha 13
                          {2,0,1,0,0,1,0,0,0,1,0,1,0,0,0,1,0,0,1,0,2}, //linha 14
-                         {2,0,1,1,0,1,1,1,1,1,1,1,1,1,1,1,0,1,1,0,2}, //linha 15
+                         {2,0,3,1,0,1,1,1,1,1,1,1,1,1,1,1,0,1,3,0,2}, //linha 15
                          {2,0,0,1,0,1,0,1,0,0,0,0,0,1,0,1,0,1,0,0,2}, //linha 16
                          {2,0,1,1,1,1,0,1,1,1,0,1,1,1,0,1,1,1,1,0,2}, //linha 17
                          {2,0,1,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,1,0,2}, //linha 18
@@ -41,7 +41,7 @@ namespace Pac_Man
                          {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2}};//linha 20
 
         // Variaveis
-        Texture2D dot, wall;
+        Texture2D dot, largeDot, wall;
         PacMan pacMan, pacWoman;
         Fantasma blinky, pinky, inky, clyde;
         List<Fantasma> fantasmas;
@@ -80,6 +80,7 @@ namespace Pac_Man
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             dot = Content.Load<Texture2D>("dot");
+            largeDot = Content.Load<Texture2D>("largeDot");
             wall = Content.Load<Texture2D>("parede");
             font = Content.Load<SpriteFont>("SpriteFont1");
 
@@ -95,10 +96,10 @@ namespace Pac_Man
             jogadores.Add(pacWoman);
 
             // Criação de Fantasmas
-            blinky = new Fantasma(new Vector2(18, 2), "blinky", Content);
-            pinky = new Fantasma(new Vector2(3, 20), "blinky", Content);
-            inky = new Fantasma(new Vector2(3, 2), "blinky", Content);
-            clyde = new Fantasma(new Vector2(3, 2), "blinky", Content);
+            blinky = new Fantasma(new Vector2(5, 3), "blinky", Content);
+            pinky = new Fantasma(new Vector2(15, 3), "pinky", Content);
+            inky = new Fantasma(new Vector2(5, 15), "inkyLeft", Content);
+            clyde = new Fantasma(new Vector2(15, 15), "clydeLeft", Content);
             fantasmas.Add(blinky);
             fantasmas.Add(pinky);
             fantasmas.Add(inky);
@@ -125,7 +126,6 @@ namespace Pac_Man
             {
                 lastHumanMove += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 ticker += gameTime.ElapsedGameTime.Milliseconds;
-
                 timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
                 LerTeclas();
@@ -156,6 +156,9 @@ namespace Pac_Man
                         // Comida
                         if (board[y, x] == 1)
                             spriteBatch.Draw(dot, new Vector2(x * wall.Width , y * wall.Height), Color.White);
+                        // Comida bónus
+                        if (board[y, x] == 3)
+                            spriteBatch.Draw(largeDot, new Vector2(x * wall.Width, y * wall.Height), Color.White);
                         // Paredes
                         if (board[y, x] == 0)
                            spriteBatch.Draw(wall, new Vector2(x * wall.Width , y * wall.Height), Color.White);
