@@ -173,7 +173,7 @@ namespace Pac_Man
 
 
             if (isGameOver)
-                spriteBatch.DrawString(font, "Hahah Morreste :D Tenta de novo!!", new Vector2(200, 250), Color.Red);
+                spriteBatch.DrawString(font, " Hahah\n Morreste :D\n Tenta de novo!!", new Vector2(630, 250), Color.Red);
             spriteBatch.End();
 
             base.Draw(gameTime);
