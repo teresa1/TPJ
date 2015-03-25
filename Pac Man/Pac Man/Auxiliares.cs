@@ -30,6 +30,14 @@ namespace Pac_Man
             return (int)((screenPosition) / 30 );
         }
 
+        static public bool Span(int x)
+        {
+            if (x % 30 != 0)
+                return true;
+            else
+                return false;
+        }
+
         // Verifica se o objeto pode prosseguir
   /*      public static bool CanGo(Vector2 rPosition, byte[,] board)
         {
@@ -42,11 +50,17 @@ namespace Pac_Man
 */
         public static bool CanGo(int x, int y, byte[,] board)
         {
-            if (Screen2Matrix(x) > 21 || Screen2Matrix(y) > 20)
+            int mX = Screen2Matrix(x);
+            int mY = Screen2Matrix(y);
+            if (mX > 21 || mY > 20)
                 return false;
-            if (board[Screen2Matrix(y), Screen2Matrix(x)] != 0 && board[Screen2Matrix(y), Screen2Matrix(x)] != 3)
-                return true;
-            else return false;
+
+            bool possoMover = true;
+            if (board[mY,mX] == 0 || board[mY, mX] == 3) possoMover = false;
+            if (Span(x) && (board[mY,mX+1] == 0 || board[mY,mX+1] == 3)) possoMover = false;
+            if (Span(y) && (board[mY+1,mX] == 0 || board[mY+1,mX] == 3)) possoMover = false;
+            if (Span(x) && Span(y) && (board[mY+1,mX+1] == 0 || board[mY+1,mX+1] == 3)) possoMover = false;
+            return possoMover;
         }
     }
 }

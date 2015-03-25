@@ -6,7 +6,6 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
-using Microsoft.Xna.Framework.GamerServices;
 #endregion
 
 namespace Pac_Man
@@ -179,26 +178,28 @@ namespace Pac_Man
         // Movimento do jogador
         private void Move()
         {
-            if (lastHumanMove >= 1f / 50f)
+            if (lastHumanMove >= 1f / 100f)
             {
                 lastHumanMove = 0f;
+
+                int movementSize = 3;
 
                 #region Pac Man
                 // Baixo
                 if ((keyState.IsKeyDown(Keys.Down) || gamepadState.IsButtonDown(Buttons.DPadDown)))
                 {
-                    if (Auxiliares.CanGo((int)pacMan.rPosition.X, (int)pacMan.rPosition.Y + Auxiliares.Matrix2Screen(1), board))
+                    if (Auxiliares.CanGo((int)pacMan.rPosition.X, (int)pacMan.rPosition.Y + movementSize, board))
                     {
-                        pacMan.rPosition.Y += 3;
+                        pacMan.rPosition.Y += movementSize;
                         pacMan.Comer(board);
                     }
                 }
                 // Cima
                 else if (keyState.IsKeyDown(Keys.Up) || gamepadState.IsButtonDown(Buttons.DPadUp))
                 {
-                    if (Auxiliares.CanGo((int)pacMan.rPosition.X, (int)pacMan.rPosition.Y - Auxiliares.Matrix2Screen(1), board))
+                    if (Auxiliares.CanGo((int)pacMan.rPosition.X, (int)pacMan.rPosition.Y - movementSize, board))
                     {
-                        pacMan.rPosition.Y -= 3;
+                        pacMan.rPosition.Y -= movementSize;
                         pacMan.Comer(board);
                     }
                 }
@@ -211,9 +212,9 @@ namespace Pac_Man
                     if (vPosition.X == 0 && vPosition.Y == 9)
                         pacMan.rPosition.X = 21*30;
 
-                    if (Auxiliares.CanGo((int)pacMan.rPosition.X - Auxiliares.Matrix2Screen(1), (int)pacMan.rPosition.Y, board))
+                    if (Auxiliares.CanGo((int)pacMan.rPosition.X - movementSize, (int)pacMan.rPosition.Y, board))
                     {
-                        pacMan.rPosition.X -= 4;
+                        pacMan.rPosition.X -= movementSize;
                         pacMan.Comer(board);
                     }
                 }
@@ -226,9 +227,9 @@ namespace Pac_Man
                     if (vPosition.X == 20 && vPosition.Y == 9)
                         pacMan.rPosition.X = -30;
 
-                    if (Auxiliares.CanGo((int)pacMan.rPosition.X + Auxiliares.Matrix2Screen(1), (int)pacMan.rPosition.Y, board))
+                    if (Auxiliares.CanGo((int)pacMan.rPosition.X + movementSize, (int)pacMan.rPosition.Y, board))
                     {
-                        pacMan.rPosition.X += 4;
+                        pacMan.rPosition.X += movementSize;
                         pacMan.Comer(board);
                     }
                 }
