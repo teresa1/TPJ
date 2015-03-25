@@ -22,55 +22,56 @@ namespace Pac_Man
             sprite = content.Load<Texture2D>(textureName);
         }
 
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Draw(sprite, Auxiliares.Matrix2Screen(position), Color.White);
-        }
-
-        public void Dispose()
-        {
-            sprite.Dispose();
-        }
-
+        // Update
         public void Update(byte[,] board, Random random)
         {
+            // Movimento dos fantasmas
             direction = random.Next(1, 5);
-
             switch (direction)
             {
+                // Baixo
+                case 2:
+                    if (Auxiliares.CanGo((int)position.X, (int)position.Y + 1, board))
+                        position.Y++;
+                    break;
+                // Cima
+                case 4:
+                    if (Auxiliares.CanGo((int)position.X, (int)position.Y - 1, board))
+                        position.Y--;
+                    break;
+                // Direita
                 case 1:
                     if (Auxiliares.CanGo((int)position.X + 1, (int)position.Y, board))
                     {
+                        // Warp da direita para a esquerda
                         if (position.X == 20 && position.Y == 9)
                             position.X = -1;
                         else position.X++;
                     }
                     break;
-
-                case 2:
-                    if (Auxiliares.CanGo((int)position.X, (int)position.Y + 1, board))
-                    {
-                        position.Y++;
-                    }
-                    break;
-
+                // Esquerda
                 case 3:
                     if (Auxiliares.CanGo((int)position.X - 1, (int)position.Y, board))
                     {
+                        // Warp da esquerda para a direita
                         if (position.X == 0 && position.Y == 9)
-                            position.X = 20;
+                            position.X = 21;
                         else position.X--;
                     }
                     break;
-
-                case 4:
-                    if (Auxiliares.CanGo((int)position.X, (int)position.Y - 1, board))
-                    {
-                        position.Y--;
-                    }
-                    break;
             }
+        }
 
+        // Draw
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(sprite, Auxiliares.Matrix2Screen(position), Color.White);
+        }
+
+        // Dispose
+        public void Dispose()
+        {
+            sprite.Dispose();
         }
 
         // Métodos get/set
