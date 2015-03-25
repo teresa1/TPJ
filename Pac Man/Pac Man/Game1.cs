@@ -187,9 +187,10 @@ namespace Pac_Man
                 // Baixo
                 if ((keyState.IsKeyDown(Keys.Down) || gamepadState.IsButtonDown(Buttons.DPadDown)))
                 {
-                    if (Auxiliares.CanGo(pacMan.rPosition, board))
+                    if (Auxiliares.CanGo(pacMan.rPosition.X, pacMan.rPosition.Y + Auxiliares.Matrix2Screen(1), board))
                     {
-                        pacMan.changeDirection(PacMan.Movimentos.baixo);
+                        pacMan.rPosition.Y += 3f;
+                        pacMan.Comer(board);
                     }
                 }
                 // Cima
@@ -197,35 +198,36 @@ namespace Pac_Man
                 {
                     if (Auxiliares.CanGo(pacMan.rPosition.X, pacMan.rPosition.Y - Auxiliares.Matrix2Screen(1), board))
                     {
-                        pacMan.changeDirection(PacMan.Movimentos.cima);
+                        pacMan.rPosition.Y -= 3f;
+                        pacMan.Comer(board);
                     }
                 }
                 // Esquerda
                 else if (keyState.IsKeyDown(Keys.Left) || gamepadState.IsButtonDown(Buttons.DPadLeft))
                 {
-                    // Warp da esquerda para a direita sim n faz mal.. isso é o menos..
-                    /*if (pacMan.vPosition.X == 0 && pacMan.vPosition.Y == 9)
-                        pacMan.vPosition.X = 21;*/
+                    // Warp da esquerda para a direita
+                    if (pacMan.vPosition.X == 0 && pacMan.vPosition.Y == 9)
+                        pacMan.vPosition.X = 21;
 
                     if (Auxiliares.CanGo(pacMan.rPosition.X - Auxiliares.Matrix2Screen(1), pacMan.rPosition.Y, board))
                     {
-                        pacMan.changeDirection(PacMan.Movimentos.esquerda);
+                        pacMan.rPosition.X -= 4f;
+                        pacMan.Comer(board);
                     }
                 }
                 // Direita
                 else if (keyState.IsKeyDown(Keys.Right) || gamepadState.IsButtonDown(Buttons.DPadRight))
                 {
                     // Warp da direita para a esquerda
-                    /*if (pacMan.vPosition.X == 20 && pacMan.vPosition.Y == 9)
-                        pacMan.vPosition.X = -1;*/
+                    if (pacMan.vPosition.X == 20 && pacMan.vPosition.Y == 9)
+                        pacMan.vPosition.X = -1;
 
                     if (Auxiliares.CanGo(pacMan.rPosition.X + Auxiliares.Matrix2Screen(1), pacMan.rPosition.Y, board))
                     {
-                        pacMan.changeDirection(PacMan.Movimentos.direita);
+                        pacMan.rPosition.X += 4f;
+                        pacMan.Comer(board);
                     }
                 }
-
-                pacMan.Update(board);
                 #endregion
 
                 #region Pac Woman
@@ -278,4 +280,3 @@ namespace Pac_Man
         }
     }
 }
-// ja nem sei o que ele mudou pq eu tava a fazer outras coisas >.<

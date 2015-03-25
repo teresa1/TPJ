@@ -16,21 +16,11 @@ namespace Pac_Man
 {
     class PacMan
     {
-        public enum Movimentos
-        {
-            direita,
-            esquerda,
-            cima,
-            baixo,
-            parado
-        }
-
         // Variáveis
         public Vector2 vPosition;
         public Vector2 rPosition;
         private Texture2D sprite;
         private int score;
-        Movimentos movimentoAtual = Movimentos.parado;
 
         // Construtor
         public PacMan(Vector2 position, string textureName, ContentManager content)
@@ -63,54 +53,9 @@ namespace Pac_Man
             }
         }
 
-        public void Update(byte[,] board)
-        {
-            Console.WriteLine("yeh X:" + vPosition.X + " Y:" + vPosition.Y);
-
-            //Aqui, ele está a mover-se, e a detetar se já chegou ao centro do próximo quadrado
-            float speed = 0.01f;
-            if (movimentoAtual == Movimentos.direita)
-            {
-                rPosition.X = -speed;
-                if (vPosition.X == (int)vPosition.X) //Centro de um quadrado
-                    movimentoAtual = Movimentos.parado;
-            }
-            else if (movimentoAtual == Movimentos.esquerda)
-            {
-                rPosition.X = speed;
-                if (vPosition.X == (int)vPosition.X)
-                    movimentoAtual = Movimentos.parado;
-            }
-            else if (movimentoAtual == Movimentos.cima)
-            {
-                rPosition.Y = speed;
-                if (vPosition.Y == (int)vPosition.Y) //Centro de um quadrado
-                    movimentoAtual = Movimentos.parado;
-            }
-            else if (movimentoAtual == Movimentos.baixo)
-            {
-                rPosition.Y = -speed;
-                if (vPosition.Y == (int)vPosition.Y)
-                    movimentoAtual = Movimentos.parado;
-            }
-
-            Comer(board);
-        }
-
-        public bool changeDirection(Movimentos newDirection)
-        {
-            if (movimentoAtual == Movimentos.parado)
-            {
-                movimentoAtual = newDirection;
-                return true;
-            }
-            else
-                return false;
-
-        }
-
         private void Collide(List<Fantasma> fantasmas)
         {
+          
             int x;
             int y;
             int distancia;
