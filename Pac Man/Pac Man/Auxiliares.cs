@@ -33,7 +33,7 @@ namespace Pac_Man
         // Verifica se o objeto pode prosseguir
         public static bool CanGo(Vector2 rPosition, byte[,] board)
         {
-            if (Screen2Matrix(rPosition).X > 21 || Screen2Matrix(rPosition).Y > 20)
+            if (Screen2Matrix(rPosition).X > 21 || Screen2Matrix(rPosition).Y > 20 || Screen2Matrix(rPosition).X < 1 || Screen2Matrix(rPosition).Y < 1)
                 return false;
             if (board[(int)Screen2Matrix(rPosition).Y + 1, (int)Screen2Matrix(rPosition).X] != 0)
                 return true;
