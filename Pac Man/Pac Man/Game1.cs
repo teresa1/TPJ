@@ -169,7 +169,7 @@ namespace Pac_Man
             
             // Score e Time
             spriteBatch.DrawString(font, "Score: " + (this.pacMan.score + pacWoman.score), new Vector2(670, 100), Color.White);
-            spriteBatch.DrawString(font, "Time: " + timer.ToString("0.00"), new Vector2(650, 500), Color.White);
+            spriteBatch.DrawString(font, "Time: " + timer.ToString("0"), new Vector2(650, 500), Color.White);
 
 
             if (isGameOver)
