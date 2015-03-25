@@ -9,12 +9,12 @@ namespace Pac_Man
     public class Auxiliares
     {
         // Converte as coordenadas virtuais para reais
-        static public Vector2 Matrix2Screen(Vector2 matrixPosition)
+        static public Vector2 Matrix2Screen(Point matrixPosition)
         {
-            return (matrixPosition * 30);
+            return new Vector2(matrixPosition.X * 30, 30 * matrixPosition.Y);
         }
 
-        static public float Matrix2Screen(float screenPosition)
+        static public int Matrix2Screen(int screenPosition)
         {
             return (screenPosition * 30);
         }
@@ -25,22 +25,22 @@ namespace Pac_Man
             return (screenPosition / 30);
         }
 
-        static public int Screen2Matrix(float screenPosition)
+        static public int Screen2Matrix(int screenPosition)
         {
-            return ((int)(screenPosition + 0.5f) / 30);
+            return (int)((screenPosition) / 30 );
         }
 
         // Verifica se o objeto pode prosseguir
-        public static bool CanGo(Vector2 rPosition, byte[,] board)
+  /*      public static bool CanGo(Vector2 rPosition, byte[,] board)
         {
-            if (Screen2Matrix(rPosition).X > 21 || Screen2Matrix(rPosition).Y > 20)
+            if (Screen2Matrix(rPosition).X >= 21 || Screen2Matrix(rPosition).Y >= 20)
                 return false;
-            if (board[(int)Screen2Matrix(rPosition).Y + 1, (int)Screen2Matrix(rPosition).X] != 0)
+            if (board[(int)Screen2Matrix(rPosition).Y , (int)Screen2Matrix(rPosition).X] != 0)
                 return true;
             else return false;
         }
-
-        public static bool CanGo(float x, float y, byte[,] board)
+*/
+        public static bool CanGo(int x, int y, byte[,] board)
         {
             if (Screen2Matrix(x) > 21 || Screen2Matrix(y) > 20)
                 return false;

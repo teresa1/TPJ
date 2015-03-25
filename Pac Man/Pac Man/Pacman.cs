@@ -17,15 +17,15 @@ namespace Pac_Man
     class PacMan
     {
         // Variáveis
-        public Vector2 vPosition;
+      //  public Point vPosition;
         public Vector2 rPosition;
         private Texture2D sprite;
         private int score;
 
         // Construtor
-        public PacMan(Vector2 position, string textureName, ContentManager content)
+        public PacMan(Point position, string textureName, ContentManager content)
         {
-            this.vPosition = position;
+        //    this.vPosition = position;
             this.rPosition = Auxiliares.Matrix2Screen(position);
             sprite = content.Load<Texture2D>(textureName);
             score = 0;
@@ -46,9 +46,9 @@ namespace Pac_Man
         // Faz o Pac Man comer as pellets
         public void Comer(byte[,] board)
         {
-            if (board[Auxiliares.Screen2Matrix(rPosition.Y), Auxiliares.Screen2Matrix(rPosition.X)] == 1)
+            if (board[Auxiliares.Screen2Matrix((int)rPosition.Y), Auxiliares.Screen2Matrix((int)rPosition.X)] == 1)
             {
-                board[Auxiliares.Screen2Matrix(rPosition.Y), Auxiliares.Screen2Matrix(rPosition.X)] = 2;
+                board[Auxiliares.Screen2Matrix((int)rPosition.Y), Auxiliares.Screen2Matrix((int)rPosition.X)] = 2;
                 score++;
             }
         }
@@ -61,7 +61,7 @@ namespace Pac_Man
             int distancia;
             foreach (Fantasma fantasma in fantasmas)
             {
-               
+                Vector2 vPosition = Auxiliares.Screen2Matrix(rPosition);
                     x = (int)vPosition.X - (int)fantasma.Position.X;
                     y = (int)vPosition.Y - (int)fantasma.Position.Y;
                     

@@ -11,12 +11,12 @@ namespace Pac_Man
     public class Fantasma
     {
         // Variáveis
-        private Vector2 position;
+        private Point position;
         private Texture2D sprite;
         private int direction;
 
         // Construtor
-        public Fantasma(Vector2 position, string textureName, ContentManager content)
+        public Fantasma(Point position, string textureName, ContentManager content)
         {
             this.position = position;
             sprite = content.Load<Texture2D>(textureName);
@@ -74,7 +74,7 @@ namespace Pac_Man
         }
 
         // Métodos get/set
-        public Vector2 Position
+        public Point Position
         {
             get { return position; }
         }
