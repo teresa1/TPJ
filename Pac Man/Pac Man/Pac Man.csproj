@@ -53,6 +53,9 @@
     <Content Include="Content\blinky.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\blinkyDown.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\dot.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
