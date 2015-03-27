@@ -17,7 +17,8 @@ namespace Pac_Man
     class PacMan
     {   
         KeyboardState keyboardState;
-        GamePadState gamepadState;   
+        GamePadState gamepadState;
+        Texture2D[] pacmanos = new Texture2D[4];
         
         public enum Direction
         {
@@ -30,17 +31,21 @@ namespace Pac_Man
 
         // Variáveis
         public Vector2 position;
-        private Texture2D sprite;
+       // private Texture2D sprite;
         private Direction direction;
         public int score;
         public int playerIndex;
+        public int PacManAtual = 0;
         
         // Construtor
         public PacMan(Vector2 position, string textureName, int playerIndex ,ContentManager content)
         {
             this.position = position;
             this.playerIndex = playerIndex;
-            sprite = content.Load<Texture2D>(textureName);
+            pacmanos[0] = content.Load<Texture2D>(textureName+"1");
+            pacmanos[1] = content.Load<Texture2D>(textureName + "2");
+            pacmanos[2] = content.Load<Texture2D>(textureName+"3");
+            pacmanos[3] = content.Load<Texture2D>(textureName+"4");
             score = 0;
             this.direction = Direction.Null;
         }
@@ -48,7 +53,7 @@ namespace Pac_Man
         // Draw
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(sprite, Auxiliares.Matrix2Screen(position), Color.White);
+            spriteBatch.Draw(pacmanos[PacManAtual], Auxiliares.Matrix2Screen(position), Color.White);
         }
 
         // Update
@@ -60,7 +65,7 @@ namespace Pac_Man
         // Dispose
         public void Dispose()
         {
-            sprite.Dispose();
+            pacmanos[PacManAtual].Dispose();
         }
 
         // Simplifica a escrita da função dos botões do teclado e comando
@@ -99,6 +104,7 @@ namespace Pac_Man
             {
                 if (Auxiliares.CanGo((int)position.X, (int)position.Y + 1, board))
                 {
+                    PacManAtual = 4;
                     position.Y++;
                     Comer(board);
                 }
@@ -160,6 +166,7 @@ namespace Pac_Man
                     {
                         if (Auxiliares.CanGo((int)position.X, (int)position.Y + movementSize, board))
                         {
+                           
                             direction = Direction.Down;
                             position.Y += movementSize;
                             Comer(board);
