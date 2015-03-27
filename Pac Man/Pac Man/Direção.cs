@@ -5,12 +5,12 @@ using System.Text;
 
 namespace Pac_Man
 {
-    public enum Direção
+    public enum Direction
     {
-        UP,
-        LEFT,
-        RIGHT,
-        DOWN,
-        NULL
+        Up,
+        Left,
+        Right,
+        Down,
+        Null
     };
 }

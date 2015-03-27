@@ -48,7 +48,7 @@ namespace Pac_Man
         List<PacMan> jogadores;
         KeyboardState keyState;
         GamePadState gamepadState;
-        Direção lastDirection;
+        Direction lastDirection;
 
         float lastHumanMove;
         float ticker;
@@ -85,25 +85,20 @@ namespace Pac_Man
             font = Content.Load<SpriteFont>("SpriteFont1");
 
             // Ciação de Pac Mans
-            pacMan = new PacMan(new Vector2(9, 9), "PacMan", Content);
-            pacWoman = new PacMan(new Vector2(11, 9), "PacMan", Content);
-
-            // Criação de Pac Mans
-            pacMan = new PacMan(new Vector2(9, 9), "PacMan", Content);
-            pacWoman = new PacMan(new Vector2(11, 9), "PacWoman", Content);
-
+            pacMan = new PacMan(new Vector2(9, 9), "PacMan", 1, Content);
+            pacWoman = new PacMan(new Vector2(11, 9), "PacWoman", 2, Content);
             jogadores.Add(pacMan);
             jogadores.Add(pacWoman);
 
             // Criação de Fantasmas
             blinky = new Fantasma(new Vector2(5, 3), "blinky", Content);
             pinky = new Fantasma(new Vector2(15, 3), "pinky", Content);
-            //inky = new Fantasma(new Vector2(5, 15), "inkyLeft", Content);
-            //clyde = new Fantasma(new Vector2(15, 15), "clydeLeft", Content);
+            inky = new Fantasma(new Vector2(5, 15), "pinky", Content);
+            clyde = new Fantasma(new Vector2(15, 15), "blinky", Content);
             fantasmas.Add(blinky);
             fantasmas.Add(pinky);
-            //fantasmas.Add(inky);
-            //fantasmas.Add(clyde);
+            fantasmas.Add(inky);
+            fantasmas.Add(clyde);
         }
 
         protected override void UnloadContent()
@@ -135,7 +130,8 @@ namespace Pac_Man
                 if (ticker >= 200)
                 {
                     ticker -= 200;
-                    Move();
+                    pacMan.HumanMove(lastHumanMove, board);
+                    pacWoman.HumanMove(lastHumanMove, board);
 
                     foreach (var fantasma in fantasmas)
                         fantasma.Update(board, random);
@@ -197,187 +193,39 @@ namespace Pac_Man
         {
             keyState = Keyboard.GetState();
             gamepadState = GamePad.GetState(PlayerIndex.One);
-            Direção dir = GetDirectionByKeyState();
-            if ( dir != Direção.NULL )
+            Direction dir = GetDirectionByKeyState();
+            if ( dir != Direction.Null )
             {
                 lastDirection = dir;
             }
             
         }
 
-        private Direção GetDirectionByKeyState()
+        private Direction GetDirectionByKeyState()
         {
-             if ((keyState.IsKeyDown(Keys.Down) || gamepadState.IsButtonDown(Buttons.DPadDown)))
-             {
-                 return Direção.DOWN;
-             }
-             else if (keyState.IsKeyDown(Keys.Up) || gamepadState.IsButtonDown(Buttons.DPadUp))
-             {
-                 return Direção.UP;
-             }
-             // Esquerda
-             else if (keyState.IsKeyDown(Keys.Left) || gamepadState.IsButtonDown(Buttons.DPadLeft))
-             {
-                 return Direção.LEFT;
-             }
-             // Direita
-             else if (keyState.IsKeyDown(Keys.Right) || gamepadState.IsButtonDown(Buttons.DPadRight))
-             {
-                 return Direção.RIGHT;
-             }
-             return Direção.NULL; // Caso nenhuma tecla esteja a ser pressionada
+            // Baixo
+            if ((keyState.IsKeyDown(Keys.Down) || gamepadState.IsButtonDown(Buttons.DPadDown)))
+            {
+                return Direction.Down;
+            }
+            // Cima
+            else if (keyState.IsKeyDown(Keys.Up) || gamepadState.IsButtonDown(Buttons.DPadUp))
+            {
+                return Direction.Up;
+            }
+            // Esquerda
+            else if (keyState.IsKeyDown(Keys.Left) || gamepadState.IsButtonDown(Buttons.DPadLeft))
+            {
+                return Direction.Left;
+            }
+            // Direita
+            else if (keyState.IsKeyDown(Keys.Right) || gamepadState.IsButtonDown(Buttons.DPadRight))
+            {
+                return Direction.Right;
+            }
+            // Caso nenhuma tecla esteja a ser pressionada
+            else return Direction.Null;
         }
 
-        private void MoveDirection(Direção dir)
-        {
-            if (dir == Direção.DOWN)
-            {
-                if (Auxiliares.CanGo((int)pacMan.position.X, (int)pacMan.position.Y + 1, board))
-                {
-                    pacMan.position.Y++;
-                    pacMan.Comer(board);
-                }
-            }
-            else if (dir == Direção.UP)
-            {
-                // Cima
-                if (Auxiliares.CanGo((int)pacMan.position.X, (int)pacMan.position.Y - 1, board))
-                {
-                    pacMan.position.Y--;
-                    pacMan.Comer(board);
-                }
-            }
-            else if (dir == Direção.LEFT)
-            {
-                // Warp da esquerda para a direita
-                if (pacMan.position.X == 0 && pacMan.position.Y == 9)
-                    pacMan.position.X = 21;
-
-                if (Auxiliares.CanGo((int)pacMan.position.X - 1, (int)pacMan.position.Y, board))
-                {
-                    pacMan.position.X--;
-                    pacMan.Comer(board);
-                }
-            }
-            else if (dir == Direção.RIGHT)
-            {
-                // Warp da direita para a esquerda
-                if (pacMan.position.X == 20 && pacMan.position.Y == 9)
-                    pacMan.position.X = -1;
-
-                if (Auxiliares.CanGo((int)pacMan.position.X + 1, (int)pacMan.position.Y, board))
-                {
-                    pacMan.position.X++;
-                    pacMan.Comer(board);
-                }
-            }
-        }
-
-        // Movimento do jogador
-        private void Move()
-        {
-            if (lastHumanMove >= 1f / 50f)
-            {
-                lastHumanMove = 0f;
-                if (GetDirectionByKeyState() == Direção.NULL)
-                {
-                    MoveDirection(lastDirection);
-                    return;
-                }
-                #region Pac Man
-                // Baixo
-                if ((keyState.IsKeyDown(Keys.Down) || gamepadState.IsButtonDown(Buttons.DPadDown)))
-                {
-                    if (Auxiliares.CanGo((int)pacMan.position.X, (int)pacMan.position.Y + 1, board))
-                    {
-                        pacMan.position.Y++;
-                        pacMan.Comer(board);
-                    }
-                }
-                // Cima
-                else if (keyState.IsKeyDown(Keys.Up) || gamepadState.IsButtonDown(Buttons.DPadUp))
-                {
-                    if (Auxiliares.CanGo((int)pacMan.position.X, (int)pacMan.position.Y - 1, board))
-                    {
-                        pacMan.position.Y--;
-                        pacMan.Comer(board);
-                    }
-                }
-                // Esquerda
-                else if (keyState.IsKeyDown(Keys.Left) || gamepadState.IsButtonDown(Buttons.DPadLeft))
-                {
-                    // Warp da esquerda para a direita
-                    if (pacMan.position.X == 0 && pacMan.position.Y == 9)
-                        pacMan.position.X = 21;
-
-                    if (Auxiliares.CanGo((int)pacMan.position.X - 1, (int)pacMan.position.Y, board))
-                    {
-                        pacMan.position.X--;
-                        pacMan.Comer(board);
-                    }
-                }
-                // Direita
-                else if (keyState.IsKeyDown(Keys.Right) || gamepadState.IsButtonDown(Buttons.DPadRight))
-                {
-                    // Warp da direita para a esquerda
-                    if (pacMan.position.X == 20 && pacMan.position.Y == 9)
-                        pacMan.position.X = -1;
-
-                    if (Auxiliares.CanGo((int)pacMan.position.X + 1, (int)pacMan.position.Y, board))
-                    {
-                        pacMan.position.X++;
-                        pacMan.Comer(board);
-                    }
-                }
-                #endregion
-
-                #region Pac Woman
-                // Baixo
-                if ((keyState.IsKeyDown(Keys.S) || gamepadState.IsButtonDown(Buttons.DPadDown)))
-                {
-                    if (Auxiliares.CanGo((int)pacWoman.position.X, (int)pacWoman.position.Y + 1, board))
-                    {
-                        pacWoman.position.Y++;
-                        pacWoman.Comer(board);
-                    }
-                }
-                // Cima
-                else if (keyState.IsKeyDown(Keys.W) || gamepadState.IsButtonDown(Buttons.DPadUp))
-                {
-                    if (Auxiliares.CanGo((int)pacWoman.position.X, (int)pacWoman.position.Y - 1, board))
-                    {
-                        pacWoman.position.Y--;
-                        pacWoman.Comer(board);
-                    }
-                }
-                // Esquerda
-                else if (keyState.IsKeyDown(Keys.A) || gamepadState.IsButtonDown(Buttons.DPadLeft))
-                {
-                    // Warp da esquerda para a direita
-                    if (pacWoman.position.X == 0 && pacWoman.position.Y == 9)
-                        pacWoman.position.X = 21;
-
-                    if (Auxiliares.CanGo((int)pacWoman.position.X - 1, (int)pacWoman.position.Y, board))
-                    {
-                        pacWoman.position.X--;
-                        pacWoman.Comer(board);
-                    }
-                }
-                // Direita
-                else if (keyState.IsKeyDown(Keys.D) || gamepadState.IsButtonDown(Buttons.DPadRight))
-                {
-                    // Warp da direita para a esquerda
-                    if (pacWoman.position.X == 20 && pacWoman.position.Y == 9)
-                        pacWoman.position.X = -1;
-
-                    if (Auxiliares.CanGo((int)pacWoman.position.X + 1, (int)pacWoman.position.Y, board))
-                    {
-                        pacWoman.position.X++;
-                        pacWoman.Comer(board);
-                    }
-                }
-                #endregion
-            }
-        }
     }
 }
