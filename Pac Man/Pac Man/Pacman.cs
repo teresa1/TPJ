@@ -42,10 +42,10 @@ namespace Pac_Man
         {
             this.position = position;
             this.playerIndex = playerIndex;
-            pacmanos[0] = content.Load<Texture2D>(textureName+"1");
+            pacmanos[0] = content.Load<Texture2D>(textureName + "1");
             pacmanos[1] = content.Load<Texture2D>(textureName + "2");
-            pacmanos[2] = content.Load<Texture2D>(textureName+"3");
-            pacmanos[3] = content.Load<Texture2D>(textureName+"4");
+            pacmanos[2] = content.Load<Texture2D>(textureName + "3");
+            pacmanos[3] = content.Load<Texture2D>(textureName + "4");
             score = 0;
             this.direction = Direction.Null;
         }
@@ -101,25 +101,27 @@ namespace Pac_Man
         private void AutoMove(Direction direction, byte[,] board)
         {
             if (direction == Direction.Down)
-            {
+            { PacManAtual = 1;
                 if (Auxiliares.CanGo((int)position.X, (int)position.Y + 1, board))
                 {
-                    PacManAtual = 4;
+                   
                     position.Y++;
                     Comer(board);
                 }
             }
             else if (direction == Direction.Up)
-            {
+            {PacManAtual = 2;
                 // Cima
                 if (Auxiliares.CanGo((int)position.X, (int)position.Y - 1, board))
                 {
+                    
                     position.Y--;
                     Comer(board);
                 }
             }
             else if (direction == Direction.Left)
-            {
+            { 
+                PacManAtual = 3;
                 // Warp da esquerda para a direita
                 if (position.X == 0 && position.Y == 9)
                     position.X = 21;
@@ -128,10 +130,12 @@ namespace Pac_Man
                 {
                     position.X--;
                     Comer(board);
+                   
                 }
             }
             else if (direction == Direction.Right)
             {
+                PacManAtual = 0;
                 // Warp da direita para a esquerda
                 if (position.X == 20 && position.Y == 9)
                     position.X = -1;
@@ -140,6 +144,7 @@ namespace Pac_Man
                 {
                     position.X++;
                     Comer(board);
+                    
                 }
             }
             else if (direction == Direction.Null) return;
