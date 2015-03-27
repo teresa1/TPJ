@@ -71,7 +71,6 @@ namespace Pac_Man
                 gamepadState = GamePad.GetState(PlayerIndex.One);
             else if (playerIndex == 2)
                 gamepadState = GamePad.GetState(PlayerIndex.Two);
-
         }
 
         private Direction GetDirectionByKeyState()
@@ -143,10 +142,9 @@ namespace Pac_Man
         public void HumanMove(float lastHumanMove, byte[,] board)
         {
             LerTeclas();
-
             int movementSize = 1;
 
-            if (lastHumanMove >= 1f / 50f)
+            if (lastHumanMove >= 1f / 100f)
             {
                 if (GetDirectionByKeyState() == Direction.Null)
                 {
@@ -260,6 +258,7 @@ namespace Pac_Man
             }
         }
 
+        // Faz o Pac Man comer as pellets
         public void Comer(byte[,] board)
         {
             if (board[(int)(position.Y + 0.5f), (int)(position.X + 0.5f)] == 1)

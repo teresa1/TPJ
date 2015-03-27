@@ -16,7 +16,7 @@ namespace Pac_Man
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Random random;
-        
+
         /*            0-parede    1- comida    2-vazio         */
         byte[,] board = {{2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2}, // Linha 0
                          {2,0,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,0,2}, // Linha 1
@@ -46,9 +46,6 @@ namespace Pac_Man
         Fantasma blinky, pinky, inky, clyde;
         List<Fantasma> fantasmas;
         List<PacMan> jogadores;
-        KeyboardState keyState;
-        GamePadState gamepadState;
-        Direction lastDirection;
 
         float lastHumanMove;
         float ticker;
@@ -56,7 +53,7 @@ namespace Pac_Man
         bool isGameOver = false;
 
         SpriteFont font;
-        
+
         public Game1()
             : base()
         {
@@ -72,7 +69,7 @@ namespace Pac_Man
             jogadores = new List<PacMan>();
             fantasmas = new List<Fantasma>();
             random = new Random();
-            
+
             base.Initialize();
         }
 
@@ -115,7 +112,7 @@ namespace Pac_Man
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            
+
             // Caso não seja Game Over, continua o jogo
             if (!isGameOver)
             {
@@ -123,13 +120,12 @@ namespace Pac_Man
                 ticker += gameTime.ElapsedGameTime.Milliseconds;
                 timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-                LerTeclas();
                 GameOver();
 
                 // Movimento dos fantasmas e do jogador
-                if (ticker >= 200)
+                if (ticker >= 250)
                 {
-                    ticker -= 200;
+                    ticker -= 250;
                     pacMan.HumanMove(lastHumanMove, board);
                     pacWoman.HumanMove(lastHumanMove, board);
 
@@ -146,26 +142,26 @@ namespace Pac_Man
 
             spriteBatch.Begin();
 
-                for (int x = 0; x < 21; x++)
-                    for (int y = 0; y < 21; y++)
-                    {
-                        // Comida
-                        if (board[y, x] == 1)
-                            spriteBatch.Draw(dot, new Vector2(x * wall.Width , y * wall.Height), Color.White);
-                        // Comida bónus
-                        if (board[y, x] == 3)
-                            spriteBatch.Draw(largeDot, new Vector2(x * wall.Width, y * wall.Height), Color.White);
-                        // Paredes
-                        if (board[y, x] == 0)
-                           spriteBatch.Draw(wall, new Vector2(x * wall.Width , y * wall.Height), Color.White);
-                    }
+            for (int x = 0; x < 21; x++)
+                for (int y = 0; y < 21; y++)
+                {
+                    // Comida
+                    if (board[y, x] == 1)
+                        spriteBatch.Draw(dot, new Vector2(x * wall.Width, y * wall.Height), Color.White);
+                    // Comida bónus
+                    if (board[y, x] == 3)
+                        spriteBatch.Draw(largeDot, new Vector2(x * wall.Width, y * wall.Height), Color.White);
+                    // Paredes
+                    if (board[y, x] == 0)
+                        spriteBatch.Draw(wall, new Vector2(x * wall.Width, y * wall.Height), Color.White);
+                }
 
             // Pac Man's e Fantamas 
             foreach (var pac in jogadores)
                 pac.Draw(spriteBatch);
             foreach (var fanta in fantasmas)
                 fanta.Draw(spriteBatch);
-            
+
             // Score e Time
             spriteBatch.DrawString(font, "Score: " + (this.pacMan.score + pacWoman.score), new Vector2(670, 100), Color.White);
             spriteBatch.DrawString(font, "Time: " + timer.ToString("0"), new Vector2(650, 500), Color.White);
@@ -182,50 +178,10 @@ namespace Pac_Man
         // Altera a variável para true caso seja Game Over
         private void GameOver()
         {
-           if(pacMan.Collide(fantasmas) || pacWoman.Collide(fantasmas))
-           {
-               isGameOver = true;
-           }
+            if (pacMan.Collide(fantasmas) || pacWoman.Collide(fantasmas))
+            {
+                isGameOver = true;
+            }
         }
-
-        // Simplifica a escrita da função dos botões do teclado e comando
-        private void LerTeclas()
-        {
-            keyState = Keyboard.GetState();
-            gamepadState = GamePad.GetState(PlayerIndex.One);
-            Direction dir = GetDirectionByKeyState();
-            if ( dir != Direction.Null )
-            {
-                lastDirection = dir;
-            }
-            
-        }
-
-        private Direction GetDirectionByKeyState()
-        {
-            // Baixo
-            if ((keyState.IsKeyDown(Keys.Down) || gamepadState.IsButtonDown(Buttons.DPadDown)))
-            {
-                return Direction.Down;
-            }
-            // Cima
-            else if (keyState.IsKeyDown(Keys.Up) || gamepadState.IsButtonDown(Buttons.DPadUp))
-            {
-                return Direction.Up;
-            }
-            // Esquerda
-            else if (keyState.IsKeyDown(Keys.Left) || gamepadState.IsButtonDown(Buttons.DPadLeft))
-            {
-                return Direction.Left;
-            }
-            // Direita
-            else if (keyState.IsKeyDown(Keys.Right) || gamepadState.IsButtonDown(Buttons.DPadRight))
-            {
-                return Direction.Right;
-            }
-            // Caso nenhuma tecla esteja a ser pressionada
-            else return Direction.Null;
-        }
-
     }
 }
