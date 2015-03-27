@@ -90,10 +90,10 @@ namespace Pac_Man
             jogadores.Add(pacWoman);
 
             // Criação de Fantasmas
-            blinky = new Fantasma(new Point(18, 2), "blinky", Content);
-            pinky = new Fantasma(new Point(3, 20), "blinky", Content);
-            inky = new Fantasma(new Point(3, 2), "blinky", Content);
-            clyde = new Fantasma(new Point(3, 2), "blinky", Content);
+            blinky = new Fantasma(new Point(5, 3), "blinkyDown", Content);
+            pinky = new Fantasma(new Point(15, 2), "blinkyDown", Content);
+            inky = new Fantasma(new Point(3, 15), "blinkyDown", Content);
+            clyde = new Fantasma(new Point(3, 15), "blinkyDown", Content);
             fantasmas.Add(blinky);
             fantasmas.Add(pinky);
             fantasmas.Add(inky);
@@ -116,20 +116,21 @@ namespace Pac_Man
                 Exit();
 
             lastHumanMove += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            ticker += gameTime.ElapsedGameTime.Milliseconds;
+            ticker += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 
             timer += (int)(gameTime.ElapsedGameTime.TotalSeconds + 0.5f);
 
             LerTeclas();
-            Move();
+            pacMan.Move(lastHumanMove, board);
+            lastHumanMove = 0f;
 
             // Movimento dos fantasmas e do jogador
-            if (ticker >= 100)
+            while (ticker >= 100)
             {
-                ticker -= 200;
-                Move();
-                foreach (var fantasma in fantasmas)
-                    fantasma.Update(board, random);
+                ticker -= 100;
+                foreach (var ghost in fantasmas)
+                    ghost.Update(gameTime, random, board);
+                lastHumanMove = 0f;
             }
 
             base.Update(gameTime);
@@ -188,48 +189,48 @@ namespace Pac_Man
                 // Baixo
                 if ((keyState.IsKeyDown(Keys.Down) || gamepadState.IsButtonDown(Buttons.DPadDown)))
                 {
-                    if (Auxiliares.CanGo((int)pacMan.rPosition.X, (int)pacMan.rPosition.Y + movementSize, board))
+                    if (Auxiliares.CanGo((int)pacMan.position.X, (int)pacMan.position.Y + movementSize, board))
                     {
-                        pacMan.rPosition.Y += movementSize;
+                        pacMan.position.Y += movementSize;
                         pacMan.Comer(board);
                     }
                 }
                 // Cima
                 else if (keyState.IsKeyDown(Keys.Up) || gamepadState.IsButtonDown(Buttons.DPadUp))
                 {
-                    if (Auxiliares.CanGo((int)pacMan.rPosition.X, (int)pacMan.rPosition.Y - movementSize, board))
+                    if (Auxiliares.CanGo((int)pacMan.position.X, (int)pacMan.position.Y - movementSize, board))
                     {
-                        pacMan.rPosition.Y -= movementSize;
+                        pacMan.position.Y -= movementSize;
                         pacMan.Comer(board);
                     }
                 }
                 // Esquerda
                 else if (keyState.IsKeyDown(Keys.Left) || gamepadState.IsButtonDown(Buttons.DPadLeft))
                 {
-                    Vector2 vPosition = Auxiliares.Screen2Matrix(pacMan.rPosition);
+                    Vector2 vPosition = Auxiliares.Screen2Matrix(pacMan.position);
 
                     // Warp da esquerda para a direita
                     if (vPosition.X == 0 && vPosition.Y == 9)
-                        pacMan.rPosition.X = 21*30;
+                        pacMan.position.X = 21*30;
 
-                    if (Auxiliares.CanGo((int)pacMan.rPosition.X - movementSize, (int)pacMan.rPosition.Y, board))
+                    if (Auxiliares.CanGo((int)pacMan.position.X - movementSize, (int)pacMan.position.Y, board))
                     {
-                        pacMan.rPosition.X -= movementSize;
+                        pacMan.position.X -= movementSize;
                         pacMan.Comer(board);
                     }
                 }
                 // Direita
                 else if (keyState.IsKeyDown(Keys.Right) || gamepadState.IsButtonDown(Buttons.DPadRight))
                 {
-                    Vector2 vPosition = Auxiliares.Screen2Matrix(pacMan.rPosition);
+                    Vector2 vPosition = Auxiliares.Screen2Matrix(pacMan.position);
 
                     // Warp da direita para a esquerda
                     if (vPosition.X == 20 && vPosition.Y == 9)
-                        pacMan.rPosition.X = -30;
+                        pacMan.position.X = -30;
 
-                    if (Auxiliares.CanGo((int)pacMan.rPosition.X + movementSize, (int)pacMan.rPosition.Y, board))
+                    if (Auxiliares.CanGo((int)pacMan.position.X + movementSize, (int)pacMan.position.Y, board))
                     {
-                        pacMan.rPosition.X += movementSize;
+                        pacMan.position.X += movementSize;
                         pacMan.Comer(board);
                     }
                 }

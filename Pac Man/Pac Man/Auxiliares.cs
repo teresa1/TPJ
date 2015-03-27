@@ -55,12 +55,12 @@ namespace Pac_Man
             if (mX > 21 || mY > 20)
                 return false;
 
-            bool possoMover = true;
-            if (board[mY,mX] == 0 || board[mY, mX] == 3) possoMover = false;
-            if (Span(x) && (board[mY,mX+1] == 0 || board[mY,mX+1] == 3)) possoMover = false;
-            if (Span(y) && (board[mY+1,mX] == 0 || board[mY+1,mX] == 3)) possoMover = false;
-            if (Span(x) && Span(y) && (board[mY+1,mX+1] == 0 || board[mY+1,mX+1] == 3)) possoMover = false;
-            return possoMover;
+            bool canMove = true;
+            if (board[mY,mX] == 0 || board[mY, mX] == 3) canMove = false;
+            if (Span(x) && (board[mY,mX+1] == 0 || board[mY,mX+1] == 3)) canMove = false;
+            if (Span(y) && (board[mY+1,mX] == 0 || board[mY+1,mX] == 3)) canMove = false;
+            if (Span(x) && Span(y) && (board[mY+1,mX+1] == 0 || board[mY+1,mX+1] == 3)) canMove = false;
+            return canMove;
         }
     }
 }
