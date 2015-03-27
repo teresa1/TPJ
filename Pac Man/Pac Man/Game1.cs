@@ -46,9 +46,9 @@ namespace Pac_Man
         Fantasma blinky, pinky, inky, clyde;
         List<Fantasma> fantasmas;
         List<PacMan> jogadores;
-
         KeyboardState keyState;
         GamePadState gamepadState;
+        Direção lastDirection;
 
         float lastHumanMove;
         float ticker;
@@ -98,12 +98,12 @@ namespace Pac_Man
             // Criação de Fantasmas
             blinky = new Fantasma(new Vector2(5, 3), "blinky", Content);
             pinky = new Fantasma(new Vector2(15, 3), "pinky", Content);
-            inky = new Fantasma(new Vector2(5, 15), "inkyLeft", Content);
-            clyde = new Fantasma(new Vector2(15, 15), "clydeLeft", Content);
+            //inky = new Fantasma(new Vector2(5, 15), "inkyLeft", Content);
+            //clyde = new Fantasma(new Vector2(15, 15), "clydeLeft", Content);
             fantasmas.Add(blinky);
             fantasmas.Add(pinky);
-            fantasmas.Add(inky);
-            fantasmas.Add(clyde);
+            //fantasmas.Add(inky);
+            //fantasmas.Add(clyde);
         }
 
         protected override void UnloadContent()
@@ -197,6 +197,80 @@ namespace Pac_Man
         {
             keyState = Keyboard.GetState();
             gamepadState = GamePad.GetState(PlayerIndex.One);
+            Direção dir = GetDirectionByKeyState();
+            if ( dir != Direção.NULL )
+            {
+                lastDirection = dir;
+            }
+            
+        }
+
+        private Direção GetDirectionByKeyState()
+        {
+             if ((keyState.IsKeyDown(Keys.Down) || gamepadState.IsButtonDown(Buttons.DPadDown)))
+             {
+                 return Direção.DOWN;
+             }
+             else if (keyState.IsKeyDown(Keys.Up) || gamepadState.IsButtonDown(Buttons.DPadUp))
+             {
+                 return Direção.UP;
+             }
+             // Esquerda
+             else if (keyState.IsKeyDown(Keys.Left) || gamepadState.IsButtonDown(Buttons.DPadLeft))
+             {
+                 return Direção.LEFT;
+             }
+             // Direita
+             else if (keyState.IsKeyDown(Keys.Right) || gamepadState.IsButtonDown(Buttons.DPadRight))
+             {
+                 return Direção.RIGHT;
+             }
+             return Direção.NULL; // Caso nenhuma tecla esteja a ser pressionada
+        }
+
+        private void MoveDirection(Direção dir)
+        {
+            if (dir == Direção.DOWN)
+            {
+                if (Auxiliares.CanGo((int)pacMan.position.X, (int)pacMan.position.Y + 1, board))
+                {
+                    pacMan.position.Y++;
+                    pacMan.Comer(board);
+                }
+            }
+            else if (dir == Direção.UP)
+            {
+                // Cima
+                if (Auxiliares.CanGo((int)pacMan.position.X, (int)pacMan.position.Y - 1, board))
+                {
+                    pacMan.position.Y--;
+                    pacMan.Comer(board);
+                }
+            }
+            else if (dir == Direção.LEFT)
+            {
+                // Warp da esquerda para a direita
+                if (pacMan.position.X == 0 && pacMan.position.Y == 9)
+                    pacMan.position.X = 21;
+
+                if (Auxiliares.CanGo((int)pacMan.position.X - 1, (int)pacMan.position.Y, board))
+                {
+                    pacMan.position.X--;
+                    pacMan.Comer(board);
+                }
+            }
+            else if (dir == Direção.RIGHT)
+            {
+                // Warp da direita para a esquerda
+                if (pacMan.position.X == 20 && pacMan.position.Y == 9)
+                    pacMan.position.X = -1;
+
+                if (Auxiliares.CanGo((int)pacMan.position.X + 1, (int)pacMan.position.Y, board))
+                {
+                    pacMan.position.X++;
+                    pacMan.Comer(board);
+                }
+            }
         }
 
         // Movimento do jogador
@@ -205,7 +279,11 @@ namespace Pac_Man
             if (lastHumanMove >= 1f / 50f)
             {
                 lastHumanMove = 0f;
-
+                if (GetDirectionByKeyState() == Direção.NULL)
+                {
+                    MoveDirection(lastDirection);
+                    return;
+                }
                 #region Pac Man
                 // Baixo
                 if ((keyState.IsKeyDown(Keys.Down) || gamepadState.IsButtonDown(Buttons.DPadDown)))
