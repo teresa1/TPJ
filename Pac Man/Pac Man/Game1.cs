@@ -85,7 +85,7 @@ namespace Pac_Man
 
             // Criação de Pac Mans
             pacMan = new PacMan(new Point(9, 7), "PacMan", Content);
-            pacWoman = new PacMan(new Point(11, 9), "PacWoman", Content);
+            pacWoman = new PacMan(new Point(11, 7), "PacWoman", Content);
             jogadores.Add(pacMan);
             jogadores.Add(pacWoman);
 
@@ -234,54 +234,58 @@ namespace Pac_Man
                     }
                 }
                 #endregion
-/*
+
                 #region Pac Woman
-                // Baixo
+                 // Baixo
                 if ((keyState.IsKeyDown(Keys.S) || gamepadState.IsButtonDown(Buttons.DPadDown)))
                 {
-                    if (Auxiliares.CanGo((int)pacWoman.vPosition.X, (int)pacWoman.vPosition.Y + 1, board))
+                    if (Auxiliares.CanGo((int)pacWoman.rPosition.X, (int)pacWoman.rPosition.Y + movementSize, board))
                     {
-                        pacWoman.vPosition.Y++;
+                        pacWoman.rPosition.Y += movementSize;
                         pacWoman.Comer(board);
                     }
                 }
                 // Cima
                 else if (keyState.IsKeyDown(Keys.W) || gamepadState.IsButtonDown(Buttons.DPadUp))
                 {
-                    if (Auxiliares.CanGo((int)pacWoman.vPosition.X, (int)pacWoman.vPosition.Y - 1, board))
+                    if (Auxiliares.CanGo((int)pacWoman.rPosition.X, (int)pacWoman.rPosition.Y - movementSize, board))
                     {
-                        pacWoman.vPosition.Y--;
+                        pacWoman.rPosition.Y -= movementSize;
                         pacWoman.Comer(board);
                     }
                 }
                 // Esquerda
                 else if (keyState.IsKeyDown(Keys.A) || gamepadState.IsButtonDown(Buttons.DPadLeft))
                 {
-                    // Warp da esquerda para a direita
-                    if (pacWoman.vPosition.X == 0 && pacWoman.vPosition.Y == 9)
-                        pacWoman.vPosition.X = 21;
+                    Vector2 vPosition = Auxiliares.Screen2Matrix(pacWoman.rPosition);
 
-                    if (Auxiliares.CanGo((int)pacWoman.vPosition.X - 1, (int)pacWoman.vPosition.Y, board))
+                    // Warp da esquerda para a direita
+                    if (vPosition.X == 0 && vPosition.Y == 9)
+                        pacWoman.rPosition.X = 21*30;
+
+                    if (Auxiliares.CanGo((int)pacWoman.rPosition.X - movementSize, (int)pacWoman.rPosition.Y, board))
                     {
-                        pacWoman.vPosition.X--;
+                        pacWoman.rPosition.X -= movementSize;
                         pacWoman.Comer(board);
                     }
                 }
                 // Direita
                 else if (keyState.IsKeyDown(Keys.D) || gamepadState.IsButtonDown(Buttons.DPadRight))
                 {
-                    // Warp da direita para a esquerda
-                    if (pacWoman.vPosition.X == 20 && pacWoman.vPosition.Y == 9)
-                        pacWoman.vPosition.X = -1;
+                    Vector2 vPosition = Auxiliares.Screen2Matrix(pacMan.rPosition);
 
-                    if (Auxiliares.CanGo((int)pacWoman.vPosition.X + 1, (int)pacWoman.vPosition.Y, board))
+                    // Warp da direita para a esquerda
+                    if (vPosition.X == 20 && vPosition.Y == 9)
+                        pacWoman.rPosition.X = -30;
+
+                    if (Auxiliares.CanGo((int)pacWoman.rPosition.X + movementSize, (int)pacWoman.rPosition.Y, board))
                     {
-                        pacWoman.vPosition.X++;
+                        pacWoman.rPosition.X += movementSize;
                         pacWoman.Comer(board);
                     }
                 }
                 #endregion
- * */
+ 
             }
         }
     }
