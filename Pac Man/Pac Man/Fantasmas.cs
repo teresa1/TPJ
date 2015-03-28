@@ -12,7 +12,7 @@ namespace Pac_Man
     {
         // Variáveis
         private Vector2 position;
-        private Texture2D sprite;
+        public Texture2D sprite;
         private int direction;
 
         // Construtor
@@ -80,5 +80,6 @@ namespace Pac_Man
             get { return position; }
         }
 
+    
     }
 }

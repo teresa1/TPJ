@@ -15,11 +15,11 @@ using Microsoft.Xna.Framework.Net;
 namespace Pac_Man
 {
     class PacMan
-    {   
+    {
         KeyboardState keyboardState;
         GamePadState gamepadState;
         Texture2D[] pacmanos = new Texture2D[4];
-        
+
         public enum Direction
         {
             Up,
@@ -31,14 +31,14 @@ namespace Pac_Man
 
         // Variáveis
         public Vector2 position;
-       // private Texture2D sprite;
+        // private Texture2D sprite;
         private Direction direction;
         public int score;
         public int playerIndex;
         public int PacManAtual = 0;
-        
+
         // Construtor
-        public PacMan(Vector2 position, string textureName, int playerIndex ,ContentManager content)
+        public PacMan(Vector2 position, string textureName, int playerIndex, ContentManager content)
         {
             this.position = position;
             this.playerIndex = playerIndex;
@@ -101,27 +101,27 @@ namespace Pac_Man
         private void AutoMove(Direction direction, byte[,] board)
         {
             if (direction == Direction.Down)
-            { PacManAtual = 1;
+            {
                 if (Auxiliares.CanGo((int)position.X, (int)position.Y + 1, board))
                 {
-                   
+
                     position.Y++;
                     Comer(board);
                 }
             }
             else if (direction == Direction.Up)
-            {PacManAtual = 2;
+            {
                 // Cima
                 if (Auxiliares.CanGo((int)position.X, (int)position.Y - 1, board))
                 {
-                    
+
                     position.Y--;
                     Comer(board);
                 }
             }
             else if (direction == Direction.Left)
-            { 
-                PacManAtual = 3;
+            {
+
                 // Warp da esquerda para a direita
                 if (position.X == 0 && position.Y == 9)
                     position.X = 21;
@@ -130,12 +130,11 @@ namespace Pac_Man
                 {
                     position.X--;
                     Comer(board);
-                   
+
                 }
             }
             else if (direction == Direction.Right)
             {
-                PacManAtual = 0;
                 // Warp da direita para a esquerda
                 if (position.X == 20 && position.Y == 9)
                     position.X = -1;
@@ -144,7 +143,7 @@ namespace Pac_Man
                 {
                     position.X++;
                     Comer(board);
-                    
+
                 }
             }
             else if (direction == Direction.Null) return;
@@ -171,7 +170,7 @@ namespace Pac_Man
                     {
                         if (Auxiliares.CanGo((int)position.X, (int)position.Y + movementSize, board))
                         {
-                           
+                            PacManAtual = 1;
                             direction = Direction.Down;
                             position.Y += movementSize;
                             Comer(board);
@@ -182,6 +181,7 @@ namespace Pac_Man
                     {
                         if (Auxiliares.CanGo((int)position.X, (int)position.Y - movementSize, board))
                         {
+                            PacManAtual = 2;
                             direction = Direction.Up;
                             position.Y -= movementSize;
                             Comer(board);
@@ -197,6 +197,7 @@ namespace Pac_Man
                             position.X = 21 * 30;
                         else if (Auxiliares.CanGo((int)position.X - movementSize, (int)position.Y, board))
                         {
+                            PacManAtual = 3;
                             direction = Direction.Left;
                             position.X -= movementSize;
                             Comer(board);
@@ -212,6 +213,7 @@ namespace Pac_Man
                             position.X = -3;
                         else if (Auxiliares.CanGo((int)position.X + movementSize, (int)position.Y, board))
                         {
+                            PacManAtual = 0;
                             direction = Direction.Right;
                             position.X += movementSize;
                             Comer(board);
@@ -228,6 +230,7 @@ namespace Pac_Man
                     {
                         if (Auxiliares.CanGo((int)position.X, (int)position.Y + 1, board))
                         {
+                            PacManAtual = 1;
                             position.Y++;
                             Comer(board);
                         }
@@ -237,6 +240,7 @@ namespace Pac_Man
                     {
                         if (Auxiliares.CanGo((int)position.X, (int)position.Y - 1, board))
                         {
+                            PacManAtual = 2;
                             position.Y--;
                             Comer(board);
                         }
@@ -249,6 +253,7 @@ namespace Pac_Man
                             position.X = 21;
                         else if (Auxiliares.CanGo((int)position.X - 1, (int)position.Y, board))
                         {
+                            PacManAtual = 3;
                             position.X--;
                             Comer(board);
                         }
@@ -261,6 +266,7 @@ namespace Pac_Man
                             position.X = -1;
                         else if (Auxiliares.CanGo((int)position.X + 1, (int)position.Y, board))
                         {
+                            PacManAtual = 0;
                             position.X++;
                             Comer(board);
                         }
@@ -278,19 +284,38 @@ namespace Pac_Man
                 board[(int)(position.Y + 0.5f), (int)(position.X + 0.5f)] = 2;
                 score++;
             }
+            if (board[(int)(position.Y + 0.5f), (int)(position.X + 0.5f)] == 3)
+            {
+                board[(int)(position.Y + 0.5f), (int)(position.X + 0.5f)] = 2;
+                score += 10; // idk
+            }
+
         }
 
         public bool Collide(List<Fantasma> fantasmas)
         {
             foreach (Fantasma fantasma in fantasmas)
             {
-                    if (position.X == fantasma.Position.X && position.Y == fantasma.Position.Y)
-                    {
-                        Console.WriteLine("mnham mnahm");
-                        return true;
-                    }
-              
-            }   return false;
+                if (position.X == fantasma.Position.X && position.Y == fantasma.Position.Y)
+                {
+                    Console.WriteLine("mnham mnahm");
+                    return true;
+                }
+
+            } return false;
         }
+
+        public bool CanKill(List<Fantasma> fantasmas, string texturename)
+        {
+                foreach (Fantasma fantasmaa in fantasmas)
+                {
+                    texturename = "CanDie"; // >.<
+                    return true;
+                }
+
+               return false;
+           
+        }
+
     }
 }
