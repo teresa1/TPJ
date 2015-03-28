@@ -17,7 +17,7 @@ namespace Pac_Man
         SpriteBatch spriteBatch;
         Random random;
 
-        /*            0-parede    1- comida    2-vazio         */
+        /*            0-parede    1- comida    2-vazio     3- big dots idk    */
         byte[,] board = {{2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2}, // Linha 0
                          {2,0,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,0,2}, // Linha 1
                          {2,0,3,0,0,1,0,0,0,1,0,1,0,0,0,1,0,0,3,0,2}, // Linha 2
@@ -26,7 +26,7 @@ namespace Pac_Man
                          {2,0,1,1,1,1,0,1,1,1,0,1,1,1,0,1,1,1,1,0,2}, // Linha 5
                          {2,0,0,0,0,1,0,0,0,2,0,2,0,0,0,1,0,0,0,0,2}, // Linha 6
                          {2,2,2,2,0,1,0,2,2,2,2,2,2,2,0,1,0,2,2,2,2}, // Linha 7
-                         {0,0,0,0,0,1,0,2,0,0,2,0,0,2,0,1,0,0,0,0,0}, //linha 8
+                         {0,0,0,0,0,1,0,2,0,2,2,2,0,2,0,1,0,0,0,0,0}, //linha 8
                          {2,2,2,2,2,1,2,2,0,2,2,2,0,2,2,1,2,2,2,2,2}, //linha 9
                          {0,0,0,0,0,1,0,2,0,0,0,0,0,2,0,1,0,0,0,0,0}, //linha 10
                          {2,2,2,2,0,1,0,2,2,2,2,2,2,2,0,1,0,2,2,2,2}, //linha 11
@@ -131,6 +131,7 @@ namespace Pac_Man
 
                     foreach (var fantasma in fantasmas)
                         fantasma.Update(board, random);
+
                 }
             }
             base.Update(gameTime);
@@ -161,7 +162,7 @@ namespace Pac_Man
                 pac.Draw(spriteBatch);
             foreach (var fanta in fantasmas)
                 fanta.Draw(spriteBatch);
-
+               
             // Score e Time
             spriteBatch.DrawString(font, "Score: " + (this.pacMan.score + pacWoman.score), new Vector2(670, 100), Color.White);
             spriteBatch.DrawString(font, "Time: " + timer.ToString("0"), new Vector2(650, 500), Color.White);
