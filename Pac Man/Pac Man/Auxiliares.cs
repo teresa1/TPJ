@@ -24,6 +24,8 @@ namespace Pac_Man
                 return false;
             if (board[y, x] != 0)
                 return true;
+        
+                
             else return false;
         }
     }
