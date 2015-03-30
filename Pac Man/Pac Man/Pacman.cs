@@ -226,48 +226,56 @@ namespace Pac_Man
                 else if (playerIndex == 2)
                 {
                     // Baixo
-                    if ((keyboardState.IsKeyDown(Keys.S) || gamepadState.IsButtonDown(Buttons.DPadDown)))
+                    if (keyboardState.IsKeyDown(Keys.S) || gamepadState.IsButtonDown(Buttons.DPadDown))
                     {
-                        if (Auxiliares.CanGo((int)position.X, (int)position.Y + 1, board))
+                        if (Auxiliares.CanGo((int)position.X, (int)position.Y + movementSize, board))
                         {
                             PacManAtual = 1;
-                            position.Y++;
+                            direction = Direction.Down;
+                            position.Y += movementSize;
                             Comer(board);
                         }
                     }
                     // Cima
                     else if (keyboardState.IsKeyDown(Keys.W) || gamepadState.IsButtonDown(Buttons.DPadUp))
                     {
-                        if (Auxiliares.CanGo((int)position.X, (int)position.Y - 1, board))
+                        if (Auxiliares.CanGo((int)position.X, (int)position.Y - movementSize, board))
                         {
                             PacManAtual = 2;
-                            position.Y--;
+                            direction = Direction.Up;
+                            position.Y -= movementSize;
                             Comer(board);
                         }
                     }
                     // Esquerda
                     else if (keyboardState.IsKeyDown(Keys.A) || gamepadState.IsButtonDown(Buttons.DPadLeft))
                     {
+                        Vector2 vPosition = Auxiliares.Screen2Matrix(position);
+
                         // Warp da esquerda para a direita
-                        if (position.X == 0 && position.Y == 9)
-                            position.X = 21;
-                        else if (Auxiliares.CanGo((int)position.X - 1, (int)position.Y, board))
+                        if (vPosition.X == 0 && vPosition.Y == 9)
+                            position.X = 21 * 30;
+                        else if (Auxiliares.CanGo((int)position.X - movementSize, (int)position.Y, board))
                         {
                             PacManAtual = 3;
-                            position.X--;
+                            direction = Direction.Left;
+                            position.X -= movementSize;
                             Comer(board);
                         }
                     }
                     // Direita
                     else if (keyboardState.IsKeyDown(Keys.D) || gamepadState.IsButtonDown(Buttons.DPadRight))
                     {
+                        Vector2 vPosition = Auxiliares.Screen2Matrix(position);
+
                         // Warp da direita para a esquerda
-                        if (position.X == 20 && position.Y == 9)
-                            position.X = -1;
-                        else if (Auxiliares.CanGo((int)position.X + 1, (int)position.Y, board))
+                        if (vPosition.X == 20 && vPosition.Y == 9)
+                            position.X = -3;
+                        else if (Auxiliares.CanGo((int)position.X + movementSize, (int)position.Y, board))
                         {
                             PacManAtual = 0;
-                            position.X++;
+                            direction = Direction.Right;
+                            position.X += movementSize;
                             Comer(board);
                         }
                     }
@@ -305,17 +313,7 @@ namespace Pac_Man
             } return false;
         }
 
-        public bool CanKill(List<Fantasma> fantasmas, string texturename)
-        {
-                foreach (Fantasma fantasmaa in fantasmas)
-                {
-                    texturename = "CanDie"; // >.<
-                    return true;
-                }
-
-               return false;
-           
-        }
+        
 
     }
 }
