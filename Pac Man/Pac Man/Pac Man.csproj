@@ -36,7 +36,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Auxiliares.cs" />
-    <Compile Include="Direção.cs" />
     <Compile Include="Fantasmas.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="PacMan.cs" />

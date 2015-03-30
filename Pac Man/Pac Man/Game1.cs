@@ -92,7 +92,6 @@ namespace Pac_Man
             pinky = new Fantasma(new Vector2(15, 3), "pinky", Content);
             inky = new Fantasma(new Vector2(5, 15), "pinky", Content);
             clyde = new Fantasma(new Vector2(15, 15), "blinky", Content);
-           //fantaDie = new Fantasma (new Vector2(0,0),"CanDie", Content);
             fantasmas.Add(blinky);
             fantasmas.Add(pinky);
             fantasmas.Add(inky);
@@ -165,11 +164,6 @@ namespace Pac_Man
 
             foreach (var fanta in fantasmas)
             {
-                //if (board[3, 18] == 2)
-                //{
-                //    fantasmas.Add(fantaDie);
-                //}
-                //else
                 fanta.Draw(spriteBatch);
             }
                
