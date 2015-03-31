@@ -82,20 +82,40 @@ namespace Pac_Man
         {
             LerTeclas();
 
-            // Baixo
-            if ((keyboardState.IsKeyDown(Keys.Down) || gamepadState.IsButtonDown(Buttons.DPadDown)))
-                return Direction.Down;
-            // Cima
-            else if (keyboardState.IsKeyDown(Keys.Up) || gamepadState.IsButtonDown(Buttons.DPadUp))
-                return Direction.Up;
-            // Esquerda
-            else if (keyboardState.IsKeyDown(Keys.Left) || gamepadState.IsButtonDown(Buttons.DPadLeft))
-                return Direction.Left;
-            // Direita
-            else if (keyboardState.IsKeyDown(Keys.Right) || gamepadState.IsButtonDown(Buttons.DPadRight))
-                return Direction.Right;
-            // Caso nenhuma tecla esteja a ser pressionada
-            else return Direction.Null;
+            if (playerIndex == 1)
+            {
+                // Baixo
+                if ((keyboardState.IsKeyDown(Keys.Down) || gamepadState.IsButtonDown(Buttons.DPadDown)))
+                    return Direction.Down;
+                // Cima
+                else if (keyboardState.IsKeyDown(Keys.Up) || gamepadState.IsButtonDown(Buttons.DPadUp))
+                    return Direction.Up;
+                // Esquerda
+                else if (keyboardState.IsKeyDown(Keys.Left) || gamepadState.IsButtonDown(Buttons.DPadLeft))
+                    return Direction.Left;
+                // Direita
+                else if (keyboardState.IsKeyDown(Keys.Right) || gamepadState.IsButtonDown(Buttons.DPadRight))
+                    return Direction.Right;
+                // Caso nenhuma tecla esteja a ser pressionada
+                else return Direction.Null;
+            }
+            else
+            {
+                // Baixo
+                if ((keyboardState.IsKeyDown(Keys.S) || gamepadState.IsButtonDown(Buttons.DPadDown)))
+                    return Direction.Down;
+                // Cima
+                else if (keyboardState.IsKeyDown(Keys.W) || gamepadState.IsButtonDown(Buttons.DPadUp))
+                    return Direction.Up;
+                // Esquerda
+                else if (keyboardState.IsKeyDown(Keys.A) || gamepadState.IsButtonDown(Buttons.DPadLeft))
+                    return Direction.Left;
+                // Direita
+                else if (keyboardState.IsKeyDown(Keys.D) || gamepadState.IsButtonDown(Buttons.DPadRight))
+                    return Direction.Right;
+                // Caso nenhuma tecla esteja a ser pressionada
+                else return Direction.Null;
+            }
         }
 
         private void AutoMove(Direction direction, byte[,] board)
@@ -221,6 +241,7 @@ namespace Pac_Man
                     }
                 }
                 #endregion
+                   
 
                 #region Pac Woman
                 else if (playerIndex == 2)
