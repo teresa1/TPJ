@@ -17,6 +17,7 @@ namespace GameName1
         private string p1;
         private int p2;
         private int p3;
+
         //Declarar primeiro a animated sprite com esta função (imagem,linhas,colunas)
         public AnimatedSprite(Texture2D texture, int rows, int columns)
         {
