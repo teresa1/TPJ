@@ -17,9 +17,10 @@ namespace GameName1
         }
 
         // Draw
-        public void Draw()
+        public override void Draw(GameTime gameTime)
         {
-
+            
+base.Draw(gameTime);
         }
 
         // Update

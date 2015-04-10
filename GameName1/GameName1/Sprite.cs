@@ -11,8 +11,8 @@ namespace GameName1
     public class Sprite
     {
         // Variáveis
-        protected ContentManager cManager;
-        //protected Scene scene;
+        protected ContentManager content;
+        protected Scene scene;
         //Sprite
         protected Texture2D texture;
         public Vector2 position;
@@ -29,7 +29,7 @@ namespace GameName1
         // Construtor
         public Sprite(ContentManager content, String textureName)
         {
-            this.cManager = content;
+            this.content = content;
             this.texture = content.Load<Texture2D>(textureName);
             this.position = Vector2.Zero;
             this.size = new Vector2(1f, (float)texture.Height / (float)texture.Width);
@@ -38,7 +38,26 @@ namespace GameName1
             this.hasCollisions = false;
         }
 
-        // Ativa as colisões da sprite
+        // Update (virtual)
+        public virtual void Update(GameTime gameTime)
+        {
+
+        }
+
+        // Draw
+        public virtual void Draw(GameTime gameTime)
+        {
+            Rectangle pos = new Rectangle(0, 0, 0, 0);//Camera.WorldSize2PixelRectangle(this.position, this.size);
+            // scene.SpriteBatch.Draw(this.image, pos, Color.White);
+
+            //spriteBatch.Begin();
+            spriteBatch.Draw(this.texture, pos, source, Color.White,
+                this.rotation, new Vector2(pixelSize.X / 2, pixelSize.Y / 2),
+                SpriteEffects.None, 0);
+            //spriteBatch.End();
+        }
+
+        // Ativa as colisões da sprite e define o raio da "bounding box"
         public virtual void EnableCollisions()
         {
             this.hasCollisions = true;
@@ -125,10 +144,11 @@ namespace GameName1
             this.size *= scale;
         }
 
-        //public virtual void SetScene(Scene s)
-        //{
-        //    this.scene = s;
-        //}
+        public virtual void SetScene(Scene scene)
+        {
+            this.scene = scene;
+        }
+
         public Sprite Scl(float scale)
         {
             this.Scale(scale);
@@ -136,31 +156,22 @@ namespace GameName1
         }
 
 
-        //public virtual void Draw(GameTime gameTime)
-        //{
-        //    Rectangle pos = Camera.WorldSize2PixelRectangle(this.position, this.size);
-        //    // scene.SpriteBatch.Draw(this.image, pos, Color.White);
-        //    scene.SpriteBatch.Draw(this.texture, pos, source, Color.White,
-        //        this.rotation, new Vector2(pixelSize.X / 2, pixelSize.Y / 2),
-        //        SpriteEffects.None, 0);
-        //}
+
 
         public virtual void SetRotation(float r)
         {
             this.rotation = r;
         }
 
-        public virtual void Update(GameTime gameTime) { }
-
         public virtual void Dispose()
         {
             this.texture.Dispose();
         }
 
-        //public void Destroy()
-        //{
-        //    this.scene.RemoveSprite(this);
-        //}
+        public void Destroy()
+        {
+            this.scene.RemoveSprite(this);
+        }
 
         public void SetPosition(Vector2 position)
         {

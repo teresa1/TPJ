@@ -16,7 +16,7 @@ namespace GameName1
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Texture2D spritesheet;
-        AnimatedSprite candyBitch;
+        Player candyBitch;
         public Game1()
             : base()
         {
@@ -54,7 +54,7 @@ namespace GameName1
 
             // TODO: Add your update logic here
 
-          //  X.Update();
+            //candyBitch.Update(gameTime);
             base.Update(gameTime);
         }
         int contador = 0;
@@ -64,16 +64,13 @@ namespace GameName1
             GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin();
 
-            candyBitch.Draw(spriteBatch, new Vector2(10, 10));
-            if(contador == 7)
+            candyBitch.Draw(gameTime);
+            if(contador == 700)
             {
                 candyBitch.Update(gameTime);
                 contador = 0;
             }
             contador++;
-
-
-
 
             spriteBatch.End();
             base.Draw(gameTime);
