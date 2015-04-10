@@ -4,57 +4,48 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 
 namespace GameName1
 {
-    public class AnimatedSprite
+    public class AnimatedSprite : Sprite
     {
-        public Texture2D Texture { get; set; }
-        public int Rows { get; set; }
-        public int Columns { get; set; }
+        public int rows;
+        public int columns;
         private int currentFrame;
         private int totalFrames;
-        private string p1;
-        private int p2;
-        private int p3;
 
         //Declarar primeiro a animated sprite com esta função (imagem,linhas,colunas)
-        public AnimatedSprite(Texture2D texture, int rows, int columns)
+        public AnimatedSprite(ContentManager content, String textureName, int rows, int columns) : base(content, textureName)
         {
-            Texture = texture;
-            Rows = rows;
-            Columns = columns;
+            this.rows = rows;
+            this.columns = columns;
             currentFrame = 0;
-            totalFrames = Rows * Columns;
+            totalFrames = rows * columns;
         }
 
-        public AnimatedSprite(string p1, int p2, int p3)
-        {
-            // TODO: Complete member initialization
-            this.p1 = p1;
-            this.p2 = p2;
-            this.p3 = p3;
-        }
-
-        public void Update()
+        public override void Update(GameTime gameTime)
         {
             currentFrame++;
             if (currentFrame == totalFrames)
                 currentFrame = 0;
+
+            base.Update(gameTime);
         }
+
         //Usar esta função para desenhar (spriteBatch, coordenadas)
         public void Draw(SpriteBatch spriteBatch, Vector2 location)
         {
-            int width = Texture.Width / Columns;
-            int height = Texture.Height / Rows;
-            int row = (int)((float)currentFrame / (float)Columns);
-            int column = currentFrame % Columns;
+            int width = texture.Width / columns;
+            int height = texture.Height / rows;
+            int row = (int)((float)currentFrame / (float)columns);
+            int column = currentFrame % columns;
 
             Rectangle sourceRectangle = new Rectangle(width * column, height * row, width, height);
             Rectangle destinationRectangle = new Rectangle((int)location.X, (int)location.Y, width, height);
 
             //spriteBatch.Begin();
-            spriteBatch.Draw(Texture, destinationRectangle, sourceRectangle, Color.White);
+            spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, Color.White);
             //spriteBatch.End();
         }
     }

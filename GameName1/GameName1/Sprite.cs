@@ -8,14 +8,14 @@ using System.Text;
 
 namespace GameName1
 {
-    class Sprite
+    public class Sprite
     {
         // Variáveis
         protected ContentManager cManager;
-        protected Scene scene;
+        //protected Scene scene;
         //Sprite
-        protected Texture2D image;
-        protected Vector2 position;
+        protected Texture2D texture;
+        public Vector2 position;
         protected Vector2 size;
         protected Vector2 pixelSize;
         protected float rotation;
@@ -27,13 +27,13 @@ namespace GameName1
         protected Color[] pixels;
 
         // Construtor
-        public Sprite(ContentManager cManager, String textureName)
+        public Sprite(ContentManager content, String textureName)
         {
-            this.cManager = cManager;
-            this.image = cManager.Load<Texture2D>(textureName);
+            this.cManager = content;
+            this.texture = content.Load<Texture2D>(textureName);
             this.position = Vector2.Zero;
-            this.size = new Vector2(1f, (float)image.Height / (float)image.Width);
-            this.pixelSize = new Vector2(image.Width, image.Height);
+            this.size = new Vector2(1f, (float)texture.Height / (float)texture.Width);
+            this.pixelSize = new Vector2(texture.Width, texture.Height);
             this.rotation = 0f;
             this.hasCollisions = false;
         }
@@ -45,7 +45,7 @@ namespace GameName1
             this.radius = (float)Math.Sqrt(Math.Pow(size.X / 2, 2) + Math.Pow(size.Y / 2, 2));
 
             pixels = new Color[(int)(pixelSize.X * pixelSize.Y)];
-            image.GetData<Color>(pixels);
+            texture.GetData<Color>(pixels);
         }
 
         // Se houver colisao, collisionPoint é o ponto de colisão
@@ -125,10 +125,10 @@ namespace GameName1
             this.size *= scale;
         }
 
-        public virtual void SetScene(Scene s)
-        {
-            this.scene = s;
-        }
+        //public virtual void SetScene(Scene s)
+        //{
+        //    this.scene = s;
+        //}
         public Sprite Scl(float scale)
         {
             this.Scale(scale);
@@ -136,14 +136,14 @@ namespace GameName1
         }
 
 
-        public virtual void Draw(GameTime gameTime)
-        {
-            Rectangle pos = Camera.WorldSize2PixelRectangle(this.position, this.size);
-            // scene.SpriteBatch.Draw(this.image, pos, Color.White);
-            scene.SpriteBatch.Draw(this.image, pos, source, Color.White,
-                this.rotation, new Vector2(pixelSize.X / 2, pixelSize.Y / 2),
-                SpriteEffects.None, 0);
-        }
+        //public virtual void Draw(GameTime gameTime)
+        //{
+        //    Rectangle pos = Camera.WorldSize2PixelRectangle(this.position, this.size);
+        //    // scene.SpriteBatch.Draw(this.image, pos, Color.White);
+        //    scene.SpriteBatch.Draw(this.texture, pos, source, Color.White,
+        //        this.rotation, new Vector2(pixelSize.X / 2, pixelSize.Y / 2),
+        //        SpriteEffects.None, 0);
+        //}
 
         public virtual void SetRotation(float r)
         {
@@ -154,13 +154,13 @@ namespace GameName1
 
         public virtual void Dispose()
         {
-            this.image.Dispose();
+            this.texture.Dispose();
         }
 
-        public void Destroy()
-        {
-            this.scene.RemoveSprite(this);
-        }
+        //public void Destroy()
+        //{
+        //    this.scene.RemoveSprite(this);
+        //}
 
         public void SetPosition(Vector2 position)
         {
