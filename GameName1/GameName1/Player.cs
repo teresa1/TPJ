@@ -11,7 +11,7 @@ namespace GameName1
     class Player : AnimatedSprite
     {
         // Construtor
-        public Player(ContentManager content, String textureName, int rows, int columns) : base(content, textureName, rows, columns)
+        public Player(ContentManager content, String textureName) : base(content, textureName, 1, 4)
         {
 
         }
@@ -28,7 +28,7 @@ namespace GameName1
             KeyboardState state = Keyboard.GetState();
             if (state.IsKeyDown(Keys.D))
             { 
-                this.position.X += 0.01f; 
+                this.position.X += 1f; 
             }
             base.Update(gameTime);
         }
