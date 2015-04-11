@@ -33,7 +33,16 @@ namespace GameName1
             Camera.target = target; 
         } 
 
-
+        /* Atualiza o ratio a ser utilizado pela câmara
+         * Depende do tamanho da janela de visualização do Windows */
+        private static void UpdateRatio() 
+        { 
+            if (Camera.lastSeenPixelWidth != Camera.gDevManager.PreferredBackBufferWidth) 
+            { 
+                Camera.ratio = Camera.gDevManager.PreferredBackBufferWidth / Camera.worldWidth; 
+                Camera.lastSeenPixelWidth = Camera.gDevManager.PreferredBackBufferWidth; 
+             } 
+         } 
 
         // Métodos get/set
         public static float WorldWidth

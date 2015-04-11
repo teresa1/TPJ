@@ -129,8 +129,7 @@ namespace GameName1
 		{
 			float x = i * size.X / (float)pixelSize.X;
 			float y = j * size.Y / (float)pixelSize.Y;
-			return new Vector2(position.X + x - (size.X * 0.5f),
-							   position.Y - y + (size.Y * 0.5f));
+			return new Vector2(position.X + x - (size.X * 0.5f), position.Y - y + (size.Y * 0.5f));
 		}
 
 		// Converte coordenadas virtuais (metros) para coordenadas virtuais (pixels)
