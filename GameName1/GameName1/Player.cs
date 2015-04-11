@@ -34,42 +34,42 @@ namespace GameName1
 		// Update
 		public override void Update(GameTime gameTime)
 		{
-            // Movimento para a direita automático
+			// Movimento para a direita automático
 			this.position.X += 0.01f;
 
 			KeyboardState keyState = Keyboard.GetState();
 			if (keyState.IsKeyDown(Keys.Up) && isJumping == false)
-                Jump();
+				Jump();
 
-            // Movimento de salto
-            if (isJumping)
-            {
-                if ((position - sourcePosition).Length() <= maxDistance)
-                {
-                    position = position + direction * velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                }
-                else
-                {
-                    position = position - direction * velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                    if (position.Y <= sourcePosition.Y)
-                    {
-                        position.Y = 0f;
-                        isJumping = false;
-                    }
-                }
-            }
+			// Movimento de salto
+			if (isJumping)
+			{
+				if ((position - sourcePosition).Length() <= maxDistance)
+				{
+					position = position + direction * velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+				}
+				else
+				{
+					position = position - direction * velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+					if (position.Y <= sourcePosition.Y)
+					{
+						position.Y = 0f;
+						isJumping = false;
+					}
+				}
+			}
 			
-            // Acompanhamento da câmara com o jogador
+			// Acompanhamento da câmara com o jogador
 			Camera.SetTarget(this.position);
 			base.Update(gameTime);
 		}
 
-        // Inicializa as variáveis a serem usadas para saltar
-        public void Jump()
-        {
-            this.isJumping = true;
-            this.sourcePosition = position;
-            this.direction = new Vector2((float)Math.Sin(rotation), (float)Math.Cos(rotation));
-        }
+		// Inicializa as variáveis a serem usadas para saltar
+		public void Jump()
+		{
+			this.isJumping = true;
+			this.sourcePosition = position;
+			this.direction = new Vector2((float)Math.Sin(rotation), (float)Math.Cos(rotation));
+		}
 	}
 }
