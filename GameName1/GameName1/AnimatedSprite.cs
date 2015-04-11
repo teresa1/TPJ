@@ -21,7 +21,10 @@ namespace GameName1
         {
             this.rows = rows;
             this.columns = columns;
-            currentFrame = Point.Zero;
+            this.pixelSize.X = this.pixelSize.X / columns;
+            this.pixelSize.Y = this.pixelSize.Y / rows;
+            this.size = new Vector2(1f, (float)pixelSize.Y / (float)pixelSize.X);
+            this.currentFrame = Point.Zero;
         }
 
         // Update
@@ -29,6 +32,7 @@ namespace GameName1
         {
             animationTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
+            // Controla o tempo de cada frame
             if (animationTimer > animationInterval)
             {
                 animationTimer = 0f;

@@ -11,7 +11,7 @@ namespace GameName1
     class Player : AnimatedSprite
     {
         // Construtor
-        public Player(ContentManager content) : base(content, "CandyGirl", 1, 4)
+        public Player(ContentManager content, String textureName, int rows, int columns) : base(content, textureName, rows, columns)
         {
 
         }
@@ -19,8 +19,7 @@ namespace GameName1
         // Draw
         public override void Draw(GameTime gameTime)
         {
-            
-base.Draw(gameTime);
+            base.Draw(gameTime);
         }
 
         // Update
