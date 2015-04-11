@@ -13,7 +13,7 @@ namespace GameName1
         // Variáveis
         private int rows, columns;
         private Point currentFrame;
-        private float animationInterval = 1f / 20f;
+        private float animationInterval = 1f / 10f;
         private float animationTimer = 0f;
 
         // Construtor
