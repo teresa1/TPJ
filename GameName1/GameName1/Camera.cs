@@ -69,12 +69,11 @@ namespace GameName1
             Camera.UpdateRatio(); 
             Vector2 pixelPosition = WorldPoint2Pixels(position); 
 
-            int pixelWidth = (int)( size.X * Camera.ratio + .5f); 
+            int pixelWidth = (int)(size.X * Camera.ratio + .5f); 
             int pixelHeight = (int)(size.Y * Camera.ratio + .5f); 
 
             return new Rectangle((int)pixelPosition.X, (int)pixelPosition.Y, pixelWidth, pixelHeight); 
         } 
-
 
         // Métodos get/set
         public static float WorldWidth
