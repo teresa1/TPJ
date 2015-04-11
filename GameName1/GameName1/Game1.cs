@@ -13,12 +13,12 @@ namespace GameName1
 {
     public class Game1 : Game
     {
+        // Variáveis
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Texture2D spritesheet;
-        Player candyBitch;
-        public Game1()
-            : base()
+        Scene scene;
+
+        public Game1() : base()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -26,53 +26,48 @@ namespace GameName1
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            // Definição do tamanho da janela
+            graphics.PreferredBackBufferHeight = 720;
+            graphics.PreferredBackBufferWidth = 1280;
+            graphics.ApplyChanges();
+
+            Camera.SetGraphicsDeviceManager(graphics);
+            Camera.SetTarget(Vector2.Zero);
+            Camera.SetWorldWidth(10);
 
             base.Initialize();
         }
 
-
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            candyBitch = new Player(Content);
+            scene = new Scene(spriteBatch);
 
-            // TODO: use this.Content to load your game content here
+            scene.AddSprite(new Sprite(Content, "Background").SpriteScale(Camera.WorldWidth)
+                .SpritePosition(new Vector2(0f, 1280 * Camera.WorldWidth / 720)));
+            scene.AddSprite(new Player(Content, "CandyGirl"));
         }
 
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
-           
+            spriteBatch.Dispose();
+            scene.Dispose();
         }
         
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+            scene.Update(gameTime);
 
-            // TODO: Add your update logic here
-
-            //candyBitch.Update(gameTime);
             base.Update(gameTime);
         }
-        int contador = 0;
 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            spriteBatch.Begin();
+            scene.Draw(gameTime);
 
-            candyBitch.Draw(gameTime);
-            if(contador == 700)
-            {
-                candyBitch.Update(gameTime);
-                contador = 0;
-            }
-            contador++;
-
-            spriteBatch.End();
             base.Draw(gameTime);
         }
     }

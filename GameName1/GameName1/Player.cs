@@ -28,7 +28,7 @@ namespace GameName1
             KeyboardState state = Keyboard.GetState();
             if (state.IsKeyDown(Keys.D))
             { 
-                this.position.X += 1f; 
+                this.position.X += 0.1f; 
             }
             base.Update(gameTime);
         }

@@ -47,14 +47,12 @@ namespace GameName1
 		// Draw
 		public virtual void Draw(GameTime gameTime)
 		{
-			Rectangle pos = new Rectangle(0, 0, 0, 0);//Camera.WorldSize2PixelRectangle(this.position, this.size);
+			Rectangle pos = Camera.WorldSize2PixelRectangle(this.position, this.size);
 			// scene.SpriteBatch.Draw(this.image, pos, Color.White);
 
-			//spriteBatch.Begin();
-			spriteBatch.Draw(this.texture, pos, source, Color.White,
+			scene.SpriteBatch.Draw(this.texture, pos, source, Color.White,
 				this.rotation, new Vector2(pixelSize.X / 2, pixelSize.Y / 2),
 				SpriteEffects.None, 0);
-			//spriteBatch.End();
 		}
 
 		// Ativa as colisões da sprite e define o raio da "bounding box"
