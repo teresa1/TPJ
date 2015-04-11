@@ -26,6 +26,9 @@ namespace GameName1
 		protected float radius;
 		protected Color[] pixels;
 
+        public Texture2D Textura;
+        public Vector2 Posicao;
+
 		// Construtor
 		public Sprite(ContentManager content, String textureName)
 		{
@@ -199,5 +202,16 @@ namespace GameName1
 			get { return hasCollisions; }
 			protected set { hasCollisions = value; }
 		}
+
+        public void loadContent(string assetName)
+        {
+            Textura = content.Load<Texture2D>(assetName);
+            Posicao = Vector2.Zero;
+        }
+
+        //public void draw(int fade)
+        //{
+        //    SpriteBatch.Draw(Textura, position, new Color(fade, fade, fade));
+        //}
 	}
 }
