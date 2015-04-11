@@ -25,11 +25,9 @@ namespace GameName1
         // Update
         public override void Update(GameTime gameTime)
         {
-            //KeyboardState state = Keyboard.GetState();
-            //if (state.IsKeyDown(Keys.D))
-            { 
-                this.position.X += 0.01f; 
-            }
+            this.position.X += 0.01f;
+            Camera.SetTarget(this.position);
+
             base.Update(gameTime);
         }
     }
