@@ -47,7 +47,6 @@ namespace GameName1
                 if ((position - sourcePosition).Length() <= maxDistance)
                 {
                     position = position + direction * velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                    continue;
                 }
                 else
                 {
