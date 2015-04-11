@@ -35,7 +35,7 @@ namespace GameName1
 		public override void Update(GameTime gameTime)
 		{
 			// Movimento para a direita automático
-			this.position.X += 0.01f;
+			this.position.X += 0.05f;
 
 			KeyboardState keyState = Keyboard.GetState();
 			if (keyState.IsKeyDown(Keys.Up) && isJumping == false)
@@ -46,11 +46,11 @@ namespace GameName1
 			{
 				if ((position - sourcePosition).Length() <= maxDistance)
 				{
-					position = position + direction * velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+					position = position + direction * velocity * (float)gameTime.ElapsedGameTime.TotalSeconds * 5;
 				}
 				else
 				{
-					position = position - direction * velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+					position = position - direction * velocity * (float)gameTime.ElapsedGameTime.TotalSeconds * 5;
 					if (position.Y <= sourcePosition.Y)
 					{
 						position.Y = 0f;
