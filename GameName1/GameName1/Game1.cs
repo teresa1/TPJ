@@ -17,6 +17,7 @@ namespace GameName1
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Scene scene;
+        ScrollingBackground background;
 
         public Game1() : base()
         {
@@ -43,9 +44,9 @@ namespace GameName1
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             scene = new Scene(spriteBatch);
-
             scene.AddSprite(new Sprite(Content, "Background").SpriteScale(Camera.WorldWidth).SpritePosition(new Vector2(0f, 0f)));
             scene.AddSprite(new Player(Content, "CandyGirl"));
+            background = new ScrollingBackground(Content);
         }
 
         protected override void UnloadContent()
@@ -59,13 +60,17 @@ namespace GameName1
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             scene.Update(gameTime);
+            background.Update(gameTime);
 
-            base.Update(gameTime);
+            base.Update(gameTime); 
         }
 
         protected override void Draw(GameTime gameTime)
         {
+           
+
             GraphicsDevice.Clear(Color.CornflowerBlue);
+            background.Draw(gameTime, spriteBatch);
             scene.Draw(gameTime);
 
             base.Draw(gameTime);

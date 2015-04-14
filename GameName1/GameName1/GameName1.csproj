@@ -37,12 +37,12 @@
   <ItemGroup>
     <Compile Include="AnimatedSprite.cs" />
     <Compile Include="Camera.cs" />
-    <Compile Include="Cenário.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scene.cs" />
+    <Compile Include="ScrollingBackground.cs" />
     <Compile Include="Sprite.cs" />
   </ItemGroup>
   <ItemGroup>
