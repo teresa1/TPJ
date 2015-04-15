@@ -8,13 +8,11 @@ using System.Text;
 
 namespace GameName1
 {
-
     class ScrollingBackground
     {
         public Texture2D texture1, texture2;
         public Vector2 posText1, posTex2;
 
-        
         public ScrollingBackground(ContentManager content)
         {
            

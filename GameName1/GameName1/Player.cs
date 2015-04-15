@@ -20,8 +20,9 @@ namespace GameName1
 		public Player(ContentManager content, String textureName) : base(content, textureName, 1, 4)
 		{
 			this.isJumping = false;
-			this.maxDistance = 1.7f;
-			this.velocity = 1f;
+            this.position = new Vector2(0, 0);
+			this.maxDistance = 3f;
+			this.velocity = 1.1f;
 			this.direction = Vector2.Zero;
 		}
 

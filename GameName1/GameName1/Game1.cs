@@ -34,7 +34,7 @@ namespace GameName1
 
             // Inicialização da câmara
             Camera.SetGraphicsDeviceManager(graphics);
-            Camera.SetTarget(Vector2.Zero);
+            //Camera.SetTarget(new Vector2(0, 2));
             Camera.SetWorldWidth(15);
 
             base.Initialize();
@@ -44,8 +44,9 @@ namespace GameName1
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             scene = new Scene(spriteBatch);
-            //scene.AddSprite(new Sprite(Content, "Background").SpriteScale(Camera.WorldWidth).SpritePosition(new Vector2(0f, 0f)));
+    
             scene.AddSprite(new Player(Content, "CandyGirl"));
+            scene.AddSprite(new Plataforma(Content));
             background = new ScrollingBackground(Content);
         }
 

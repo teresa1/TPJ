@@ -12,7 +12,7 @@ namespace GameName1
         private static GraphicsDeviceManager gDevManager;
         private static float worldWidth;
         private static float ratio;
-        private static Vector2 target; 
+        private static Vector2 target = new Vector2(0, 2.3f); 
         private static int lastSeenPixelWidth = 0;
  
         // Define o GraphicsDeviceManager a usar
@@ -30,7 +30,7 @@ namespace GameName1
         // Define o alvo da camera (centro)
         public static void SetTarget(Vector2 target) 
         { 
-            Camera.target.X = target.X; 
+            Camera.target.X = target.X;
         } 
 
         /* Atualiza o ratio a ser utilizado pela câmara
