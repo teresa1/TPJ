@@ -11,8 +11,6 @@ namespace GameName1
 
     class ScrollingBackground
     {
-
-
         public Texture2D texture1, texture2;
         public Vector2 posText1, posTex2;
 
@@ -21,17 +19,17 @@ namespace GameName1
         {
            
             texture1 = content.Load<Texture2D>("Background");
-            texture2 = texture1; //poupar processamento ^_^ e agora? :o
+            texture2 = texture1; //poupar processamento ^_^
 
-            posText1 = new Vector2(0, 0);
+            posText1 = new Vector2(0,0);
             posTex2 = new Vector2(texture1.Width, 0); 
         }
 
         public void Update(GameTime gameTime)
         {
 
-            this.posText1.X -= 1; //isto faz andar os backgrounds
-            this.posTex2.X -= 1;
+            this.posText1.X -= 10; //isto faz andar os backgrounds
+            this.posTex2.X -= 10;
               
             // isto faz saltar imagens
             if(posTex2.X == -texture1.Width ) 
@@ -42,6 +40,7 @@ namespace GameName1
             {
                 posText1.X = texture2.Width; 
             }
+
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)

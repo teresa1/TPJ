@@ -44,7 +44,7 @@ namespace GameName1
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             scene = new Scene(spriteBatch);
-            scene.AddSprite(new Sprite(Content, "Background").SpriteScale(Camera.WorldWidth).SpritePosition(new Vector2(0f, 0f)));
+            //scene.AddSprite(new Sprite(Content, "Background").SpriteScale(Camera.WorldWidth).SpritePosition(new Vector2(0f, 0f)));
             scene.AddSprite(new Player(Content, "CandyGirl"));
             background = new ScrollingBackground(Content);
         }
