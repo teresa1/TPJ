@@ -15,12 +15,15 @@ namespace GameName1
 		private float maxDistance, velocity;
 		private Vector2 sourcePosition;
 		private Vector2 direction;
+        private bool isFalling;
+        Plataforma plataforma;
 
 		// Construtor
-		public Player(ContentManager content, String textureName) : base(content, textureName, 1, 4)
+        public Player(ContentManager content, String textureName)
+            : base(content, textureName, 1, 4)
 		{
-			this.isJumping = false;
-            this.position = new Vector2(0, 0);
+			this.isJumping = false; 
+            this.position = new Vector2(-5, 10);
 			this.maxDistance = 3f;
 			this.velocity = 1.1f;
 			this.direction = Vector2.Zero;
@@ -36,8 +39,11 @@ namespace GameName1
 		public override void Update(GameTime gameTime)
 		{
 			// Movimento para a direita automático
+            //this.Collides(this, plataforma);
 			this.position.X += 0.05f;
-
+            Gravidade();
+           // if (level.plataforma.Collides(this))   
+           
 			KeyboardState keyState = Keyboard.GetState();
 			if (keyState.IsKeyDown(Keys.Up) && isJumping == false)
 				Jump();
@@ -72,5 +78,11 @@ namespace GameName1
 			this.sourcePosition = position;
 			this.direction = new Vector2((float)Math.Sin(rotation), (float)Math.Cos(rotation));
 		}
+
+        public void Gravidade()
+        {
+            this.position.Y-=0.1f;
+            isFalling = true;
+        }
 	}
 }

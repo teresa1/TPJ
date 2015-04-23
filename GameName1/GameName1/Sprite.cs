@@ -20,6 +20,7 @@ namespace GameName1
 		protected Vector2 pixelSize;
 		protected float rotation;
 		protected Rectangle? source = null;
+        Rectangle rect = new Rectangle(10, 0, 500, 80);
 		// Colisões
 		protected bool hasCollisions;
 		// Raio da "bounding box"
@@ -28,6 +29,9 @@ namespace GameName1
 
         public Texture2D Textura;
         public Vector2 Posicao;
+
+
+        
 
 		// Construtor
 		public Sprite(ContentManager content, String textureName)
@@ -58,66 +62,24 @@ namespace GameName1
 				SpriteEffects.None, 0);
 		}
 
-		// Ativa as colisões da sprite e define o raio da "bounding box"
-		public virtual void EnableCollisions()
-		{
-			this.hasCollisions = true;
-			this.radius = (float)Math.Sqrt(Math.Pow(size.X / 2, 2) + Math.Pow(size.Y / 2, 2));
 
-			pixels = new Color[(int)(pixelSize.X * pixelSize.Y)];
-			texture.GetData<Color>(pixels);
-		}
+        public bool Collides(Sprite sprite1, Sprite sprite2)
+        {
+            bool isColiding = false;
 
-		/* Se houver colisao, collisionPoint é o ponto de colisão
-		 * Se não houver, collisionPoint deve ser ignorado! */
-		public bool CollidesWith(Sprite otherSprite, out Vector2 collisionPoint)
-		{
-			// Para calar o compilador
-			collisionPoint = position;
-
-			if (!this.hasCollisions) return false;
-			if (!otherSprite.hasCollisions) return false;
-
-			float distance = (this.position - otherSprite.position).Length();
-
-			if (distance > this.radius + otherSprite.radius) return false;
-
-			return this.PixelTouches(otherSprite, out collisionPoint);
-		}
+            if ((sprite1.Posicao.X - sprite1.Textura.Width / 2 < sprite2.Posicao.X + sprite2.Textura.Width / 2) &&
+                (sprite1.Posicao.X + sprite1.Textura.Width / 2 > sprite2.Posicao.X - sprite2.Textura.Width / 2) &&
+                (sprite1.Posicao.Y - sprite1.Textura.Height / 2 < sprite2.Posicao.X + sprite2.Textura.Height / 2) &&
+                (sprite1.Posicao.Y + sprite1.Textura.Height / 2 > sprite2.Posicao.X - sprite2.Textura.Height / 2))
+                isColiding = true;
+            return isColiding;
+        }
 
 		/* Deteta se os pixels de ambas as sprite colidem
 		 * 
 		 * Se nao houver colisao, o ponto de colisão retornado é
 		 * a posicao da sprite (podia ser outro valor qualquer) */
-		public bool PixelTouches(Sprite otherSprite, out Vector2 collisionPoint)
-		{
-			bool isTouching = false;
-			// Para calar o compilador
-			collisionPoint = position;
-
-			for (int i = 0; !isTouching && i < pixelSize.X; i++)
-			{
-				for (int j = 0; !isTouching && j < pixelSize.Y; j++)
-				{
-					if (GetColorAt(i, j).A > 0)
-					{
-						Vector2 collidePoint = ImagePixelToVirtualWorld(i, j);
-						Vector2 otherPixel = otherSprite.VirtualWorldPointToImagePixel(collidePoint);
-
-						if (otherPixel.X >= 0 && otherPixel.Y >= 0 && otherPixel.X < otherSprite.pixelSize.X && otherPixel.Y < otherSprite.pixelSize.Y)
-						{
-							if (otherSprite.GetColorAt((int)otherPixel.X, (int)otherPixel.Y).A > 0)
-							{
-								isTouching = true;
-								collisionPoint = collidePoint;
-							}
-						}
-					}
-				}
-			}
-			return isTouching;
-		}
-
+		
 		// Devolve o alpha de um pixel da sprite
 		public Color GetColorAt(int x, int y)
 		{

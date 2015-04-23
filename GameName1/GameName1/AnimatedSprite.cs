@@ -16,6 +16,8 @@ namespace GameName1
         private float animationInterval = 1f / 10f;
         private float animationTimer = 0f;
 
+   
+
         // Construtor
         public AnimatedSprite(ContentManager content, String textureName, int rows, int columns) : base(content, textureName)
         {
@@ -60,5 +62,7 @@ namespace GameName1
             }
             else currentFrame = Point.Zero;
         }
+
+       
     }
 }

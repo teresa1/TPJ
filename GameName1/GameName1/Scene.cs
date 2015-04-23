@@ -46,31 +46,13 @@ namespace GameName1
             sprite.SetScene(this);
         }
 
+
+
+
         // Remove uma sprite da cena
         public void RemoveSprite(Sprite sprite)
         {
             this.spriteList.Remove(sprite);
-        }
-
-        // Deteção de colisões de todas as sprites da cena
-        public bool Collides(Sprite sprite, out Sprite collided, out Vector2 collisionPoint)
-        {
-            bool collisionExists = false;
-            // Parar "calar" o compilador
-            collided = sprite;
-            collisionPoint = Vector2.Zero;
-
-            foreach (var s in spriteList)
-            {
-                if (sprite == s) continue;
-                if (sprite.CollidesWith(s, out collisionPoint))
-                {
-                    collisionExists = true;
-                    collided = s;
-                    break;
-                }
-            }
-            return collisionExists;
         }
 
         // Dispose

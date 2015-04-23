@@ -18,7 +18,6 @@ namespace GameName1
         SpriteBatch spriteBatch;
         Scene scene;
         ScrollingBackground background;
-
         public Game1() : base()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -44,9 +43,10 @@ namespace GameName1
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             scene = new Scene(spriteBatch);
-    
-            scene.AddSprite(new Player(Content, "CandyGirl"));
             scene.AddSprite(new Plataforma(Content));
+            scene.AddSprite(new Player(Content, "CandyGirl"));
+           
+
             background = new ScrollingBackground(Content);
         }
 
