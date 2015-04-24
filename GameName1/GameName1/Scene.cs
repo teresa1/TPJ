@@ -20,6 +20,13 @@ namespace GameName1
             this.spriteList = new List<Sprite>();
         }
 
+        // UnloadContent
+        public void UnloadContent()
+        {
+            foreach (var sprite in spriteList)
+                sprite.Dispose();
+        }
+
         // Update
         public void Update(GameTime gameTime)
         {
@@ -46,20 +53,10 @@ namespace GameName1
             sprite.SetScene(this);
         }
 
-
-
-
         // Remove uma sprite da cena
         public void RemoveSprite(Sprite sprite)
         {
             this.spriteList.Remove(sprite);
-        }
-
-        // Dispose
-        public void Dispose()
-        {
-            foreach (var sprite in spriteList)
-                sprite.Dispose();
         }
 
         // Métodos get/set

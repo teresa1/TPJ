@@ -53,7 +53,7 @@ namespace GameName1
         protected override void UnloadContent()
         {
             spriteBatch.Dispose();
-            scene.Dispose();
+            scene.UnloadContent();
         }
         
         protected override void Update(GameTime gameTime)

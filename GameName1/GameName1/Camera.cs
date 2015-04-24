@@ -30,7 +30,7 @@ namespace GameName1
         // Define o alvo da camera (centro)
         public static void SetTarget(Vector2 target) 
         { 
-            Camera.target.X = target.X + 5;
+            Camera.target.X = target.X;
         } 
 
         /* Atualiza o ratio a ser utilizado pela câmara
