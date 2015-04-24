@@ -68,5 +68,7 @@ namespace GameName1
             get { return spriteBatch; }
             private set { spriteBatch = value; }
         }
+
+       
     }
 }

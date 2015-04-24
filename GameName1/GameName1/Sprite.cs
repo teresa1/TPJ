@@ -23,6 +23,7 @@ namespace GameName1
         Rectangle rect = new Rectangle(10, 0, 500, 80);
 		// Colisões
 		protected bool hasCollisions;
+        protected Rectangle boundingBox;
 		// Raio da "bounding box"
 		protected float radius;
 		protected Color[] pixels;
@@ -45,10 +46,11 @@ namespace GameName1
 			this.hasCollisions = false;
 		}
 
-		// Update (virtual)
+		// Update
 		public virtual void Update(GameTime gameTime)
 		{
-
+            if (this.HasCollisions)
+                this.boundingBox = new Rectangle((int)(position.X + 0.5f), (int)(position.Y + 0.5f), texture.Width, texture.Height);
 		}
 
 		// Draw
@@ -62,18 +64,24 @@ namespace GameName1
 				SpriteEffects.None, 0);
 		}
 
-
-        public bool Collides(Sprite sprite1, Sprite sprite2)
+        // Ativa as colisões e cria a bounding box
+        public virtual void EnableCollisions()
         {
-            bool isColiding = false;
-
-            if ((sprite1.Posicao.X - sprite1.Textura.Width / 2 < sprite2.Posicao.X + sprite2.Textura.Width / 2) &&
-                (sprite1.Posicao.X + sprite1.Textura.Width / 2 > sprite2.Posicao.X - sprite2.Textura.Width / 2) &&
-                (sprite1.Posicao.Y - sprite1.Textura.Height / 2 < sprite2.Posicao.X + sprite2.Textura.Height / 2) &&
-                (sprite1.Posicao.Y + sprite1.Textura.Height / 2 > sprite2.Posicao.X - sprite2.Textura.Height / 2))
-                isColiding = true;
-            return isColiding;
+            this.HasCollisions = true;
+            this.boundingBox = new Rectangle((int)(position.X + 0.5f), (int)(position.Y + 0.5f), texture.Width, texture.Height);
         }
+
+        //public bool Collides(Sprite sprite1, Sprite sprite2)
+        //{
+        //    bool isColiding = false;
+
+        //    if ((sprite1.Posicao.X - sprite1.Textura.Width / 2 < sprite2.Posicao.X + sprite2.Textura.Width / 2) &&
+        //        (sprite1.Posicao.X + sprite1.Textura.Width / 2 > sprite2.Posicao.X - sprite2.Textura.Width / 2) &&
+        //        (sprite1.Posicao.Y - sprite1.Textura.Height / 2 < sprite2.Posicao.X + sprite2.Textura.Height / 2) &&
+        //        (sprite1.Posicao.Y + sprite1.Textura.Height / 2 > sprite2.Posicao.X - sprite2.Textura.Height / 2))
+        //        isColiding = true;
+        //    return isColiding;
+        //}
 
 		/* Deteta se os pixels de ambas as sprite colidem
 		 * 
@@ -165,7 +173,7 @@ namespace GameName1
 			protected set { hasCollisions = value; }
 		}
 
-        public void loadContent(string assetName)
+        public void LoadContent(string assetName)
         {
             Textura = content.Load<Texture2D>(assetName);
             Posicao = Vector2.Zero;

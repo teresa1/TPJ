@@ -16,8 +16,6 @@ namespace GameName1
         private float animationInterval = 1f / 10f;
         private float animationTimer = 0f;
 
-   
-
         // Construtor
         public AnimatedSprite(ContentManager content, String textureName, int rows, int columns) : base(content, textureName)
         {
@@ -41,6 +39,10 @@ namespace GameName1
                 NextFrame();
             }
             base.Update(gameTime);
+
+            // Faz a bounding box seguir a sprite
+            if (this.HasCollisions)
+                this.boundingBox = new Rectangle((int)(position.X + 0.5f), (int)(position.Y + 0.5f), texture.Width / columns, texture.Height / rows);
         }
 
         // Draw
@@ -63,6 +65,11 @@ namespace GameName1
             else currentFrame = Point.Zero;
         }
 
-       
+        // Ativa as colisões e cria a bounding box
+        public override void EnableCollisions()
+        {
+            this.HasCollisions = true;
+            this.boundingBox = new Rectangle((int)(position.X + 0.5f), (int)(position.Y + 0.5f), texture.Width / columns, texture.Height / rows);
+        }
     }
 }
