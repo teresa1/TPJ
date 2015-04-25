@@ -24,15 +24,13 @@ namespace GameName1
 		// Colisões
 		protected bool hasCollisions;
         protected Rectangle boundingBox;
+        protected bool isFalling;
 		// Raio da "bounding box"
 		protected float radius;
 		protected Color[] pixels;
 
         public Texture2D Textura;
         public Vector2 Posicao;
-
-
-        
 
 		// Construtor
 		public Sprite(ContentManager content, String textureName)
@@ -49,6 +47,8 @@ namespace GameName1
 		// Update
 		public virtual void Update(GameTime gameTime)
 		{
+            Gravidade();
+
             if (this.HasCollisions)
                 this.boundingBox = new Rectangle((int)(position.X + 0.5f), (int)(position.Y + 0.5f), texture.Width, texture.Height);
 		}
@@ -177,6 +177,19 @@ namespace GameName1
         {
             Textura = content.Load<Texture2D>(assetName);
             Posicao = Vector2.Zero;
+        }
+
+        public virtual void Collides(Plataforma plataforma)
+        {
+            if (this.boundingBox.Intersects(plataforma.boundingBox))
+                this.isFalling = false;
+            else isFalling = true;
+        }
+
+        public void Gravidade()
+        {
+            if (isFalling)
+                this.position.Y -= 0.1f;
         }
 
         //public void draw(int fade)

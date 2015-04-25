@@ -15,7 +15,7 @@ namespace GameName1
         {
             this.position = new Vector2(7f, -1.5f);
             this.SetScale(10f);
-            
+            this.EnableCollisions();
         }
 
         public void repete()
