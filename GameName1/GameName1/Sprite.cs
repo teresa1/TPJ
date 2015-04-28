@@ -25,6 +25,12 @@ namespace Sugar_Run
 		protected bool hasCollisions;
         protected Rectangle boundingBox;
         protected bool isFalling;
+<<<<<<< HEAD
+=======
+		// Raio da "bounding box"
+		protected float radius;
+		protected Color[] pixels;
+>>>>>>> origin/master
 
         public Texture2D Textura;
         public Vector2 Posicao;
@@ -46,6 +52,7 @@ namespace Sugar_Run
 		// Update
 		public virtual void Update(GameTime gameTime)
 		{
+<<<<<<< HEAD
             scene.Collides();
 
             // Gravidade
@@ -53,6 +60,10 @@ namespace Sugar_Run
                 this.position.Y -= .1f;
 
             // Faz a bounding box acompanhar o movimento da sprite
+=======
+            Gravidade();
+
+>>>>>>> origin/master
             if (this.HasCollisions)
                 this.boundingBox = bb();
 		}
@@ -183,12 +194,27 @@ namespace Sugar_Run
             set { isFalling = value; }
         }
 
+<<<<<<< HEAD
 
         //public void LoadContent(string assetName)
         //{
         //    Textura = content.Load<Texture2D>(assetName);
         //    Posicao = Vector2.Zero;
         //}
+=======
+        public virtual void Collides(Plataforma plataforma)
+        {
+            if (this.boundingBox.Intersects(plataforma.boundingBox))
+                this.isFalling = false;
+            else isFalling = true;
+        }
+
+        public void Gravidade()
+        {
+            if (isFalling)
+                this.position.Y -= 0.1f;
+        }
+>>>>>>> origin/master
 
         //public void draw(int fade)
         //{
