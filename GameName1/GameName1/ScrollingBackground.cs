@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace GameName1
+namespace Sugar_Run
 {
     class ScrollingBackground
     {
@@ -26,8 +26,8 @@ namespace GameName1
         public void Update(GameTime gameTime)
         {
 
-            this.posText1.X -= 10; //isto faz andar os backgrounds
-            this.posTex2.X -= 10;
+            this.posText1.X -= 2; //isto faz andar os backgrounds
+            this.posTex2.X -= 2;
               
             // isto faz saltar imagens
             if(posTex2.X == -texture1.Width ) 

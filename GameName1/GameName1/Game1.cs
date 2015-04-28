@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Storage;
 //using Microsoft.Xna.Framework.GamerServices;
 #endregion
 
-namespace GameName1
+namespace Sugar_Run
 {
     public class Game1 : Game
     {
@@ -18,6 +18,8 @@ namespace GameName1
         SpriteBatch spriteBatch;
         Scene scene;
         ScrollingBackground background;
+
+        // Construtor
         public Game1() : base()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -39,38 +41,42 @@ namespace GameName1
             base.Initialize();
         }
 
+        // Load Content
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             scene = new Scene(spriteBatch);
-            scene.AddSprite(new Plataforma(Content));
+
+            scene.AddPlatform(new Plataform(Content));
             scene.AddSprite(new Player(Content, "CandyGirl"));
            
-
             background = new ScrollingBackground(Content);
         }
 
+        // Unload Content
         protected override void UnloadContent()
         {
             spriteBatch.Dispose();
             scene.UnloadContent();
         }
         
+        // Update
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+
             scene.Update(gameTime);
             background.Update(gameTime);
 
             base.Update(gameTime); 
         }
-
+        
+        // Draw
         protected override void Draw(GameTime gameTime)
         {
-           
-
             GraphicsDevice.Clear(Color.CornflowerBlue);
+
             background.Draw(gameTime, spriteBatch);
             scene.Draw(gameTime);
 

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace GameName1
+namespace Sugar_Run
 {
 	class Player : AnimatedSprite
 	{
@@ -15,16 +15,16 @@ namespace GameName1
 		private float maxDistance, velocity;
 		private Vector2 sourcePosition;
 		private Vector2 direction;
-        Plataforma plataforma;
 
 		// Construtor
         public Player(ContentManager content, String textureName)
             : base(content, textureName, 1, 4)
 		{
-			this.isJumping = false; 
-            this.position = new Vector2(-5, 10);
-			this.maxDistance = 3f;
-			this.velocity = 1.1f;
+			this.isJumping = false;
+            this.isFalling = true;
+            this.position = new Vector2(0, 0);
+			this.maxDistance = 4f;
+			this.velocity = .5f;
 			this.direction = Vector2.Zero;
             this.EnableCollisions();
 		}
@@ -40,7 +40,6 @@ namespace GameName1
 		{
 			// Movimento para a direita automático
 			this.position.X += 0.05f;
-            //Gravidade();   
            
 			KeyboardState keyState = Keyboard.GetState();
 			if (keyState.IsKeyDown(Keys.Up) && isJumping == false)
@@ -66,6 +65,7 @@ namespace GameName1
 			
 			// Acompanhamento da câmara com o jogador
 			Camera.SetTarget(this.position);
+
 			base.Update(gameTime);
 		}
 

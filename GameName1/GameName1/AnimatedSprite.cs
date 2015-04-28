@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 
-namespace GameName1
+namespace Sugar_Run
 {
     public class AnimatedSprite : Sprite
     {
@@ -40,9 +40,7 @@ namespace GameName1
             }
             base.Update(gameTime);
 
-            // Faz a bounding box seguir a sprite
-            if (this.HasCollisions)
-                this.boundingBox = new Rectangle((int)(position.X + 0.5f), (int)(position.Y + 0.5f), texture.Width / columns, texture.Height / rows);
+        
         }
 
         // Draw

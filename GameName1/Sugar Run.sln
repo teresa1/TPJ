@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameName1", "GameName1\GameName1.csproj", "{FE71A7FA-3985-4F8F-8D92-7CCC2ABC37AD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sugar Run", "GameName1\Sugar Run.csproj", "{FE71A7FA-3985-4F8F-8D92-7CCC2ABC37AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

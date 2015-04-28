@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace GameName1
+namespace Sugar_Run
 {
 	public class Sprite
 	{
@@ -24,15 +24,10 @@ namespace GameName1
 		// Colisões
 		protected bool hasCollisions;
         protected Rectangle boundingBox;
-		// Raio da "bounding box"
-		protected float radius;
-		protected Color[] pixels;
+        protected bool isFalling;
 
         public Texture2D Textura;
         public Vector2 Posicao;
-
-
-        
 
 		// Construtor
 		public Sprite(ContentManager content, String textureName)
@@ -44,14 +39,31 @@ namespace GameName1
 			this.pixelSize = new Vector2(texture.Width, texture.Height);
 			this.rotation = 0f;
 			this.hasCollisions = false;
+            this.boundingBox = new Rectangle();
+            this.isFalling = false;
 		}
 
 		// Update
 		public virtual void Update(GameTime gameTime)
 		{
+            scene.Collides();
+
+            // Gravidade
+            if (isFalling)
+                this.position.Y -= .1f;
+
+            // Faz a bounding box acompanhar o movimento da sprite
             if (this.HasCollisions)
-                this.boundingBox = new Rectangle((int)(position.X + 0.5f), (int)(position.Y + 0.5f), texture.Width, texture.Height);
+                this.boundingBox = bb();
 		}
+
+        private Rectangle bb()
+        {
+            Rectangle r = Camera.WorldSize2PixelRectangle(position, size);
+            r.X -= (int)(r.Width / 2f);
+            r.Y -= (int)(r.Height / 2f);
+            return  r;
+        }
 
 		// Draw
 		public virtual void Draw(GameTime gameTime)
@@ -68,7 +80,7 @@ namespace GameName1
         public virtual void EnableCollisions()
         {
             this.HasCollisions = true;
-            this.boundingBox = new Rectangle((int)(position.X + 0.5f), (int)(position.Y + 0.5f), texture.Width, texture.Height);
+            this.boundingBox = bb();
         }
 
         //public bool Collides(Sprite sprite1, Sprite sprite2)
@@ -82,18 +94,6 @@ namespace GameName1
         //        isColiding = true;
         //    return isColiding;
         //}
-
-		/* Deteta se os pixels de ambas as sprite colidem
-		 * 
-		 * Se nao houver colisao, o ponto de colisão retornado é
-		 * a posicao da sprite (podia ser outro valor qualquer) */
-		
-		// Devolve o alpha de um pixel da sprite
-		public Color GetColorAt(int x, int y)
-		{
-			// Se nao houver collider, da erro!!!
-			return pixels[x + y * (int)pixelSize.X];
-		}
 
 		// Converte coordenadas reais (pixels) para coordenadas virtuais (metros)
 		private Vector2 ImagePixelToVirtualWorld(int i, int j)
@@ -172,12 +172,23 @@ namespace GameName1
 			get { return hasCollisions; }
 			protected set { hasCollisions = value; }
 		}
-
-        public void LoadContent(string assetName)
+        public Rectangle BoundingBox
         {
-            Textura = content.Load<Texture2D>(assetName);
-            Posicao = Vector2.Zero;
+            get { return boundingBox; }
+            protected set { boundingBox = value; }
         }
+        public bool IsFalling
+        {
+            get { return isFalling; }
+            set { isFalling = value; }
+        }
+
+
+        //public void LoadContent(string assetName)
+        //{
+        //    Textura = content.Load<Texture2D>(assetName);
+        //    Posicao = Vector2.Zero;
+        //}
 
         //public void draw(int fade)
         //{

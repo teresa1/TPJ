@@ -8,8 +8,8 @@
     <ProjectGuid>{FE71A7FA-3985-4F8F-8D92-7CCC2ABC37AD}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GameName1</RootNamespace>
-    <AssemblyName>GameName1</AssemblyName>
+    <RootNamespace>Sugar_Run</RootNamespace>
+    <AssemblyName>Sugar Run</AssemblyName>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -38,7 +38,7 @@
     <Compile Include="AnimatedSprite.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="Game1.cs" />
-    <Compile Include="Plataforma.cs" />
+    <Compile Include="Plataform.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
