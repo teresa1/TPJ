@@ -17,5 +17,9 @@ namespace Sugar_Run
             this.SetScale(20f);
             this.EnableCollisions();
         }
+  
+       
+
+     
     }
 }

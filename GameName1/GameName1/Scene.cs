@@ -96,9 +96,10 @@ namespace Sugar_Run
                 sprite.IsFalling = true;
                 foreach (var platform in platformList)
                 {
-                   
+                    
                     if (sprite.BoundingBox.Intersects(platform.BoundingBox))
                         sprite.IsFalling = false;
+
                 }
             }
         }
@@ -109,5 +110,7 @@ namespace Sugar_Run
             get { return spriteBatch; }
             private set { spriteBatch = value; }
         }
+
+
     }
 }

@@ -23,7 +23,7 @@ namespace Sugar_Run
 			this.isJumping = false;
             this.isFalling = true;
             this.position = new Vector2(0, 0);
-			this.maxDistance = 4f;
+			this.maxDistance = 3f;
 			this.velocity = .5f;
 			this.direction = Vector2.Zero;
             this.EnableCollisions();
@@ -48,9 +48,11 @@ namespace Sugar_Run
 			// Movimento de salto
 			if (isJumping)
 			{
+                this.isFalling = false;
 				if ((position - sourcePosition).Length() <= maxDistance)
 				{
 					position = position + direction * velocity * (float)gameTime.ElapsedGameTime.TotalSeconds * 5;
+                    this.isFalling = true;
 				}
 				else
 				{
@@ -59,8 +61,10 @@ namespace Sugar_Run
 					{
 						position.Y = 0f;
 						isJumping = false;
+                        this.isFalling = true;
 					}
 				}
+             
 			}
 			
 			// Acompanhamento da câmara com o jogador

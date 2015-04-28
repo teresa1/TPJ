@@ -40,16 +40,38 @@ namespace Sugar_Run
 
             base.Initialize();
         }
-
+        
+       public Random random = new Random();
+      
         // Load Content
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             scene = new Scene(spriteBatch);
 
-            scene.AddPlatform(new Plataform(Content));
+            //scene.AddPlatform(new Plataform(Content));
             scene.AddSprite(new Player(Content, "CandyGirl"));
            
+            
+        Vector2 posiçãoPlat = new Vector2(0f, -1.5f);
+           
+      
+            for (int i = 0; i < 100; i++)
+            { 
+                int rand = (random.Next(4)-2);
+                Plataform p = new Plataform(Content);
+                p.position.X = posiçãoPlat.X + (p.size.X);
+           
+               p.position.Y = posiçãoPlat.Y + rand;
+
+               if (p.position.Y < -1.5f)
+                   p.position.Y = -1.5f;
+
+               scene.AddPlatform(p);
+               posiçãoPlat = p.position;
+
+            }
+        
             background = new ScrollingBackground(Content);
         }
 
