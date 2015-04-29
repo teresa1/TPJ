@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Sugar_Run
 {
-    class ScrollingBackground
+    public class ScrollingBackground
     {
         public Texture2D texture1, texture2;
         public Vector2 posText1, posTex2;

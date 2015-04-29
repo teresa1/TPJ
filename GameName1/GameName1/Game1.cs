@@ -51,7 +51,7 @@ namespace Sugar_Run
 
             //scene.AddPlatform(new Plataform(Content));
             scene.AddSprite(new Player(Content, "CandyGirl"));
-           
+            
             
         Vector2 posiçãoPlat = new Vector2(0f, -1.5f);
            
@@ -60,6 +60,8 @@ namespace Sugar_Run
             { 
                 int rand = (random.Next(4)-2);
                 Plataform p = new Plataform(Content);
+
+                scene.AddSprite(p);
                 p.position.X = posiçãoPlat.X + (p.size.X);
            
                p.position.Y = posiçãoPlat.Y + rand;
@@ -67,7 +69,7 @@ namespace Sugar_Run
                if (p.position.Y < -1.5f)
                    p.position.Y = -1.5f;
 
-               scene.AddPlatform(p);
+              // scene.AddPlatform(p);
                posiçãoPlat = p.position;
 
             }
@@ -79,7 +81,7 @@ namespace Sugar_Run
         protected override void UnloadContent()
         {
             spriteBatch.Dispose();
-            scene.UnloadContent();
+            
         }
         
         // Update

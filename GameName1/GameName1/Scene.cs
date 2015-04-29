@@ -9,108 +9,88 @@ namespace Sugar_Run
 {
     public class Scene
     {
-        // Variáveis
-        public SpriteBatch spriteBatch;
-        private List<Sprite> spriteList;
-        private List<Plataform> platformList;
+        public SpriteBatch SpriteBatch {get; private set;}
+        public List<Sprite> sprites;
 
-        // Construtor
-        public Scene(SpriteBatch spriteBatch)
+        // Background list
+        private List<ScrollingBackground> backgrounds;
+
+        public Scene(SpriteBatch sb)
         {
-            this.SpriteBatch = spriteBatch;
-            this.spriteList = new List<Sprite>();
-            this.platformList = new List<Plataform>();
+            this.SpriteBatch = sb;
+            this.sprites = new List<Sprite>();
+            this.backgrounds = new List<ScrollingBackground>();
         }
 
-        // Load Content
-        public void LoadContent()
-        { }
-
-        // Unload Content
-        public void UnloadContent()
+        public void AddSprite(Sprite s)
         {
-            foreach (var sprite in spriteList)
-                sprite.Dispose();
-            foreach (var platform in platformList)
-                platform.Dispose();
+            this.sprites.Add(s);
+            s.SetScene(this);
         }
 
-        // Update
+        public void AddBackground(ScrollingBackground b)
+        {
+            this.backgrounds.Add(b);
+           // b.SetScene(this);
+        }
+
+        public void RemoveSprite(Sprite s)
+        {
+            this.sprites.Remove(s);
+        }
+
         public void Update(GameTime gameTime)
         {
-            foreach (var sprite in spriteList.ToList())
+            foreach (var sprite in sprites.ToList())
+            {
                 sprite.Update(gameTime);
-            foreach (var plat in platformList.ToList())
-                plat.Update(gameTime);
+            }
         }
 
-        // Draw
         public void Draw(GameTime gameTime)
         {
-            this.spriteBatch.Begin();
-            if (spriteList.Count > 0)
-            { 
-                foreach (var sprite in spriteList)
+            if (sprites.Count > 0 || backgrounds.Count > 0)
+            {
+                this.SpriteBatch.Begin();
+                // Desenhar os fundos!!!
+                foreach (var background in backgrounds)
+                    background.Draw(gameTime, SpriteBatch);
+                
+                // Desenhar as sprites!!!
+                foreach (var sprite in sprites)
                     sprite.Draw(gameTime);
+
+                this.SpriteBatch.End();
             }
-            if (platformList.Count > 0)
+        }
+
+        public bool Collides(Sprite s, out Sprite collided,
+                                       out Vector2 collisionPoint)
+        {
+            bool collisionExists = false;
+            collided = s;  // para calar o compilador
+            collisionPoint = Vector2.Zero; // para calar o compilador
+
+            foreach (var sprite in sprites)
             {
-                foreach (var platform in platformList)
-                    platform.Draw(gameTime);
-            }
-            this.spriteBatch.End();
-        }
-
-        // Adiciona uma nova sprite à cena
-        public void AddSprite(Sprite sprite)
-        {
-            this.spriteList.Add(sprite);
-            sprite.SetScene(this);
-        }
-
-        // Adiciona uma nova plataforma à cena
-        public void AddPlatform(Plataform platform)
-        {
-            this.platformList.Add(platform);
-            platform.SetScene(this);
-        }
-
-        // Remove uma sprite da cena
-        public void RemoveSprite(Sprite sprite)
-        {
-            this.spriteList.Remove(sprite);
-        }
-
-        // Remove uma plataforma da cena
-        public void RemoveSprite(Plataform platform)
-        {
-            this.platformList.Remove(platform);
-        }
-
-        // Calcula as colisões de todas as sprites da cena (com colisões)
-        public void Collides()
-        {
-         
-            foreach (var sprite in spriteList)
-            {
-                sprite.IsFalling = true;
-                foreach (var platform in platformList)
+                if (s == sprite) continue;
+                if (s.CollidesWith(sprite, out collisionPoint))
                 {
-                    
-                    if (sprite.BoundingBox.Intersects(platform.BoundingBox))
-                        sprite.IsFalling = false;
-
+                    collisionExists = true;
+                    collided = sprite;
+                    break;
                 }
             }
+            return collisionExists;
         }
 
-        // Métodos get/set
-        public SpriteBatch SpriteBatch
+        public void Dispose()
         {
-            get { return spriteBatch; }
-            private set { spriteBatch = value; }
+            foreach (var sprite in sprites)
+                sprite.Dispose();
+
+            //foreach (var background in backgrounds)
+            //    background.Dispose();
         }
-
-
     }
 }

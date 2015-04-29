@@ -15,20 +15,27 @@ namespace Sugar_Run
 		private float maxDistance, velocity;
 		private Vector2 sourcePosition;
 		private Vector2 direction;
-
+        bool isFalling;
+        Sprite Collided;
+        Vector2 CollisionPoint;
 		// Construtor
         public Player(ContentManager content, String textureName)
             : base(content, textureName, 1, 4)
 		{
 			this.isJumping = false;
             this.isFalling = true;
-            this.position = new Vector2(0, 0);
+            this.position = new Vector2(8, 8);
 			this.maxDistance = 3f;
 			this.velocity = .5f;
 			this.direction = Vector2.Zero;
             this.EnableCollisions();
 		}
 
+        public bool IsFalling
+        {
+            get { return isFalling; }
+            set { isFalling = value; }
+        }
 		// Draw
 		public override void Draw(GameTime gameTime)
 		{
@@ -40,11 +47,20 @@ namespace Sugar_Run
 		{
 			// Movimento para a direita automático
 			this.position.X += 0.05f;
-           
+
+            if (!this.scene.Collides(this, out this.Collided, out this.CollisionPoint))
+            {
+                
+                    this.position.Y -= 0.05f;
+                   // this.isFalling = false;
+                
+            }
+
 			KeyboardState keyState = Keyboard.GetState();
 			if (keyState.IsKeyDown(Keys.Up) && isJumping == false)
 				Jump();
 
+            Console.WriteLine(this.position.X + "  "+this.position.Y);
 			// Movimento de salto
 			if (isJumping)
 			{
@@ -80,5 +96,10 @@ namespace Sugar_Run
 			this.sourcePosition = position;
 			this.direction = new Vector2((float)Math.Sin(rotation), (float)Math.Cos(rotation));
 		}
+
+        public override void SetScene(Scene s)
+        {
+            this.scene = s;
+        }
 	}
 }
