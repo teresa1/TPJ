@@ -14,6 +14,8 @@ namespace Sugar_Run
     {
         public bool HasCollisions { protected set; get; }
 
+        // So we can debug easily knowing which objects are being analysed...
+        public string name;
         protected Texture2D image;
         public Vector2 position;
         protected float radius; // raio da "bounding box"
@@ -26,6 +28,7 @@ namespace Sugar_Run
         protected ContentManager cManager;
         public Sprite(ContentManager contents, String assetName)
         {
+            this.name = assetName;
             this.cManager = contents;
             this.HasCollisions = false;
             this.rotation = 0f;
