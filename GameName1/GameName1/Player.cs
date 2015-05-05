@@ -15,7 +15,6 @@ namespace Sugar_Run
 		private float maxDistance, velocity;
 		private Vector2 sourcePosition;
 		private Vector2 direction;
-        bool isFalling;
         Sprite Collided;
         Vector2 CollisionPoint;
 		// Construtor
@@ -23,23 +22,11 @@ namespace Sugar_Run
             : base(content, textureName, 1, 4)
 		{
 			this.isJumping = false;
-            this.isFalling = true;
             this.position = new Vector2(8, 8);
 			this.maxDistance = 3f;
 			this.velocity = .5f;
 			this.direction = Vector2.Zero;
             this.EnableCollisions();
-		}
-
-        public bool IsFalling
-        {
-            get { return isFalling; }
-            set { isFalling = value; }
-        }
-		// Draw
-		public override void Draw(GameTime gameTime)
-		{
-			base.Draw(gameTime);
 		}
 
 		// Update
@@ -48,40 +35,34 @@ namespace Sugar_Run
 			// Movimento para a direita automático
 			this.position.X += 0.05f;
 
-            if (!this.scene.Collides(this, out this.Collided, out this.CollisionPoint))
+            if (!isJumping)
             {
-                
-                    this.position.Y -= 0.05f;
-                   // this.isFalling = false;
-                
+                // Gravidade puxa para baixo
+                this.position.Y -= 0.05f;
+
+                if (this.scene.Collides(this, out this.Collided, out this.CollisionPoint))
+                {
+                    // Oops, colidimos. Vamos regressar para cima    
+                    this.position.Y += 0.05f;
+
+                    // se colidimos estamos no chao, logo, so nesta altura podemos ver se podemos saltar
+                    KeyboardState keyState = Keyboard.GetState();
+                    if (keyState.IsKeyDown(Keys.Up))
+                        Jump();
+                }
             }
+            else
+            {
+                if ((position - sourcePosition).Length() <= maxDistance)
+                {
+                    position = position + direction * velocity * (float)gameTime.ElapsedGameTime.TotalSeconds * 5;
+                }
+                else
+                {
+                    isJumping = false;
+                }
 
-			KeyboardState keyState = Keyboard.GetState();
-			if (keyState.IsKeyDown(Keys.Up) && isJumping == false)
-				Jump();
-
-            Console.WriteLine(this.position.X + "  "+this.position.Y);
-			// Movimento de salto
-			if (isJumping)
-			{
-                this.isFalling = false;
-				if ((position - sourcePosition).Length() <= maxDistance)
-				{
-					position = position + direction * velocity * (float)gameTime.ElapsedGameTime.TotalSeconds * 5;
-                    this.isFalling = true;
-				}
-				else
-				{
-					position = position - direction * velocity * (float)gameTime.ElapsedGameTime.TotalSeconds * 5;
-					if (position.Y <= sourcePosition.Y)
-					{
-						position.Y = 0f;
-						isJumping = false;
-                        this.isFalling = true;
-					}
-				}
-             
-			}
+            }
 			
 			// Acompanhamento da câmara com o jogador
 			Camera.SetTarget(this.position);
