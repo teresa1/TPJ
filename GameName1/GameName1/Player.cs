@@ -17,6 +17,8 @@ namespace Sugar_Run
 		private Vector2 direction;
         Sprite Collided;
         Vector2 CollisionPoint;
+        ContentManager Content;
+       
 		// Construtor
         public Player(ContentManager content, String textureName)
             : base(content, textureName, 1, 4)
@@ -27,13 +29,28 @@ namespace Sugar_Run
 			this.velocity = .5f;
 			this.direction = Vector2.Zero;
             this.EnableCollisions();
+            this.Content = content;
+           
+            
 		}
-
+        
 		// Update
 		public override void Update(GameTime gameTime)
 		{
 			// Movimento para a direita automático
 			this.position.X += 0.05f;
+
+            if (this.scene.Collides(this, out this.Collided, out this.CollisionPoint))
+            {
+                this.position.X -= 0.05f;
+                
+                AnimatedSprite e = new AnimatedSprite(Content, "explosion", 1, 12);
+                e.Loop = false;
+                e.SetPosition(this.position);
+                e.Scale(1.5f);
+                scene.AddSprite(e);
+                this.Destroy();
+            }
 
             if (!isJumping)
             {

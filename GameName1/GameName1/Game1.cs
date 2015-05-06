@@ -18,6 +18,7 @@ namespace Sugar_Run
         SpriteBatch spriteBatch;
         Scene scene;
         ScrollingBackground background;
+        Player player;
 
         // Construtor
         public Game1() : base()
@@ -50,7 +51,10 @@ namespace Sugar_Run
             scene = new Scene(spriteBatch);
 
             //scene.AddPlatform(new Plataform(Content));
-            scene.AddSprite(new Player(Content, "CandyGirl"));
+            player = new Player(Content, "CandyGirl");
+            scene.AddSprite(player);
+
+            
             
             
         Vector2 posiçãoPlat = new Vector2(0f, -1.5f);
@@ -87,12 +91,20 @@ namespace Sugar_Run
         // Update
         protected override void Update(GameTime gameTime)
         {
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
-            scene.Update(gameTime);
-            background.Update(gameTime);
-
+           
+              if (scene.sprites.Contains(player))
+            {
+                background.Update(gameTime);
+            } 
+            for (int i = 0; i < 10; i++)
+            {
+                if(i == 9)
+            scene.Update(gameTime);  
+            }
+            
             base.Update(gameTime); 
         }
         

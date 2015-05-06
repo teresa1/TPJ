@@ -26,6 +26,7 @@ namespace Sugar_Run
         protected Rectangle? source = null;
         protected Color[] pixels;
         protected ContentManager cManager;
+
         public Sprite(ContentManager contents, String assetName)
         {
             this.name = assetName;

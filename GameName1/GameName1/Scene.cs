@@ -6,6 +6,11 @@ using System.Linq;
 using System.Text;
 
 namespace Sugar_Run
+
+    /* 
+     Bitch.Width / 2 + plat.widh/2 = dist; 
+     alturas;
+    */
 {
     public class Scene
     {
@@ -84,13 +89,12 @@ namespace Sugar_Run
             return collisionExists;
         }
 
+   
+
         public void Dispose()
         {
             foreach (var sprite in sprites)
                 sprite.Dispose();
-
-            //foreach (var background in backgrounds)
-            //    background.Dispose();
         }
     }
 }
