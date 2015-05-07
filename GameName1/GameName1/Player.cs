@@ -31,7 +31,6 @@ namespace Sugar_Run
             this.EnableCollisions();
             this.Content = content;
            
-            
 		}
         
 		// Update
@@ -42,7 +41,6 @@ namespace Sugar_Run
 
             if (this.scene.Collides(this, out this.Collided, out this.CollisionPoint))
             {
-                this.position.X -= 0.05f;
                 
                 AnimatedSprite e = new AnimatedSprite(Content, "explosion", 1, 12);
                 e.Loop = false;

@@ -57,7 +57,7 @@ namespace Sugar_Run
             
             
             
-        Vector2 posiçãoPlat = new Vector2(0f, -1.5f);
+            Vector2 posiçãoPlat = new Vector2(0f, -1.5f);
            
       
             for (int i = 0; i < 100; i++)
@@ -73,7 +73,7 @@ namespace Sugar_Run
                if (p.position.Y < -1.5f)
                    p.position.Y = -1.5f;
 
-              // scene.AddPlatform(p);
+              
                posiçãoPlat = p.position;
 
             }
