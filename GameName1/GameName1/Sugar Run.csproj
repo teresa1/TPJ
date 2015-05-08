@@ -38,7 +38,7 @@
     <Compile Include="AnimatedSprite.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="Game1.cs" />
-    <Compile Include="Inimigo.cs" />
+    <Compile Include="Enemy.cs" />
     <Compile Include="Plataform.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />

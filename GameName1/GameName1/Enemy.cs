@@ -7,21 +7,19 @@ using System.Text;
 
 namespace Sugar_Run
 {
-    class Inimigo : Sprite
+    class Enemy : Sprite
     {
-
-
         ContentManager Content;
         Sprite Collided;
         Vector2 CollisionPoint;
         Random random = new Random();
-         public Inimigo(ContentManager content) : base (content, "inimigo1")
+
+         public Enemy(ContentManager content) : base (content, "inimigo1")
         {
             this.position = new Vector2(0f, -1.5f);
             this.Scale(10f);
             this.EnableCollisions();
             this.Content = content;
-            
         }
 
 

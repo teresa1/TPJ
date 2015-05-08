@@ -19,6 +19,8 @@ namespace Sugar_Run
         Scene scene;
         ScrollingBackground background;
         Player player;
+        Vector2 posiçãoPlataforma;
+        Random random = new Random();
 
         // Construtor
         public Game1() : base()
@@ -41,8 +43,6 @@ namespace Sugar_Run
 
             base.Initialize();
         }
-        
-       public Random random = new Random();
       
         // Load Content
         protected override void LoadContent()
@@ -54,28 +54,23 @@ namespace Sugar_Run
             player = new Player(Content, "CandyGirl");
             scene.AddSprite(player);
 
-            
-            
-            
-            Vector2 posiçãoPlat = new Vector2(0f, -1.5f);
-           
-      
+            // Geração aleatória de Plataformas
+            posiçãoPlataforma = new Vector2(0f, -1.5f);
             for (int i = 0; i < 100; i++)
             { 
                 int rand = (random.Next(4)-2);
                 Plataform p = new Plataform(Content);
 
                 scene.AddSprite(p);
-                p.position.X = posiçãoPlat.X + (p.size.X);
+                p.position.X = posiçãoPlataforma.X + (p.size.X);
            
-               p.position.Y = posiçãoPlat.Y + rand;
+               p.position.Y = posiçãoPlataforma.Y + rand;
 
                if (p.position.Y < -1.5f)
                    p.position.Y = -1.5f;
 
               
-               posiçãoPlat = p.position;
-
+               posiçãoPlataforma = p.position;
             }
         
             background = new ScrollingBackground(Content);
@@ -85,7 +80,6 @@ namespace Sugar_Run
         protected override void UnloadContent()
         {
             spriteBatch.Dispose();
-            
         }
         
         // Update
