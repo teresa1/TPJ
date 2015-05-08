@@ -19,6 +19,7 @@ namespace Sugar_Run
         Scene scene;
         ScrollingBackground background;
         Player player;
+        Enemy enemy;
         Vector2 posiçãoPlataforma;
         Random random = new Random();
 
@@ -52,7 +53,9 @@ namespace Sugar_Run
 
             //scene.AddPlatform(new Plataform(Content));
             player = new Player(Content, "CandyGirl");
+            enemy = new Enemy(Content, "inimigo1");
             scene.AddSprite(player);
+            scene.AddSprite(enemy);
 
             // Geração aleatória de Plataformas
             posiçãoPlataforma = new Vector2(0f, -1.5f);
