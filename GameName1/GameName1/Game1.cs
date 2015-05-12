@@ -65,17 +65,24 @@ namespace Sugar_Run
                 Plataform p = new Plataform(Content);
 
                 scene.AddSprite(p);
-                p.position.X = posiçãoPlataforma.X + (p.size.X);
-           
-               p.position.Y = posiçãoPlataforma.Y + 0*rand;
+               p.position.X = posiçãoPlataforma.X + (p.size.X);
 
+              
+               p.position.Y = posiçãoPlataforma.Y + rand;
+             
+                    for (int x = 0; x < 6; x++)
+                   {
+                       p.position.Y = p.position.Y;
+                   }
+               
                if (p.position.Y < -1.5f)
                    p.position.Y = -1.5f;
-
+                
               
                posiçãoPlataforma = p.position;
             }
-        
+
+       
             background = new ScrollingBackground(Content);
         }
 
