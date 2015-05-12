@@ -33,8 +33,8 @@ namespace Sugar_Run
         protected override void Initialize()
         {
             // Definição do tamanho da janela
-            graphics.PreferredBackBufferHeight = 720;
-            graphics.PreferredBackBufferWidth = 1280;
+            graphics.PreferredBackBufferHeight = 520;
+            graphics.PreferredBackBufferWidth = 800;
             graphics.ApplyChanges();
 
             // Inicialização da câmara
@@ -67,7 +67,7 @@ namespace Sugar_Run
                 scene.AddSprite(p);
                 p.position.X = posiçãoPlataforma.X + (p.size.X);
            
-               p.position.Y = posiçãoPlataforma.Y + rand;
+               p.position.Y = posiçãoPlataforma.Y + 0*rand;
 
                if (p.position.Y < -1.5f)
                    p.position.Y = -1.5f;
@@ -96,11 +96,8 @@ namespace Sugar_Run
             {
                 background.Update(gameTime);
             } 
-            for (int i = 0; i < 10; i++)
-            {
-                if(i == 9)
             scene.Update(gameTime);  
-            }
+            
             
             base.Update(gameTime); 
         }
