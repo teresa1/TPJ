@@ -81,7 +81,6 @@ namespace Sugar_Run
             get { return worldWidth; }
             private set { worldWidth = value; }
         }
-
         public static float Ratio
         {
             get { return ratio; }
