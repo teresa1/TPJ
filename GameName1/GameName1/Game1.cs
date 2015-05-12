@@ -35,6 +35,7 @@ namespace Sugar_Run
             // Definição do tamanho da janela
             graphics.PreferredBackBufferHeight = 720;
             graphics.PreferredBackBufferWidth = 1280;
+            graphics.IsFullScreen = true;
             graphics.ApplyChanges();
 
             // Inicialização da câmara
