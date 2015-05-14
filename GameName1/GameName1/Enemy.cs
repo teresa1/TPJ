@@ -19,8 +19,8 @@ namespace Sugar_Run
         Vector2 CollisionPoint;
         Random random = new Random();
 
-        List<Plataform> plataformas;
-        public Plataform p;
+        List<Platform> plataformas;
+        public Platform p;
 
         // Construtor
         public Enemy(ContentManager content, String textureName)
@@ -79,7 +79,7 @@ namespace Sugar_Run
         {
             foreach (Sprite s in this.scene.sprites)
             {
-                if (s is Plataform)
+                if (s is Platform)
                 {
                     this.plataformas.Add(this.p);
                 }

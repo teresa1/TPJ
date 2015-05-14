@@ -39,7 +39,7 @@
     <Compile Include="Camera.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Enemy.cs" />
-    <Compile Include="Plataform.cs" />
+    <Compile Include="Platform.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

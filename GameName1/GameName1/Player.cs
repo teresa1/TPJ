@@ -24,7 +24,7 @@ namespace Sugar_Run
 		{
 			this.Content = content;
 			this.isJumping = false;
-			this.position = new Vector2(8, 1);
+			this.position = new Vector2(4, 3);
 			this.maxDistance = 2f;
 			this.velocity = 1f;
 			this.direction = Vector2.Zero;

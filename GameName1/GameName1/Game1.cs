@@ -23,6 +23,8 @@ namespace Sugar_Run
         Vector2 posiçãoPlataforma;
         Random random = new Random();
         float time;
+        int platformCounter;
+        int randomPlatformHeight;
 
         // Construtor
         public Game1() : base()
@@ -43,6 +45,9 @@ namespace Sugar_Run
             //Camera.SetTarget(new Vector2(0, 2));
             Camera.SetWorldWidth(15);
 
+            posiçãoPlataforma = new Vector2(4f, -1.5f);
+            platformCounter = 0;
+
             base.Initialize();
         }
       
@@ -58,40 +63,10 @@ namespace Sugar_Run
             scene.AddSprite(player);
             scene.AddSprite(enemy);
 
-            CriarPlataforma();
+            //CreatePlatform();
 
             background = new ScrollingBackground(Content);
         }
-
-
-        //Plataformas
-        public void CriarPlataforma()
-        {
-            // Geração aleatória de Plataformas
-                posiçãoPlataforma = new Vector2(15, -1.5f);
-
-              
-                    int rand = (random.Next(4) - 2);
-                    Plataform p = new Plataform(Content);
-
-                    scene.AddSprite(p);
-                    p.position.X = posiçãoPlataforma.X + (p.size.X);
-
-                    for (int x = 0; x < 6; x = x + 3)
-                    {
-                         p.position.Y = posiçãoPlataforma.Y;
-                     
-                    }
-
-                    p.position.Y = posiçãoPlataforma.Y + rand;
-
-                    if (p.position.Y < -1.5f)
-                        p.position.Y = -1.5f;
-                
-               
-            
-        }
-
 
         // Unload Content
         protected override void UnloadContent()
@@ -102,25 +77,21 @@ namespace Sugar_Run
         // Update
         protected override void Update(GameTime gameTime)
         {
-
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
            
-              if (scene.sprites.Contains(player))
+            if (scene.sprites.Contains(player))
             {
                 background.Update(gameTime);
             }
 
-              time += gameTime.ElapsedGameTime.Milliseconds;
-              if (time >= 200)
-              {
-                  time -= 200;
-                  CriarPlataforma();
-
-              }
-             
+            time += gameTime.ElapsedGameTime.Milliseconds;
+            if (time >= 50)
+            {
+                time = 0;
+                CreatePlatform();
+            }
             scene.Update(gameTime);
-
           
             base.Update(gameTime); 
         }
@@ -134,6 +105,33 @@ namespace Sugar_Run
             scene.Draw(gameTime);
 
             base.Draw(gameTime);
+        }
+
+        // Geração aleatória de plataformas
+        public void CreatePlatform()
+        {
+            // Controla o número mínimo de plataformas por altura
+            if (platformCounter < 3)
+            {
+                randomPlatformHeight = 0;
+                platformCounter++;
+            }
+            else
+            {
+                randomPlatformHeight = (random.Next(4) - 2);
+                platformCounter = 0;
+            }
+
+            Platform plataforma = new Platform(Content);
+            plataforma.position.X = posiçãoPlataforma.X + (plataforma.size.X);
+            plataforma.position.Y = posiçãoPlataforma.Y + randomPlatformHeight;
+
+            // Não deixa que as plataformas fiquem muito altas
+            if (plataforma.position.Y < -1.5f)
+                plataforma.position.Y = -1.5f;
+
+            scene.AddSprite(plataforma);
+            posiçãoPlataforma = plataforma.position;
         }
     }
 }
