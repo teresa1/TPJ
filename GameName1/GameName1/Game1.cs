@@ -140,7 +140,7 @@ namespace Sugar_Run
         {
             enemy = new Enemy(Content, "inimigo1");
             scene.AddSprite(enemy);
-            enemy.position.X = player.position.X + 5;
+            enemy.position.X = player.position.X + 10;
         }
     }
 }
