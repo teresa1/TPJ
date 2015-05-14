@@ -22,6 +22,7 @@ namespace Sugar_Run
         Enemy enemy;
         Vector2 posiçãoPlataforma;
         Random random = new Random();
+        float time;
 
         // Construtor
         public Game1() : base()
@@ -57,34 +58,40 @@ namespace Sugar_Run
             scene.AddSprite(player);
             scene.AddSprite(enemy);
 
-            // Geração aleatória de Plataformas
-            posiçãoPlataforma = new Vector2(0f, -1.5f);
-            for (int i = 0; i < 100; i++)
-            { 
-                int rand = (random.Next(4)-2);
-                Plataform p = new Plataform(Content);
+            CriarPlataforma();
 
-                scene.AddSprite(p);
-               p.position.X = posiçãoPlataforma.X + (p.size.X);
-
-              
-               p.position.Y = posiçãoPlataforma.Y + rand;
-             
-                    for (int x = 0; x < 6; x++)
-                   {
-                       p.position.Y = p.position.Y;
-                   }
-               
-               if (p.position.Y < -1.5f)
-                   p.position.Y = -1.5f;
-                
-              
-               posiçãoPlataforma = p.position;
-            }
-
-       
             background = new ScrollingBackground(Content);
         }
+
+
+        //Plataformas
+        public void CriarPlataforma()
+        {
+            // Geração aleatória de Plataformas
+                posiçãoPlataforma = new Vector2(15, -1.5f);
+
+              
+                    int rand = (random.Next(4) - 2);
+                    Plataform p = new Plataform(Content);
+
+                    scene.AddSprite(p);
+                    p.position.X = posiçãoPlataforma.X + (p.size.X);
+
+                    for (int x = 0; x < 6; x = x + 3)
+                    {
+                         p.position.Y = posiçãoPlataforma.Y;
+                     
+                    }
+
+                    p.position.Y = posiçãoPlataforma.Y + rand;
+
+                    if (p.position.Y < -1.5f)
+                        p.position.Y = -1.5f;
+                
+               
+            
+        }
+
 
         // Unload Content
         protected override void UnloadContent()
@@ -102,10 +109,19 @@ namespace Sugar_Run
               if (scene.sprites.Contains(player))
             {
                 background.Update(gameTime);
-            } 
-            scene.Update(gameTime);  
-            
-            
+            }
+
+              time += gameTime.ElapsedGameTime.Milliseconds;
+              if (time >= 200)
+              {
+                  time -= 200;
+                  CriarPlataforma();
+
+              }
+             
+            scene.Update(gameTime);
+
+          
             base.Update(gameTime); 
         }
         
