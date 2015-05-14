@@ -11,7 +11,7 @@ namespace Sugar_Run
     class Burger : Sprite
     {
         
-        public float maxDistance = 10;
+        public float maxDistance = 15;
         public float velocity = 4;
         private Vector2 sourcePosition;
         private Vector2 direction;
