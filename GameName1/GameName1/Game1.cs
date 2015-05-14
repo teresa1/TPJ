@@ -22,7 +22,8 @@ namespace Sugar_Run
         Enemy enemy;
         Vector2 posiçãoPlataforma;
         Random random = new Random();
-        float time;
+        float timePlat;
+        float timeEnemy;
         int platformCounter;
         int randomPlatformHeight;
 
@@ -59,11 +60,8 @@ namespace Sugar_Run
 
             //scene.AddPlatform(new Plataform(Content));
             player = new Player(Content, "CandyGirl");
-            enemy = new Enemy(Content, "inimigo1");
             scene.AddSprite(player);
-            scene.AddSprite(enemy);
-
-            //CreatePlatform();
+          
 
             background = new ScrollingBackground(Content);
         }
@@ -85,12 +83,21 @@ namespace Sugar_Run
                 background.Update(gameTime);
             }
 
-            time += gameTime.ElapsedGameTime.Milliseconds;
-            if (time >= 50)
+            timePlat += gameTime.ElapsedGameTime.Milliseconds;
+            if (timePlat >= 50)
             {
-                time = 0;
+                timePlat = 0;
                 CreatePlatform();
+               
             }
+
+            timeEnemy += gameTime.ElapsedGameTime.Milliseconds;
+            if(timeEnemy >= 5000)
+            {
+                timeEnemy = 0;
+                CreateEnemy();
+            }
+
             scene.Update(gameTime);
           
             base.Update(gameTime); 
@@ -132,6 +139,13 @@ namespace Sugar_Run
 
             scene.AddSprite(plataforma);
             posiçãoPlataforma = plataforma.position;
+        }
+
+        public void CreateEnemy()
+        {
+            enemy = new Enemy(Content, "inimigo1");
+            scene.AddSprite(enemy);
+            enemy.position.X = player.position.X + 5;
         }
     }
 }

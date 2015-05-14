@@ -14,7 +14,7 @@ namespace Sugar_Run
         public Plataform(ContentManager content) : base (content, "Plataforma")
         {
             this.position = new Vector2(0f, -1.5f);
-          this.Scale(1f);
+            this.Scale(1f);
             this.EnableCollisions();
         }
     }
