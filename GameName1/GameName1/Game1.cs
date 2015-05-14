@@ -63,7 +63,8 @@ namespace Sugar_Run
             scene.AddSprite(player);
           
 
-            background = new ScrollingBackground(Content);
+            background = new ScrollingBackground(Content, "background", 0);
+            scene.AddBackground(background);
         }
 
         // Unload Content
@@ -77,11 +78,6 @@ namespace Sugar_Run
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-           
-            if (scene.sprites.Contains(player))
-            {
-                background.Update(gameTime);
-            }
 
             timePlat += gameTime.ElapsedGameTime.Milliseconds;
             if (timePlat >= 50)
@@ -108,7 +104,6 @@ namespace Sugar_Run
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            background.Draw(gameTime, spriteBatch);
             scene.Draw(gameTime);
 
             base.Draw(gameTime);

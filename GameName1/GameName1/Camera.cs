@@ -9,16 +9,16 @@ namespace Sugar_Run
     class Camera
     {
         // Variáveis
-        private static GraphicsDeviceManager gDevManager;
+        private static GraphicsDeviceManager graphicsDevManager;
         private static float worldWidth;
         private static float ratio;
         private static Vector2 target = new Vector2(0, 2.3f); 
         private static int lastSeenPixelWidth = 0;
  
         // Define o GraphicsDeviceManager a usar
-        public static void SetGraphicsDeviceManager(GraphicsDeviceManager gDevManager) 
+        public static void SetGraphicsDeviceManager(GraphicsDeviceManager graphicsDevManager) 
         { 
-            Camera.gDevManager = gDevManager; 
+            Camera.graphicsDevManager = graphicsDevManager; 
         } 
 
         // Define a largura do mundo
@@ -27,20 +27,26 @@ namespace Sugar_Run
             Camera.worldWidth = worldWidth; 
         } 
 
-        // Define o alvo da camera (centro)
+        // Define o alvo da câmera (centro)
         public static void SetTarget(Vector2 target) 
         { 
             Camera.target.X = target.X;
-        } 
+        }
+
+        // Devolve o alvo da câmara (centro)
+        public static Vector2 GetTarget()
+        {
+            return Camera.target;
+        }
 
         /* Atualiza o ratio a ser utilizado pela câmara
          * Depende do tamanho da janela de visualização do Windows */
         private static void UpdateRatio() 
         { 
-            if (Camera.lastSeenPixelWidth != Camera.gDevManager.PreferredBackBufferWidth) 
+            if (Camera.lastSeenPixelWidth != Camera.graphicsDevManager.PreferredBackBufferWidth) 
             { 
-                Camera.ratio = Camera.gDevManager.PreferredBackBufferWidth / Camera.worldWidth; 
-                Camera.lastSeenPixelWidth = Camera.gDevManager.PreferredBackBufferWidth; 
+                Camera.ratio = Camera.graphicsDevManager.PreferredBackBufferWidth / Camera.worldWidth; 
+                Camera.lastSeenPixelWidth = Camera.graphicsDevManager.PreferredBackBufferWidth; 
              } 
         }
 
@@ -54,12 +60,12 @@ namespace Sugar_Run
             pixelPoint.X = (int)((point.X - target.X) * Camera.ratio + 0.5f); 
             pixelPoint.Y = (int)((point.Y - target.Y) * Camera.ratio + 0.5f); 
 
-            // Proteta os pixels calculados para o canto inferior esquerdo do ecra 
+            // Projeta os pixels calculados para o canto inferior esquerdo do ecra 
             pixelPoint.X += Camera.lastSeenPixelWidth / 2; 
-            pixelPoint.Y += Camera.gDevManager.PreferredBackBufferHeight / 2; 
+            pixelPoint.Y += Camera.graphicsDevManager.PreferredBackBufferHeight / 2; 
 
             // Inverter as coordenadas Y 
-            pixelPoint.Y = Camera.gDevManager.PreferredBackBufferHeight - pixelPoint.Y; 
+            pixelPoint.Y = Camera.graphicsDevManager.PreferredBackBufferHeight - pixelPoint.Y; 
 
             return pixelPoint; 
         } 
@@ -76,6 +82,11 @@ namespace Sugar_Run
         } 
 
         // Métodos get/set
+        public static  GraphicsDeviceManager GraphicsDevManager
+        {
+            get { return graphicsDevManager; }
+            private set { graphicsDevManager = value; } 
+        }
         public static float WorldWidth
         {
             get { return worldWidth; }

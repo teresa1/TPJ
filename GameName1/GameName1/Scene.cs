@@ -33,10 +33,10 @@ namespace Sugar_Run
             s.SetScene(this);
         }
 
-        public void AddBackground(ScrollingBackground b)
+        public void AddBackground(ScrollingBackground background)
         {
-            this.backgrounds.Add(b);
-           // b.SetScene(this);
+            this.backgrounds.Add(background);
+            background.SetScene(this);
         }
 
         public void RemoveSprite(Sprite s)
@@ -59,7 +59,7 @@ namespace Sugar_Run
                 this.SpriteBatch.Begin();
                 // Desenhar os fundos!!!
                 foreach (var background in backgrounds)
-                    background.Draw(gameTime, SpriteBatch);
+                    background.Draw(gameTime);
                 
                 // Desenhar as sprites!!!
                 foreach (var sprite in sprites)
