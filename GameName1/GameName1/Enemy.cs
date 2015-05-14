@@ -38,7 +38,7 @@ namespace Sugar_Run
         public override void Update(GameTime gameTime)
         {
             // Movimento para a esquerda automático
-            this.position.X -= 0.05f;
+            this.position.X -= 0.005f;
 
             if (this.scene.Collides(this, out this.Collided, out this.CollisionPoint))
             {

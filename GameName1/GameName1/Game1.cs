@@ -70,6 +70,7 @@ namespace Sugar_Run
         // Unload Content
         protected override void UnloadContent()
         {
+            scene.Dispose();
             spriteBatch.Dispose();
         }
         

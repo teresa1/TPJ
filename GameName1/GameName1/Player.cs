@@ -13,29 +13,34 @@ namespace Sugar_Run
 		// Variáveis
 		ContentManager Content;
 		private bool isJumping;
+        private bool isShooting;
 		private float maxDistance, velocity;
 		private Vector2 sourcePosition;
 		private Vector2 direction;
 		Sprite Collided;
 		Vector2 CollisionPoint;
+        private float fireCounter = 0f;
+        private float fireInterval = 0.2f;
 	   
 		// Construtor
 		public Player(ContentManager content, String textureName) : base(content, textureName, 1, 4)
 		{
 			this.Content = content;
 			this.isJumping = false;
+            this.isShooting = false;
 			this.position = new Vector2(4, 3);
 			this.maxDistance = 2f;
 			this.velocity = 1f;
 			this.direction = Vector2.Zero;
 			this.EnableCollisions();
 		}
-		
+      
 		// Update
 		public override void Update(GameTime gameTime)
 		{
 			// Movimento para a direita automático
 			this.position.X += 0.05f;
+            KeyboardState keyState = Keyboard.GetState();
 
 			if (this.scene.Collides(this, out this.Collided, out this.CollisionPoint))
 			{
@@ -46,6 +51,19 @@ namespace Sugar_Run
 				scene.AddSprite(e);
 				this.Destroy();
 			}
+
+
+            //Disparar Burgers!! :D
+            fireCounter += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (fireCounter >= fireInterval && keyState.IsKeyDown(Keys.Space))
+            {
+                Vector2 pos;
+                pos.X = this.position.X + 1f;
+                pos.Y = this.position.Y;
+                Burger bullet = new Burger(cManager, pos);
+                scene.AddSprite(bullet);
+                fireCounter = 0f;
+            }
 
 			if (!isJumping)
 			{
@@ -58,8 +76,7 @@ namespace Sugar_Run
 					this.position.Y += 0.05f;
 
 					// se colidimos estamos no chao, logo, so nesta altura podemos ver se podemos saltar
-					KeyboardState keyState = Keyboard.GetState();
-					if (keyState.IsKeyDown(Keys.Up))
+				if (keyState.IsKeyDown(Keys.Up))
 						Jump();
 				}
 			}
@@ -90,9 +107,16 @@ namespace Sugar_Run
 			this.direction = new Vector2((float)Math.Sin(rotation), (float)Math.Cos(rotation));
 		}
 
+        public void Shoot()
+        {
+            this.isShooting = true;
+        }
+
 		public override void SetScene(Scene s)
 		{
 			this.scene = s;
 		}
+     
+
 	}
 }

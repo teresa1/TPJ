@@ -7,10 +7,6 @@ using System.Text;
 
 namespace Sugar_Run
 
-    /* 
-     Bitch.Width / 2 + plat.widh/2 = dist; 
-     alturas;
-    */
 {
     public class Scene
     {
