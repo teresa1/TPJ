@@ -33,6 +33,7 @@ namespace Sugar_Run
 			this.velocity = 1f;
 			this.direction = Vector2.Zero;
 			this.EnableCollisions();
+            this.name = "Girl";
 		}
       
 		// Update
@@ -44,12 +45,15 @@ namespace Sugar_Run
 
 			if (this.scene.Collides(this, out this.Collided, out this.CollisionPoint))
 			{
-				AnimatedSprite e = new AnimatedSprite(Content, "explosion", 1, 12);
-				e.Loop = false;
-				e.SetPosition(this.position);
-				e.Scale(1.5f);
-				scene.AddSprite(e);
-				this.Destroy();
+                if (Collided.name == "Plataforma")
+                {
+                    AnimatedSprite e = new AnimatedSprite(Content, "explosion", 1, 12);
+                    e.Loop = false;
+                    e.SetPosition(this.position);
+                    e.Scale(1.5f);
+                    scene.AddSprite(e);
+                    this.Destroy();
+                }
 			}
 
 

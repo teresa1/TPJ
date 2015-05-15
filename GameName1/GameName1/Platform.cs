@@ -16,6 +16,7 @@ namespace Sugar_Run
             this.position = new Vector2(0f, -1.5f);
             this.Scale(1f);
             this.EnableCollisions();
+            this.name = "Plataforma";
         }
     }
 }

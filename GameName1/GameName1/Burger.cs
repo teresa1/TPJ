@@ -17,15 +17,14 @@ namespace Sugar_Run
         private Vector2 direction;
       
 
-        public Burger(ContentManager cManager,
-                      Vector2 sourcePosition)
-            : base(cManager, "burger")
+        public Burger(ContentManager cManager, Vector2 sourcePosition) : base(cManager, "burger")
         {
             this.position = sourcePosition;
             this.EnableCollisions();
             this.sourcePosition = sourcePosition;
             this.Scale(.5f);
             this.direction = new Vector2(1,0);
+            this.name = "burger";
         }
 
         public override void Update(GameTime gameTime)

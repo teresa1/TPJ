@@ -26,7 +26,10 @@ namespace Sugar_Run
         float timeEnemy;
         int platformCounter;
         int randomPlatformHeight;
+        int randomLollipop;
 
+
+        
         // Construtor
         public Game1() : base()
         {
@@ -46,7 +49,7 @@ namespace Sugar_Run
             //Camera.SetTarget(new Vector2(0, 2));
             Camera.SetWorldWidth(15);
 
-            posiçãoPlataforma = new Vector2(4f, -1.5f);
+            posiçãoPlataforma = new Vector2(6, -1.5f);
             platformCounter = 0;
 
             base.Initialize();
@@ -95,6 +98,9 @@ namespace Sugar_Run
                 CreateEnemy();
             }
 
+            if (posiçãoPlataforma.X* Camera.Ratio < graphics.PreferredBackBufferWidth)
+                CreatePlatform();
+
             scene.Update(gameTime);
           
             base.Update(gameTime); 
@@ -110,6 +116,7 @@ namespace Sugar_Run
             base.Draw(gameTime);
         }
 
+        
         // Geração aleatória de plataformas
         public void CreatePlatform()
         {
@@ -126,6 +133,7 @@ namespace Sugar_Run
             }
 
             Platform plataforma = new Platform(Content);
+           
             plataforma.position.X = posiçãoPlataforma.X + (plataforma.size.X);
             plataforma.position.Y = posiçãoPlataforma.Y + randomPlatformHeight;
 
@@ -135,6 +143,16 @@ namespace Sugar_Run
 
             scene.AddSprite(plataforma);
             posiçãoPlataforma = plataforma.position;
+
+            randomLollipop = random.Next(100);
+
+            if(randomLollipop > 90)
+            {
+                PowerUps lollipop = new PowerUps(Content, plataforma.position);
+                scene.AddSprite(lollipop);
+            }
+
+          
         }
 
         public void CreateEnemy()

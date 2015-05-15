@@ -32,6 +32,7 @@ namespace Sugar_Run
             this.velocity = 1f;
             this.direction = Vector2.Zero;
             this.EnableCollisions();
+            this.name = "enemy";
         }
 
         // Update    
