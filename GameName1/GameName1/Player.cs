@@ -66,17 +66,18 @@ namespace Sugar_Run
                     if (keyState.IsKeyDown(Keys.Up))
                         Jump();
                 }
+
                 if(Collided.name == "lollipop")
                 {
                     AnimatedSprite sparkle;
                     sparkle = new AnimatedSprite(cManager, "sparkle", 4, 8);
                     scene.AddSprite(sparkle);
                     sparkle.SetPosition(this.position);
-                    sparkle.Scale(.3f);
+                    sparkle.Scale(.7f);
                     sparkle.Loop = false;
                     Collided.Destroy();
                 }
-
+                
             }
 
             //Disparar Burgers!! :D

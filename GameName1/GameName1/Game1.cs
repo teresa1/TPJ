@@ -146,7 +146,7 @@ namespace Sugar_Run
 
             randomLollipop = random.Next(100);
 
-            if(randomLollipop > 90)
+            if(randomLollipop > 95)
             {
                 PowerUps lollipop = new PowerUps(Content, plataforma.position);
                 scene.AddSprite(lollipop);
