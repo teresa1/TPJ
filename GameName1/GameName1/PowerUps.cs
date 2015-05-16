@@ -24,24 +24,24 @@ namespace Sugar_Run
             this.name = "lollipop";
         }
 
-        public override void Update(GameTime gameTime)
-        {
-            if (this.scene.Collides(this, out this.Collided, out this.CollisionPoint))
-            {
-                this.Destroy();
-            }
-        }
+        //public override void Update(GameTime gameTime)
+        //{
+        //    if (this.scene.Collides(this, out this.Collided, out this.CollisionPoint))
+        //    {
+        //        this.Destroy();
+        //    }
+        //}
 
-        public override void Destroy()
-        {
-            AnimatedSprite explosion;
-            explosion = new AnimatedSprite(cManager, "sparkle", 4, 8);
-            scene.AddSprite(explosion);
-            explosion.SetPosition(this.position);
-            explosion.Scale(.3f);
-            explosion.Loop = false;
-            base.Destroy();
-        }
+        //public override void Destroy()
+        //{
+        //    AnimatedSprite explosion;
+        //    explosion = new AnimatedSprite(cManager, "sparkle", 4, 8);
+        //    scene.AddSprite(explosion);
+        //    explosion.SetPosition(this.position);
+        //    explosion.Scale(.3f);
+        //    explosion.Loop = false;
+        //    base.Destroy();
+        //}
 
 
 

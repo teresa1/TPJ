@@ -21,6 +21,7 @@ namespace Sugar_Run
 		Vector2 CollisionPoint;
         private float fireCounter = 0f;
         private float fireInterval = 0.2f;
+        PowerUps lollipop;
 	   
 		// Construtor
 		public Player(ContentManager content, String textureName) : base(content, textureName, 1, 4)
@@ -37,25 +38,46 @@ namespace Sugar_Run
 		}
       
 		// Update
-		public override void Update(GameTime gameTime)
-		{
+		public override void Update(GameTime gameTime )
+        {
 			// Movimento para a direita automático
 			this.position.X += 0.05f;
             KeyboardState keyState = Keyboard.GetState();
 
-			if (this.scene.Collides(this, out this.Collided, out this.CollisionPoint))
-			{
-                if (Collided.name == "Plataforma")
+            if (isJumping || !isJumping)
+            {
+                if (this.scene.Collides(this, out this.Collided, out this.CollisionPoint))
                 {
-                    AnimatedSprite e = new AnimatedSprite(Content, "explosion", 1, 12);
-                    e.Loop = false;
-                    e.SetPosition(this.position);
-                    e.Scale(1.5f);
-                    scene.AddSprite(e);
-                    this.Destroy();
+                    if (Collided.name == "Plataforma")
+                    {
+                        AnimatedSprite e = new AnimatedSprite(Content, "explosion", 1, 12);
+                        e.Loop = false;
+                        e.SetPosition(this.position);
+                        e.Scale(1.5f);
+                        scene.AddSprite(e);
+                        this.Destroy();
+                    }
                 }
-			}
+                if (!isJumping && Collided.name == "Plataforma")
+                {
+                     this.position.Y += 0.05f;
 
+                    // se colidimos estamos no chao, logo, so nesta altura podemos ver se podemos saltar
+                    if (keyState.IsKeyDown(Keys.Up))
+                        Jump();
+                }
+                if(Collided.name == "lollipop")
+                {
+                    AnimatedSprite sparkle;
+                    sparkle = new AnimatedSprite(cManager, "sparkle", 4, 8);
+                    scene.AddSprite(sparkle);
+                    sparkle.SetPosition(this.position);
+                    sparkle.Scale(.3f);
+                    sparkle.Loop = false;
+                    Collided.Destroy();
+                }
+
+            }
 
             //Disparar Burgers!! :D
             fireCounter += (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -74,15 +96,15 @@ namespace Sugar_Run
 				// Gravidade puxa para baixo
 				this.position.Y -= 0.05f;
 
-		    	if (this.scene.Collides(this, out this.Collided, out this.CollisionPoint))
-				{
-					// Oops, colidimos. Vamos regressar para cima    
-					this.position.Y += 0.05f;
+                if (this.scene.Collides(this, out this.Collided, out this.CollisionPoint))
+                {
+                    // Oops, colidimos. Vamos regressar para cima    
+                    this.position.Y += 0.05f;
 
-					// se colidimos estamos no chao, logo, so nesta altura podemos ver se podemos saltar
-				if (keyState.IsKeyDown(Keys.Up))
-						Jump();
-				}
+                    // se colidimos estamos no chao, logo, so nesta altura podemos ver se podemos saltar
+                    if (keyState.IsKeyDown(Keys.Up))
+                        Jump();
+                }
 			}
 			else
 			{
