@@ -97,7 +97,7 @@ namespace Sugar_Run
 				// Gravidade puxa para baixo
 				this.position.Y -= 0.05f;
 
-                if (this.scene.Collides(this, out this.Collided, out this.CollisionPoint))
+                if (this.scene.Collides(this, out this.Collided, out this.CollisionPoint) || Collided.name == "lollipop")
                 {
                     // Oops, colidimos. Vamos regressar para cima    
                     this.position.Y += 0.05f;
