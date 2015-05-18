@@ -59,6 +59,9 @@
     <Content Include="Content\Background.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\boundingBox.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\burger.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

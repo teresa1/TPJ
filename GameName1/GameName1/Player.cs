@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
@@ -11,36 +12,50 @@ namespace Sugar_Run
 	class Player : AnimatedSprite
 	{
 		// Variáveis
+		Rectangle boundingBox;
+		Texture2D boundingBoxTex;
+
 		ContentManager Content;
 		private bool isJumping;
-        private bool isShooting;
+		private bool isShooting;
 		private float maxDistance, velocity;
 		private Vector2 sourcePosition;
 		private Vector2 direction;
 		Sprite Collided;
 		Vector2 CollisionPoint;
-        private float fireCounter = 0f;
-        private float fireInterval = 0.2f;
+		private float fireCounter = 0f;
+		private float fireInterval = 0.2f;
 	   
 		// Construtor
 		public Player(ContentManager content, String textureName) : base(content, textureName, 1, 4)
 		{
 			this.Content = content;
 			this.isJumping = false;
-            this.isShooting = false;
+			this.isShooting = false;
 			this.position = new Vector2(4, 3);
 			this.maxDistance = 2f;
 			this.velocity = 1f;
 			this.direction = Vector2.Zero;
 			this.EnableCollisions();
+
+			this.boundingBox = new Rectangle((int)this.position.X, (int)this.position.Y, (int)this.size.X, (int)this.size.Y);
+			this.boundingBoxTex = content.Load<Texture2D>("boundingBox");
 		}
-      
+
+
+		public override void Draw(GameTime gameTime)
+		{
+			scene.SpriteBatch.Draw(boundingBoxTex, boundingBox, Color.White);
+
+			base.Draw(gameTime);
+		}
+
 		// Update
 		public override void Update(GameTime gameTime)
 		{
 			// Movimento para a direita automático
 			this.position.X += 0.05f;
-            KeyboardState keyState = Keyboard.GetState();
+			KeyboardState keyState = Keyboard.GetState();
 
 			if (this.scene.Collides(this, out this.Collided, out this.CollisionPoint))
 			{
@@ -53,24 +68,24 @@ namespace Sugar_Run
 			}
 
 
-            //Disparar Burgers!! :D
-            fireCounter += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (fireCounter >= fireInterval && keyState.IsKeyDown(Keys.Space))
-            {
-                Vector2 pos;
-                pos.X = this.position.X + 1f;
-                pos.Y = this.position.Y;
-                Burger bullet = new Burger(cManager, pos);
-                scene.AddSprite(bullet);
-                fireCounter = 0f;
-            }
+			//Disparar Burgers!! :D
+			fireCounter += (float)gameTime.ElapsedGameTime.TotalSeconds;
+			if (fireCounter >= fireInterval && keyState.IsKeyDown(Keys.Space))
+			{
+				Vector2 pos;
+				pos.X = this.position.X + 1f;
+				pos.Y = this.position.Y;
+				Burger bullet = new Burger(cManager, pos);
+				scene.AddSprite(bullet);
+				fireCounter = 0f;
+			}
 
 			if (!isJumping)
 			{
 				// Gravidade puxa para baixo
 				this.position.Y -= 0.05f;
 
-		    	if (this.scene.Collides(this, out this.Collided, out this.CollisionPoint))
+				if (this.scene.Collides(this, out this.Collided, out this.CollisionPoint))
 				{
 					// Oops, colidimos. Vamos regressar para cima    
 					this.position.Y += 0.05f;
@@ -96,6 +111,8 @@ namespace Sugar_Run
 			// Acompanhamento da câmara com o jogador
 			Camera.SetTarget(this.position);
 
+			boundingBox = new Rectangle((int)this.position.X, (int)this.position.Y, (int)this.size.X, (int)this.size.Y);
+
 			base.Update(gameTime);
 		}
 
@@ -107,16 +124,16 @@ namespace Sugar_Run
 			this.direction = new Vector2((float)Math.Sin(rotation), (float)Math.Cos(rotation));
 		}
 
-        public void Shoot()
-        {
-            this.isShooting = true;
-        }
+		public void Shoot()
+		{
+			this.isShooting = true;
+		}
 
 		public override void SetScene(Scene s)
 		{
 			this.scene = s;
 		}
-     
+	 
 
 	}
 }
