@@ -30,7 +30,7 @@ namespace Sugar_Run
             this.origin = new Vector2(texture.Width / 2f, texture.Height / 2f);
             this.lastCameraPosition = Camera.GetTarget();
             this.position = Camera.GetTarget();
-            this.size = new Vector2(/*0.5f * Camera.WorldWidth*/30, /*0.5f * Camera.WorldWidth * texture.Height / texture.Width*/15);
+            this.size = new Vector2(2 * Camera.WorldWidth, 2 * Camera.WorldWidth * texture.Height / texture.Width);
             this.speedRatio = speedRatio;
         }
 

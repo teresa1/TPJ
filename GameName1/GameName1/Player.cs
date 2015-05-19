@@ -31,7 +31,7 @@ namespace Sugar_Run
             this.isShooting = false;
 			this.position = new Vector2(4, 3);
 			this.maxDistance = 2f;
-			this.velocity = 1f;
+			this.velocity = 1/2f;
 			this.direction = Vector2.Zero;
 			this.EnableCollisions();
             this.name = "Girl";

@@ -1,9 +1,9 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 
 namespace Sugar_Run
 {
@@ -23,8 +23,7 @@ namespace Sugar_Run
         public Platform p;
 
         // Construtor
-        public Enemy(ContentManager content, String textureName)
-            : base(content, textureName, 1, 1)
+        public Enemy(ContentManager content, String textureName) : base(content, textureName, 1, 1)
         {
             this.Content = content;
             this.isJumping = false;
@@ -33,6 +32,18 @@ namespace Sugar_Run
             this.direction = Vector2.Zero;
             this.EnableCollisions();
             this.name = "enemy";
+        }
+
+        // Load Content
+        public void LoadContent()
+        {
+
+        }
+
+        // Unload Content
+        public void UnloadContent()
+        {
+            
         }
 
         // Update    
@@ -78,7 +89,7 @@ namespace Sugar_Run
 
         public void GerarAleatoriamente()
         {
-            foreach (Sprite s in this.scene.sprites)
+            foreach (Sprite s in this.scene.spriteList)
             {
                 if (s is Platform)
                 {

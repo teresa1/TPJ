@@ -10,39 +10,39 @@ namespace Sugar_Run
 {
     public class Scene
     {
+        //Variáveis
         public SpriteBatch SpriteBatch {get; private set;}
-        public List<Sprite> sprites;
-
-        // Background list
-        private List<ScrollingBackground> backgrounds;
+        // Lists
+        public List<Sprite> spriteList;
+        private List<ScrollingBackground> backgroundList;
 
         public Scene(SpriteBatch sb)
         {
             this.SpriteBatch = sb;
-            this.sprites = new List<Sprite>();
-            this.backgrounds = new List<ScrollingBackground>();
+            this.spriteList = new List<Sprite>();
+            this.backgroundList = new List<ScrollingBackground>();
         }
 
         public void AddSprite(Sprite s)
         {
-            this.sprites.Add(s);
+            this.spriteList.Add(s);
             s.SetScene(this);
         }
 
         public void AddBackground(ScrollingBackground background)
         {
-            this.backgrounds.Add(background);
+            this.backgroundList.Add(background);
             background.SetScene(this);
         }
 
         public void RemoveSprite(Sprite s)
         {
-            this.sprites.Remove(s);
+            this.spriteList.Remove(s);
         }
 
         public void Update(GameTime gameTime)
         {
-            foreach (var sprite in sprites.ToList())
+            foreach (var sprite in spriteList.ToList())
             {
                 sprite.Update(gameTime);
             }
@@ -50,15 +50,15 @@ namespace Sugar_Run
 
         public void Draw(GameTime gameTime)
         {
-            if (sprites.Count > 0 || backgrounds.Count > 0)
+            if (spriteList.Count > 0 || backgroundList.Count > 0)
             {
                 this.SpriteBatch.Begin();
-                // Desenhar os fundos!!!
-                foreach (var background in backgrounds)
+                // Desenha os fundos
+                foreach (var background in backgroundList)
                     background.Draw(gameTime);
                 
-                // Desenhar as sprites!!!
-                foreach (var sprite in sprites)
+                // Desenha as sprites
+                foreach (var sprite in spriteList)
                     sprite.Draw(gameTime);
 
                 this.SpriteBatch.End();
@@ -72,7 +72,7 @@ namespace Sugar_Run
             collided = s;  // para calar o compilador
             collisionPoint = Vector2.Zero; // para calar o compilador
 
-            foreach (var sprite in sprites)
+            foreach (var sprite in spriteList)
             {
                 if (s == sprite) continue;
                 if (s.CollidesWith(sprite, out collisionPoint))
@@ -89,7 +89,7 @@ namespace Sugar_Run
 
         public void Dispose()
         {
-            foreach (var sprite in sprites)
+            foreach (var sprite in spriteList)
                 sprite.Dispose();
         }
     }
