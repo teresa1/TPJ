@@ -30,11 +30,13 @@ namespace Sugar_Run
         float enemyTime;
         // Power-Ups
         int randomLollipop;
+<<<<<<< HEAD
 
-
+=======
         SpriteFont font;
        
-   
+        
+>>>>>>> origin/fixJumps
         // Construtor
         public Game1() : base()
         {
@@ -69,8 +71,11 @@ namespace Sugar_Run
             //scene.AddPlatform(new Plataform(Content));
             player = new Player(Content, "CandyGirl");
             scene.AddSprite(player);
+<<<<<<< HEAD
+=======
 
             font = Content.Load<SpriteFont>("SpriteFont1");
+>>>>>>> origin/fixJumps
 
             // Backgrounds
             background = new ScrollingBackground(Content, "Backgrounds/Sky", 0f);
