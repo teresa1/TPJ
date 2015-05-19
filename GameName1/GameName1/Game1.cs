@@ -30,7 +30,13 @@ namespace Sugar_Run
         float enemyTime;
         // Power-Ups
         int randomLollipop;
+<<<<<<< HEAD
 
+=======
+        SpriteFont font;
+       
+        
+>>>>>>> origin/fixJumps
         // Construtor
         public Game1() : base()
         {
@@ -65,6 +71,11 @@ namespace Sugar_Run
             //scene.AddPlatform(new Plataform(Content));
             player = new Player(Content, "CandyGirl");
             scene.AddSprite(player);
+<<<<<<< HEAD
+=======
+
+            font = Content.Load<SpriteFont>("SpriteFont1");
+>>>>>>> origin/fixJumps
 
             // Backgrounds
             background = new ScrollingBackground(Content, "Backgrounds/Sky", 0f);
@@ -119,7 +130,10 @@ namespace Sugar_Run
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             scene.Draw(gameTime);
-
+            
+            spriteBatch.Begin();
+            spriteBatch.DrawString(font, "Score: " + player.timer.ToString("0"), new Vector2(600, 10), Color.Black);
+            spriteBatch.End();
             base.Draw(gameTime);
         }
 

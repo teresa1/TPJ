@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Sugar_Run
 {
-	class Player : AnimatedSprite
+	 class Player : AnimatedSprite
 	{
 		// Variáveis
 		ContentManager Content;
@@ -22,6 +22,7 @@ namespace Sugar_Run
         private float fireCounter = 0f;
         private float fireInterval = 0.2f;
         PowerUps lollipop;
+        public float timer = 0;
 	   
 		// Construtor
 		public Player(ContentManager content, String textureName) : base(content, textureName, 1, 4)
@@ -40,15 +41,18 @@ namespace Sugar_Run
 		// Update
 		public override void Update(GameTime gameTime )
         {
+            timer += (float)gameTime.ElapsedGameTime.TotalSeconds * 10;
 			// Movimento para a direita automático
 			this.position.X += 0.05f;
             KeyboardState keyState = Keyboard.GetState();
+
+            
 
             if (isJumping || !isJumping)
             {
                 if (this.scene.Collides(this, out this.Collided, out this.CollisionPoint))
                 {
-                    if (Collided.name == "Plataforma")
+                    if (Collided.name == "Plataforma" || Collided.name == "enemy")
                     {
                         AnimatedSprite e = new AnimatedSprite(Content, "explosion", 1, 12);
                         e.Loop = false;
@@ -76,6 +80,7 @@ namespace Sugar_Run
                     sparkle.Scale(.7f);
                     sparkle.Loop = false;
                     Collided.Destroy();
+                    timer += 50;
                 }
                 
             }
@@ -101,7 +106,7 @@ namespace Sugar_Run
                 {
                     // Oops, colidimos. Vamos regressar para cima    
                     this.position.Y += 0.05f;
-
+                    
                     // se colidimos estamos no chao, logo, so nesta altura podemos ver se podemos saltar
                     if (keyState.IsKeyDown(Keys.Up))
                         Jump();
@@ -143,7 +148,5 @@ namespace Sugar_Run
 		{
 			this.scene = s;
 		}
-     
-
 	}
 }
