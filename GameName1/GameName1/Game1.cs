@@ -83,11 +83,11 @@ namespace Sugar_Run
             // Backgrounds
             //background = new ScrollingBackground(Content, "Backgrounds/Sky", 0f);
             //scene.AddBackground(background);
-            background = new ScrollingBackground(Content, "Backgrounds/Small Clouds", 1/5f);
+            background = new ScrollingBackground(Content, "Backgrounds/Small Clouds", 1 / 10f);
             scene.AddBackground(background);
-            background = new ScrollingBackground(Content, "Backgrounds/Forest", 1/50f);
+            background = new ScrollingBackground(Content, "Backgrounds/Forest", 0f);
             scene.AddBackground(background);
-            background = new ScrollingBackground(Content, "Backgrounds/Sky Clouds", 1 / 10f);
+            background = new ScrollingBackground(Content, "Backgrounds/Sky Clouds", 1 / 5f);
             scene.AddBackground(background);
         }
 
