@@ -72,6 +72,9 @@
     <Content Include="Content\burger.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\CandyGirl Jump.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\CandyGirl.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -9,34 +9,31 @@ namespace Sugar_Run
 {
     class AnimatedSprite: Sprite
     {
-        private int ncols,nrows;
-        private Point currentFrame;
-        private float animationInterval = 1f / 20f;
+        private int cols,rows;
+        public Point currentFrame;
+        private float animationInterval = 1f / 10f;
         private float animationTimer = 0f;
 
         public bool Loop { get; set; }
 
-        public AnimatedSprite(ContentManager content, 
-            string filename, int nrows, int ncols):
-            base(content,filename)
+        public AnimatedSprite(ContentManager content, string textureName, int rows, int cols) : base(content,textureName)
         {
-            this.ncols = ncols;
-            this.nrows = nrows;
-            this.pixelsize.X = this.pixelsize.X / ncols;
-            this.pixelsize.Y = this.pixelsize.Y / nrows;
-            this.size = new Vector2(1f, 
-                (float)pixelsize.Y / (float)pixelsize.X);
+            this.cols = cols;
+            this.rows = rows;
+            this.pixelsize.X = this.pixelsize.X / cols;
+            this.pixelsize.Y = this.pixelsize.Y / rows;
+            this.size = new Vector2(1f, (float)pixelsize.Y / (float)pixelsize.X);
             this.currentFrame = Point.Zero;
             Loop = true;
         }
 
-        private void nextFrame()
+        private void NextFrame()
         {
-            if(currentFrame.X < ncols - 1)
+            if(currentFrame.X < cols - 1)
             {
                 currentFrame.X++;
             }
-            else if(currentFrame.Y<nrows-1)
+            else if(currentFrame.Y < rows - 1)
             {
                 currentFrame.X = 0;
                 currentFrame.Y++;
@@ -53,17 +50,16 @@ namespace Sugar_Run
 
         public override void Update(GameTime gameTime)
         {
-            animationTimer += 
-                (float)gameTime.ElapsedGameTime.TotalSeconds;
+            animationTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
             if(animationTimer> animationInterval)
             {
                 animationTimer = 0f;
-                nextFrame();
-
+                NextFrame();
             }
 
             base.Update(gameTime);
         }
+
         public override void Draw(GameTime gameTime)
         {
            

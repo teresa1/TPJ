@@ -76,14 +76,11 @@ namespace Sugar_Run
             // Backgrounds
             background = new ScrollingBackground(Content, "Backgrounds/Sky", 0f);
             scene.AddBackground(background);
-            background = new ScrollingBackground(Content, "Backgrounds/Small Clouds", 1 / 10f);
-            background = new ScrollingBackground(Content, "Backgrounds/Sky", 0f);
+            background = new ScrollingBackground(Content, "Backgrounds/Small Clouds", 1 / 2f);
             scene.AddBackground(background);
-            background = new ScrollingBackground(Content, "Backgrounds/Small Clouds", 1/5f);
+            background = new ScrollingBackground(Content, "Backgrounds/Forest", 1 / 5f);
             scene.AddBackground(background);
-            background = new ScrollingBackground(Content, "Backgrounds/Forest", 0f);
-            scene.AddBackground(background);
-            background = new ScrollingBackground(Content, "Backgrounds/Sky Clouds", 1 / 5f);
+            background = new ScrollingBackground(Content, "Backgrounds/Sky Clouds", 1 / 3f);
             scene.AddBackground(background);
         }
 
@@ -115,7 +112,7 @@ namespace Sugar_Run
                 CreateEnemy();
             }
 
-            if (platformPosition.X* Camera.Ratio < graphics.PreferredBackBufferWidth)
+            if (platformPosition.X * Camera.Ratio < graphics.PreferredBackBufferWidth)
                 CreatePlatform();
 
             scene.Update(gameTime);
@@ -158,8 +155,8 @@ namespace Sugar_Run
             plataforma.position.Y = platformPosition.Y + randomPlatformHeight;
 
             // Não deixa que as plataformas fiquem muito altas
-            if (plataforma.position.Y < -1.5f)
-                plataforma.position.Y = -1.5f;
+            if (plataforma.position.Y < -1.7f)
+                plataforma.position.Y = -1.7f;
 
             scene.AddSprite(plataforma);
             platformPosition = plataforma.position;
