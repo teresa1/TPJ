@@ -21,24 +21,20 @@ namespace Sugar_Run
         ScrollingBackground background;
         Player player;
         Enemy enemy;
-        SpriteFont font;
-
         // Plataformas
         Vector2 platformPosition;
         float platformTime;
         int platformCounter;
         int randomPlatformHeight;
-        
         // Inimigos
         float enemyTime;
-        
         // Power-Ups
         int randomLollipop;
 
-        // Background
-        Texture2D backgroundTexture;
-        Vector2 backgroundPosition;
-      
+        SpriteFont font;
+       
+        
+
         // Construtor
         public Game1() : base()
         {
@@ -49,9 +45,9 @@ namespace Sugar_Run
         protected override void Initialize()
         {
             // Definição do tamanho da janela
-            graphics.PreferredBackBufferWidth = 800;
             graphics.PreferredBackBufferHeight = 450;
-            //graphics.IsFullScreen = true;
+            graphics.PreferredBackBufferWidth = 800;
+            graphics.IsFullScreen = true;
             graphics.ApplyChanges();
 
             // Inicialização da câmara
@@ -60,8 +56,6 @@ namespace Sugar_Run
 
             platformPosition = new Vector2(6, -1.5f);
             platformCounter = 0;
-
-            backgroundPosition = new Vector2(-10, 0);
 
             base.Initialize();
         }
@@ -76,14 +70,19 @@ namespace Sugar_Run
             player = new Player(Content, "CandyGirl");
             scene.AddSprite(player);
 
+
             font = Content.Load<SpriteFont>("SpriteFont1");
 
-            backgroundTexture = Content.Load<Texture2D>("Backgrounds/Sky");
-
             // Backgrounds
+<<<<<<< HEAD
             //background = new ScrollingBackground(Content, "Backgrounds/Sky", 0f);
             //scene.AddBackground(background);
             background = new ScrollingBackground(Content, "Backgrounds/Small Clouds", 1 / 10f);
+=======
+            background = new ScrollingBackground(Content, "Backgrounds/Sky", 0f);
+            scene.AddBackground(background);
+            background = new ScrollingBackground(Content, "Backgrounds/Small Clouds", 1/5f);
+>>>>>>> origin/fixJumps
             scene.AddBackground(background);
             background = new ScrollingBackground(Content, "Backgrounds/Forest", 0f);
             scene.AddBackground(background);
@@ -103,8 +102,6 @@ namespace Sugar_Run
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
-            backgroundPosition = new Vector2(player.position.X - 1000f, 0);
 
             platformTime += gameTime.ElapsedGameTime.Milliseconds;
             if (platformTime >= 50)
@@ -134,12 +131,11 @@ namespace Sugar_Run
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            spriteBatch.Begin();
-            spriteBatch.Draw(backgroundTexture, backgroundPosition, Color.White);
-            spriteBatch.DrawString(font, "Score: " + player.timer.ToString("0"), new Vector2(650, 10), Color.White);
-            spriteBatch.End();
             scene.Draw(gameTime);
             
+            spriteBatch.Begin();
+            spriteBatch.DrawString(font, "Score: " + player.timer.ToString("0"), new Vector2(600, 10), Color.Black);
+            spriteBatch.End();
             base.Draw(gameTime);
         }
 
