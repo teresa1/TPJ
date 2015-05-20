@@ -74,15 +74,12 @@ namespace Sugar_Run
             font = Content.Load<SpriteFont>("SpriteFont1");
 
             // Backgrounds
-<<<<<<< HEAD
             //background = new ScrollingBackground(Content, "Backgrounds/Sky", 0f);
             //scene.AddBackground(background);
             background = new ScrollingBackground(Content, "Backgrounds/Small Clouds", 1 / 10f);
-=======
             background = new ScrollingBackground(Content, "Backgrounds/Sky", 0f);
             scene.AddBackground(background);
             background = new ScrollingBackground(Content, "Backgrounds/Small Clouds", 1/5f);
->>>>>>> origin/fixJumps
             scene.AddBackground(background);
             background = new ScrollingBackground(Content, "Backgrounds/Forest", 0f);
             scene.AddBackground(background);
