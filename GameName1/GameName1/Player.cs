@@ -13,7 +13,6 @@ namespace Sugar_Run
 		// Variáveis
 		ContentManager Content;
 		private bool isJumping;
-        private bool isShooting;
 		private float maxDistance, velocity;
 		private Vector2 sourcePosition;
 		private Vector2 direction;
@@ -29,10 +28,9 @@ namespace Sugar_Run
 		{
 			this.Content = content;
 			this.isJumping = false;
-            this.isShooting = false;
 			this.position = new Vector2(4, 3);
 			this.maxDistance = 2f;
-			this.velocity = 1/2f;
+			this.velocity = 3/2f;
 			this.direction = Vector2.Zero;
 			this.EnableCollisions();
             this.name = "Girl";
@@ -139,10 +137,7 @@ namespace Sugar_Run
 			this.direction = new Vector2((float)Math.Sin(rotation), (float)Math.Cos(rotation));
 		}
 
-        public void Shoot()
-        {
-            this.isShooting = true;
-        }
+      
 
 		public override void SetScene(Scene s)
 		{

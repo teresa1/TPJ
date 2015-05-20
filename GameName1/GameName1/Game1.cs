@@ -161,6 +161,9 @@ namespace Sugar_Run
             if (plataforma.position.Y < -1.5f)
                 plataforma.position.Y = -1.5f;
 
+            if (plataforma.position.Y > 200)
+                plataforma.position.Y = 200;
+
             scene.AddSprite(plataforma);
             platformPosition = plataforma.position;
 
