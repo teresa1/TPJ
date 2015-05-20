@@ -45,21 +45,37 @@ namespace Sugar_Run
         {
             
         }
-
+        int direção = -1;
         // Update    
         public override void Update(GameTime gameTime)
         {
             // Movimento para a esquerda automático
-            this.position.X -= 0.005f;
+            this.position.X += 0.005f * direção;
 
             if (this.scene.Collides(this, out this.Collided, out this.CollisionPoint))
             {
-                AnimatedSprite e = new AnimatedSprite(Content, "explosion", 1, 12);
-                e.Loop = false;
-                e.SetPosition(this.position);
-                e.Scale(1.5f);
-                scene.AddSprite(e);
-                this.Destroy();
+
+
+                if (Collided.name == "Plataforma")
+                {
+                    direção = -direção;
+                }
+
+                if (Collided.name == "burger")
+                {
+                    AnimatedSprite e = new AnimatedSprite(Content, "explosion", 1, 12);
+                    e.Loop = false;
+                    e.SetPosition(this.position);
+                    e.Scale(1.5f);
+                    scene.AddSprite(e);
+                    this.Destroy();
+                }
+
+                if(Collided.name == "lollipop")
+                {
+                    this.position.Y -= 0.05f;
+                }
+
             }
 
             if (!isJumping)
