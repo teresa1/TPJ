@@ -13,25 +13,24 @@ namespace Sugar_Run
         ContentManager Content;
         Random random = new Random();
         private Vector2 sourcePosition;
-        private Vector2 direction;
         private float velocity;
         // Colisões
         Sprite Collided;
         Vector2 CollisionPoint;
 
         List<Platform> plataformas;
-        public Platform p;
-        public int direção = -1;
+        public Platform platform;
+        public int direction;
 
         // Construtor
         public EnemyCorn(ContentManager content) : base(content, "Enemies/Corn", 1, 2)
         {
             this.Content = content;
-            this.position = new Vector2(15, 4);
-            this.velocity = 1f;
-            this.direction = Vector2.Zero;
-            this.EnableCollisions();
             this.name = "enemy";
+            this.position = new Vector2(15, 1);
+            this.velocity = 1f;
+            this.direction = -1;
+            this.EnableCollisions();
         }
 
         // Load Content
@@ -50,13 +49,13 @@ namespace Sugar_Run
         public override void Update(GameTime gameTime)
         {
             // Movimento para a esquerda automático
-            this.position.X += 0.05f * direção;
+            this.position.X += 0.05f * direction;
 
             if (this.scene.Collides(this, out this.Collided, out this.CollisionPoint))
             {
                 if (Collided.name == "Plataforma" || Collided.name == "lollipop")
                 {
-                    direção = -direção;
+                    direction = -direction;
                 }
 
                 if (Collided.name == "burger")
@@ -67,7 +66,6 @@ namespace Sugar_Run
                     explosion.Scale(1.5f);
                     scene.AddSprite(explosion);
                     this.Destroy();
-                    scene.RemoveSprite(explosion);
                 }
             }
             
@@ -76,21 +74,17 @@ namespace Sugar_Run
 
         public void GerarAleatoriamente()
         {
-            foreach (Sprite s in this.scene.spriteList)
+            foreach (Sprite sprite in this.scene.spriteList)
             {
-                if (s is Platform)
+                if (sprite is Platform)
                 {
-                    this.plataformas.Add(this.p);
+                    this.plataformas.Add(this.platform);
                 }
             }
 
-            this.position.Y = p.position.Y;
-
+            this.position.Y = platform.position.Y - 2.5f;
             int rand = (random.Next(4) - 2); // como chegar ao Lenght da plataformaaaaaaaaaaaaaaaaa? .-.
-
-            this.position.X = p.position.X + rand;
-
-
+            this.position.X = platform.position.X + rand;
         }
     }
 }

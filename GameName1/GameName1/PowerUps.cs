@@ -16,11 +16,11 @@ namespace Sugar_Run
         // Construtor
         public PowerUps(ContentManager cManager, Vector2 sourcePosition) : base(cManager, "lollipop")
         {
-            this.position = sourcePosition;
-            this.position.Y += 1;
-            this.EnableCollisions();
-            this.Scale(.7f);
             this.name = "lollipop";
+            this.position = sourcePosition;
+            this.position.Y += 1f;
+            this.Scale(0.7f);
+            this.EnableCollisions();
         }
     }
 }

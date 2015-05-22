@@ -20,7 +20,8 @@ namespace Sugar_Run
         Scene scene;
         ScrollingBackground background;
         Player player;
-        EnemyBroccoli enemy;
+        EnemyBroccoli enemyBroccoli;
+        EnemyCorn enemyCorn;
         // Plataformas
         Vector2 platformPosition;
         float platformTime;
@@ -181,9 +182,13 @@ namespace Sugar_Run
         // Geração aleatória de um inimigo
         public void CreateEnemy()
         {
-            enemy = new EnemyBroccoli(Content);
-            scene.AddSprite(enemy);
-            enemy.position.X = player.position.X + 10;
+            enemyBroccoli = new EnemyBroccoli(Content);
+            scene.AddSprite(enemyBroccoli);
+            enemyBroccoli.position.X = player.position.X + 10;
+
+            enemyCorn = new EnemyCorn(Content);
+            scene.AddSprite(enemyCorn);
+            enemyCorn.position.X = player.position.X + 10;
         }
     }
 }

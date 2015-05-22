@@ -17,16 +17,16 @@ namespace Sugar_Run
 		private float maxDistance, velocity;
 		private Vector2 sourcePosition;
 		private Vector2 direction;
-        // Colisões
+		// Colisões
 		Sprite Collided;
 		Vector2 CollisionPoint;
 		// Burgers
-        private float fireCounter = 0f;
+		private float fireCounter = 0f;
 		private float fireInterval = 0.5f;
 		// Score
-        public float timer = 0;
+		public float timer = 0;
 		// Sons
-        SoundEffect jumpSound;
+		SoundEffect jumpSound;
 	   
 		// Construtor
 		public Player(ContentManager content) : base(content, "CandyGirl", 1, 4)
@@ -64,19 +64,19 @@ namespace Sugar_Run
 		public override void Update(GameTime gameTime )
 		{
 			timer += (float)gameTime.ElapsedGameTime.TotalSeconds * 10;
-            KeyboardState keyboardState = Keyboard.GetState();
+			KeyboardState keyboardState = Keyboard.GetState();
 
 			// Movimento para a direita automático
 			this.position.X += 0.05f;
-            // Dispara burgers
-            this.Shoot(gameTime, keyboardState);
+			// Dispara burgers
+			this.Shoot(gameTime, keyboardState);
 
 			if (isJumping || !isJumping)
 			{
-                // Colisões
+				// Colisões
 				if (this.scene.Collides(this, out this.Collided, out this.CollisionPoint))
 				{
-                    // Se colidir com uma plataforma ou inimigo, explode e game over
+					// Se colidir com uma plataforma ou inimigo, explode e game over
 					if (Collided.name == "Plataforma" || Collided.name == "enemy")
 					{
 						AnimatedSprite explosion = new AnimatedSprite(Content, "explosion", 1, 12);
@@ -86,31 +86,31 @@ namespace Sugar_Run
 						scene.AddSprite(explosion);
 						this.Destroy();
 
-                        // GAME OVER
+						// GAME OVER
 					}
 
-                    // Se colidir com a plataforma enquanto salta, deixa de cair
-                    if (!isJumping && Collided.name == "Plataforma")
-                    {
-                        this.position.Y += 0.05f;
+					// Se colidir com a plataforma enquanto salta, deixa de cair
+					if (!isJumping && Collided.name == "Plataforma")
+					{
+						this.position.Y += 0.05f;
 
-                        // Se colidimos estamos no chao, logo, ness altura podemos saltar
-                        if (keyboardState.IsKeyDown(Keys.Up))
-                            Jump();
-                    }
+						// Se colidimos estamos no chao, logo, ness altura podemos saltar
+						if (keyboardState.IsKeyDown(Keys.Up))
+							Jump();
+					}
 
-                    // Se colidir com um power up, ganha pontos
-                    if (Collided.name == "lollipop")
-                    {
-                        AnimatedSprite sparkle;
-                        sparkle = new AnimatedSprite(content, "sparkle", 4, 8);
-                        scene.AddSprite(sparkle);
-                        sparkle.SetPosition(this.position);
-                        sparkle.Scale(.7f);
-                        sparkle.loop = false;
-                        Collided.Destroy();
-                        timer += 50;
-                    }
+					// Se colidir com um power up, ganha pontos
+					if (Collided.name == "lollipop")
+					{
+						AnimatedSprite sparkle;
+						sparkle = new AnimatedSprite(content, "sparkle", 4, 8);
+						scene.AddSprite(sparkle);
+						sparkle.SetPosition(this.position);
+						sparkle.Scale(.7f);
+						sparkle.loop = false;
+						Collided.Destroy();
+						timer += 50;
+					}
 				
 				}
 			}
@@ -149,7 +149,7 @@ namespace Sugar_Run
 			base.Update(gameTime);
 		}
 
-        // Draw
+		// Draw
 		public override void Draw(GameTime gameTime)
 		{
 			if (isJumping)
@@ -166,21 +166,21 @@ namespace Sugar_Run
 			this.direction = new Vector2((float)Math.Sin(rotation), (float)Math.Cos(rotation));
 		}
 
-        // Dispara burgers
-        public void Shoot(GameTime gameTime, KeyboardState keyboardState)
-        {			
-            // Dispara burgers 
-            fireCounter += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (fireCounter >= fireInterval && keyboardState.IsKeyDown(Keys.Space))
-            {
-                Vector2 burgerSourcePosition = new Vector2(this.position.X + 0.8f, this.position.Y);
-                Burger burger = new Burger(content, burgerSourcePosition);
-                scene.AddSprite(burger);
-                fireCounter = 0f;
-            }
-        }
+		// Dispara burgers
+		public void Shoot(GameTime gameTime, KeyboardState keyboardState)
+		{			
+			// Dispara burgers 
+			fireCounter += (float)gameTime.ElapsedGameTime.TotalSeconds;
+			if (fireCounter >= fireInterval && keyboardState.IsKeyDown(Keys.Space))
+			{
+				Vector2 burgerSourcePosition = new Vector2(this.position.X + 0.8f, this.position.Y);
+				Burger burger = new Burger(content, burgerSourcePosition);
+				scene.AddSprite(burger);
+				fireCounter = 0f;
+			}
+		}
 
-        // Seleciona a cena
+		// Seleciona a cena
 		public override void SetScene(Scene scene)
 		{
 			this.scene = scene;

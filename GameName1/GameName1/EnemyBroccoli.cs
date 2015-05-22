@@ -26,12 +26,12 @@ namespace Sugar_Run
         public EnemyBroccoli(ContentManager content) : base(content, "Enemies/Broccoli", 1, 1)
         {
             this.Content = content;
+            this.name = "enemy";
             this.isJumping = false;
             this.position = new Vector2(15, 4);
             this.velocity = 1f;
             this.direction = Vector2.Zero;
             this.EnableCollisions();
-            this.name = "enemy";
         }
 
         // Load Content
