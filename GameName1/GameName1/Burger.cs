@@ -57,7 +57,7 @@ namespace Sugar_Run
         public override void Destroy()
         {
             AnimatedSprite explosion;
-            explosion = new AnimatedSprite(cManager, "explosion", 1, 12);
+            explosion = new AnimatedSprite(content, "explosion", 1, 12);
             scene.AddSprite(explosion);
             explosion.SetPosition(this.position);
             explosion.Scale(.3f);

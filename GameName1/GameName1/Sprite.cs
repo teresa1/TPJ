@@ -1,49 +1,50 @@
-﻿#region Using statements
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-#endregion
+
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Sugar_Run
 {
     public class Sprite
     {
-        public bool HasCollisions { protected set; get; }
-
-        // So we can debug easily knowing which objects are being analysed...
+        // Variáveis
+        protected ContentManager content;
+        protected Scene scene;
+        //Sprite
         public string name;
         protected Texture2D texture;
         public Vector2 position;
-        protected float radius; // raio da "bounding box"
         public Vector2 size;
+        protected Vector2 pixelSize;
         protected float rotation;
-        protected Scene scene;
-        protected Vector2 pixelsize;
         protected Rectangle? source = null;
+        // Colisões
+        protected bool hasCollisions;
+        // Raio da "bounding box"
+        protected float radius;
         protected Color[] pixels;
-        protected ContentManager cManager;
 
         // Construtor
-        public Sprite(ContentManager contents, String assetName)
+        public Sprite(ContentManager content, string textureName)
         {
-            this.name = assetName;
-            this.cManager = contents;
-            this.HasCollisions = false;
-            this.rotation = 0f;
+            this.name = textureName;
+            this.content = content;
             this.position = Vector2.Zero;
-            this.texture = contents.Load<Texture2D>(assetName);
-            this.pixelsize = new Vector2(texture.Width, texture.Height);
+            this.texture = content.Load<Texture2D>(textureName);
             this.size = new Vector2(1f, (float)texture.Height / (float)texture.Width);
+            this.pixelSize = new Vector2(texture.Width, texture.Height);
+            this.rotation = 0f;
+            this.hasCollisions = false;
         }
 
         // Load Content
         public virtual void LoadContent()
         {
-           
+
         }
 
         // Unload Content
@@ -52,14 +53,38 @@ namespace Sugar_Run
             this.texture.Dispose();
         }
 
+        // Update
+        public virtual void Update(GameTime gameTime) 
+        {
+
+        }
+
+        // Draw 
+        public virtual void Draw(GameTime gameTime)
+        {
+            Rectangle rectPosition = Camera.WorldSize2PixelRectangle(this.position, this.size);
+            scene.spriteBatch.Draw(this.texture, rectPosition, source, Color.White, this.rotation, new Vector2(pixelSize.X / 2, pixelSize.Y / 2), SpriteEffects.None, 0);
+        }
+
+
+        // Ativa as colisões e inicializa a bounding box
+        public virtual void EnableCollisions()
+        {
+            this.hasCollisions = true;
+            this.radius = (float)Math.Sqrt(Math.Pow(size.X / 2, 2) + Math.Pow(size.Y / 2, 2));
+
+            pixels = new Color[(int)(pixelSize.X * pixelSize.Y)];
+            texture.GetData<Color>(pixels);
+        }
+
         // Se houver colisao, collisionPoint é o ponto de colisão
         // se não houver, collisionPoint deve ser ignorado!
         public bool CollidesWith(Sprite other, out Vector2 collisionPoint)
         {
             collisionPoint = position; // Calar o compilador
 
-            if (!this.HasCollisions)  return false;
-            if (!other.HasCollisions) return false;
+            if (!this.hasCollisions)  return false;
+            if (!other.hasCollisions) return false;
 
             float distance = (this.position - other.position).Length();
 
@@ -68,55 +93,24 @@ namespace Sugar_Run
             return this.PixelTouches(other, out collisionPoint);
         }
 
-        public virtual void EnableCollisions()
-        {
-            this.HasCollisions = true;
-            this.radius = (float) Math.Sqrt( Math.Pow(size.X / 2, 2) +
-                                             Math.Pow(size.Y / 2, 2) );
-
-            pixels = new Color[(int)(pixelsize.X * pixelsize.Y)];
-            texture.GetData<Color>(pixels);
-        }
-
         public Color GetColorAt(int x, int y)
         {
             // Se nao houver collider, da erro!!!
-            return pixels[x + y * (int)pixelsize.X];
-        }
-
-        private Vector2 ImagePixelToVirtualWorld(int i, int j)
-        {
-            float x = i * size.X / (float)pixelsize.X;
-            float y = j * size.Y / (float)pixelsize.Y;
-            return new Vector2(position.X + x - (size.X * 0.5f),
-                               position.Y - y + (size.Y * 0.5f));
-        }
-
-        private Vector2 VirtualWorldPointToImagePixel(Vector2 p)
-        {
-            Vector2 delta = p - position;
-            float i = delta.X * pixelsize.X / size.X;
-            float j = delta.Y * pixelsize.Y / size.Y;
-
-            i += pixelsize.X * 0.5f;
-            j = pixelsize.Y * 0.5f - j;
-
-            return new Vector2(i, j);
+            return pixels[x + y * (int)pixelSize.X];
         }
 
         public bool PixelTouches(Sprite other, out Vector2 collisionPoint)
         {
-            // Se nao houver colisao, o ponto de colisao retornado e'
-            // a posicao da Sprite (podia ser outro valor qualquer)
+            // Se nao houver colisao, o ponto de colisao retornado é a posicao da Sprite (podia ser outro valor qualquer)
             collisionPoint = position;
 
             bool touches = false;
 
             int i = 0;
-            while (touches == false && i < pixelsize.X)
+            while (touches == false && i < pixelSize.X)
             {
                 int j = 0;
-                while (touches == false && j < pixelsize.Y)
+                while (touches == false && j < pixelSize.Y)
                 {
                     if (GetColorAt(i, j).A > 0)
                     {
@@ -124,8 +118,8 @@ namespace Sugar_Run
                         Vector2 otherPixel = other.VirtualWorldPointToImagePixel(CollidePoint);
 
                         if (otherPixel.X >= 0 && otherPixel.Y >= 0 &&
-                            otherPixel.X < other.pixelsize.X &&
-                            otherPixel.Y < other.pixelsize.Y)
+                            otherPixel.X < other.pixelSize.X &&
+                            otherPixel.Y < other.pixelSize.Y)
                         {
                             if (other.GetColorAt((int)otherPixel.X, (int)otherPixel.Y).A > 0)
                             {
@@ -142,52 +136,81 @@ namespace Sugar_Run
             return touches;
         }
 
+
+        // Converte coordenadas reais (pixels) para coordenadas virtuais (metros)
+        private Vector2 ImagePixelToVirtualWorld(int i, int j)
+        {
+            float x = i * size.X / (float)pixelSize.X;
+            float y = j * size.Y / (float)pixelSize.Y;
+            return new Vector2(position.X + x - (size.X * 0.5f),
+                               position.Y - y + (size.Y * 0.5f));
+        }
+
+        // Converte coordenadas virtuais (metros) para coordenadas virtuais (pixels)
+        private Vector2 VirtualWorldPointToImagePixel(Vector2 p)
+        {
+            Vector2 delta = p - position;
+            float i = delta.X * pixelSize.X / size.X;
+            float j = delta.Y * pixelSize.Y / size.Y;
+
+            i += pixelSize.X * 0.5f;
+            j = pixelSize.Y * 0.5f - j;
+
+            return new Vector2(i, j);
+        }
+
+
+        // Seleciona uma cena
+        public virtual void SetScene(Scene s)
+        {
+            this.scene = s;
+        }
+
+        // Escala o tamanho da sprite
         public virtual void Scale(float scale)
         {
             this.size *= scale;
         }
 
-        public virtual void SetScene(Scene s)
-        {
-            this.scene = s;
-        }
-        public Sprite Scl(float scale)
+        // Escala o tamanho da sprite, devolvendo essa sprite
+        public Sprite SpriteScale(float scale)
         {
             this.Scale(scale);
             return this;
         }
 
-
-        public virtual void Draw(GameTime gameTime)
+        // Altera a posição da sprite
+        public void SetPosition(Vector2 position)
         {
-            Rectangle pos = Camera.WorldSize2PixelRectangle(this.position, this.size);
-           // scene.SpriteBatch.Draw(this.image, pos, Color.White);
-            scene.spriteBatch.Draw(this.texture, pos, source, Color.White,
-                this.rotation, new Vector2(pixelsize.X/ 2, pixelsize.Y / 2),
-                SpriteEffects.None, 0);
+            this.position = position;
         }
 
-        public virtual void SetRotation(float r)
+        // Altera a posição da sprite, devolvendo a sprite
+        public Sprite SpritePosition(Vector2 position)
         {
-            this.rotation = r;
+            this.SetPosition(position);
+            return this;
         }
 
-        public virtual void Update(GameTime gameTime) { }
+        // Altera a rotação da sprite
+        public virtual void SetRotation(float rotation)
+        {
+            this.rotation = rotation;
+        }
 
+
+        // Remove a sprite da cena
         public virtual void Destroy()
         {
             this.scene.RemoveSprite(this);
         }
 
-        public void SetPosition(Vector2 position)
-        {
-            this.position = position;
-        }
-        public Sprite At(Vector2 p)
-        {
-            this.SetPosition(p);
-            return this;
-        }
 
+        // Métodos get/set
+        public bool HasCollisions
+        {
+            get { return hasCollisions; }
+            protected set { hasCollisions = value; }
+        }
     }
 }

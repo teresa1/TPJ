@@ -20,7 +20,7 @@ namespace Sugar_Run
         Scene scene;
         ScrollingBackground background;
         Player player;
-        Enemy enemy;
+        EnemyBroccoli enemy;
         // Plataformas
         Vector2 platformPosition;
         float platformTime;
@@ -33,8 +33,6 @@ namespace Sugar_Run
 
         SpriteFont font;
        
-        
-
         // Construtor
         public Game1() : base()
         {
@@ -67,13 +65,13 @@ namespace Sugar_Run
             scene = new Scene(spriteBatch);
 
             //scene.AddPlatform(new Plataform(Content));
-            player = new Player(Content, "CandyGirl");
+            player = new Player(Content);
             scene.AddSprite(player);
 
-
+            // Fontes
             font = Content.Load<SpriteFont>("SpriteFont1");
 
-            // Backgrounds
+            // Fundos
             background = new ScrollingBackground(Content, "Backgrounds/Sky", -1f);
             scene.AddBackground(background);
             background = new ScrollingBackground(Content, "Backgrounds/Small Clouds", -1 / 10f);
@@ -100,17 +98,19 @@ namespace Sugar_Run
         // Update
         protected override void Update(GameTime gameTime)
         {
+            // Saída do jogo
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            // Geração de plataformas
             platformTime += gameTime.ElapsedGameTime.Milliseconds;
             if (platformTime >= 50)
             {
                 platformTime = 0;
                 CreatePlatform();
-               
             }
 
+            // Geração de inimigos
             enemyTime += gameTime.ElapsedGameTime.Milliseconds;
             if(enemyTime >= 5000)
             {
@@ -134,17 +134,17 @@ namespace Sugar_Run
             scene.Draw(gameTime);
             
             spriteBatch.Begin();
-            spriteBatch.DrawString(font, "Score: " + player.timer.ToString("0"), new Vector2(600, 10), Color.Black);
+            spriteBatch.DrawString(font, "Score: " + player.timer.ToString("0"), new Vector2(600, 10), Color.White);
             spriteBatch.End();
             base.Draw(gameTime);
         }
 
         
-        // Geração aleatória de plataformas
+        // Geração aleatória de uma plataforma
         public void CreatePlatform()
         {
             // Controla o número mínimo de plataformas por altura
-            if (platformCounter < 3)
+            if (platformCounter < 4)
             {
                 randomPlatformHeight = 0;
                 platformCounter++;
@@ -156,11 +156,10 @@ namespace Sugar_Run
             }
 
             Platform plataforma = new Platform(Content);
-           
             plataforma.position.X = platformPosition.X + (plataforma.size.X);
             plataforma.position.Y = platformPosition.Y + randomPlatformHeight;
 
-            // Não deixa que as plataformas fiquem muito altas
+            // Proíbe que as plataformas fiquem demasiado altas
             if (plataforma.position.Y < -1.7f)
                 plataforma.position.Y = -1.7f;
 
@@ -179,9 +178,10 @@ namespace Sugar_Run
             }
         }
 
+        // Geração aleatória de um inimigo
         public void CreateEnemy()
         {
-            enemy = new Enemy(Content, "inimigo1");
+            enemy = new EnemyBroccoli(Content);
             scene.AddSprite(enemy);
             enemy.position.X = player.position.X + 10;
         }

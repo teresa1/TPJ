@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Sugar_Run
 {
-    class Enemy : AnimatedSprite
+    class EnemyBroccoli : AnimatedSprite
     {
         // Variáveis
         ContentManager Content;
@@ -23,7 +23,7 @@ namespace Sugar_Run
         public Platform p;
 
         // Construtor
-        public Enemy(ContentManager content, String textureName) : base(content, textureName, 1, 1)
+        public EnemyBroccoli(ContentManager content) : base(content, "Enemies/Broccoli", 1, 1)
         {
             this.Content = content;
             this.isJumping = false;

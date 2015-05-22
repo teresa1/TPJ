@@ -21,9 +21,9 @@ namespace Sugar_Run
         {
             this.cols = cols;
             this.rows = rows;
-            this.pixelsize.X = this.pixelsize.X / cols;
-            this.pixelsize.Y = this.pixelsize.Y / rows;
-            this.size = new Vector2(1f, (float)pixelsize.Y / (float)pixelsize.X);
+            this.pixelSize.X = this.pixelSize.X / cols;
+            this.pixelSize.Y = this.pixelSize.Y / rows;
+            this.size = new Vector2(1f, (float)pixelSize.Y / (float)pixelSize.X);
             this.currentFrame = Point.Zero;
             loop = true;
         }
@@ -58,7 +58,7 @@ namespace Sugar_Run
         // Draw
         public override void Draw(GameTime gameTime)
         {
-            source = new Rectangle((int)(currentFrame.X * pixelsize.X), (int)(currentFrame.Y * pixelsize.Y), (int)pixelsize.X, (int)pixelsize.Y);
+            source = new Rectangle((int)(currentFrame.X * pixelSize.X), (int)(currentFrame.Y * pixelSize.Y), (int)pixelSize.X, (int)pixelSize.Y);
 
             base.Draw(gameTime);
         }
@@ -88,13 +88,13 @@ namespace Sugar_Run
         // Ativa as colisões e cria a "bounding circle"
         public override void EnableCollisions()
         {
-            this.HasCollisions = true;
+            this.hasCollisions = true;
 
             this.radius = (float)Math.Sqrt(Math.Pow(size.X / 2, 2) + Math.Pow(size.Y / 2, 2));
 
-            pixels = new Color[(int)(pixelsize.X * pixelsize.Y)];
-            texture.GetData<Color>(0, new Rectangle((int)(currentFrame.X * pixelsize.X), (int)(currentFrame.Y * pixelsize.Y), (int)pixelsize.X, (int)pixelsize.Y),
-                                 pixels, 0, (int)(pixelsize.X * pixelsize.Y));
+            pixels = new Color[(int)(pixelSize.X * pixelSize.Y)];
+            texture.GetData<Color>(0, new Rectangle((int)(currentFrame.X * pixelSize.X), (int)(currentFrame.Y * pixelSize.Y), (int)pixelSize.X, (int)pixelSize.Y),
+                                   pixels, 0, (int)(pixelSize.X * pixelSize.Y));
         }
 
         // Métodos get/set
