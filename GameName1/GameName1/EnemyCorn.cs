@@ -20,6 +20,7 @@ namespace Sugar_Run
 
         List<Platform> plataformas;
         public Platform platform;
+
         public int direction;
 
         // Construtor
@@ -27,9 +28,10 @@ namespace Sugar_Run
         {
             this.Content = content;
             this.name = "enemy";
-            this.position = new Vector2(15, 1);
-            this.velocity = 1f;
+            this.position = new Vector2(15f, 1f);
+            this.velocity = 0.05f;
             this.direction = -1;
+            this.Scale(1.2f);
             this.EnableCollisions();
         }
 
@@ -49,7 +51,7 @@ namespace Sugar_Run
         public override void Update(GameTime gameTime)
         {
             // Movimento para a esquerda automático
-            this.position.X += 0.05f * direction;
+            this.position.X += velocity * direction;
 
             if (this.scene.Collides(this, out this.Collided, out this.CollisionPoint))
             {
