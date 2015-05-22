@@ -47,7 +47,7 @@ namespace Sugar_Run
             // Definição do tamanho da janela
             graphics.PreferredBackBufferHeight = 450;
             graphics.PreferredBackBufferWidth = 800;
-            graphics.IsFullScreen = true;
+            //graphics.IsFullScreen = true;
             graphics.ApplyChanges();
 
             // Inicialização da câmara
@@ -74,20 +74,26 @@ namespace Sugar_Run
             font = Content.Load<SpriteFont>("SpriteFont1");
 
             // Backgrounds
-            background = new ScrollingBackground(Content, "Backgrounds/Sky", 0f);
+            background = new ScrollingBackground(Content, "Backgrounds/Sky", -1f);
             scene.AddBackground(background);
-            background = new ScrollingBackground(Content, "Backgrounds/Small Clouds", 1 / 2f);
+            background = new ScrollingBackground(Content, "Backgrounds/Small Clouds", -1 / 10f);
             scene.AddBackground(background);
-            background = new ScrollingBackground(Content, "Backgrounds/Forest", 1 / 5f);
+            background = new ScrollingBackground(Content, "Backgrounds/Mountains", -1 / 2f);
+            scene.AddBackground(background);
+            background = new ScrollingBackground(Content, "Backgrounds/Small Clouds", 1 / 5f);
+            scene.AddBackground(background);
+            background = new ScrollingBackground(Content, "Backgrounds/Forest", 1 / 4f);
             scene.AddBackground(background);
             background = new ScrollingBackground(Content, "Backgrounds/Sky Clouds", 1 / 3f);
             scene.AddBackground(background);
+
+            scene.LoadContent();
         }
 
         // Unload Content
         protected override void UnloadContent()
         {
-            scene.Dispose();
+            scene.UnloadContent();
             spriteBatch.Dispose();
         }
         

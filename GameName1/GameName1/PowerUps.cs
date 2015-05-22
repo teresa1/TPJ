@@ -9,12 +9,11 @@ namespace Sugar_Run
 {
     class PowerUps : Sprite
     {
-       
+       // Variáveis
         Sprite Collided;
-
         Vector2 CollisionPoint;
 
-
+        // Construtor
         public PowerUps(ContentManager cManager, Vector2 sourcePosition) : base(cManager, "lollipop")
         {
             this.position = sourcePosition;
@@ -23,7 +22,5 @@ namespace Sugar_Run
             this.Scale(.7f);
             this.name = "lollipop";
         }
-
-
     }
 }

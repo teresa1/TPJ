@@ -1,14 +1,15 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Input;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Sugar_Run
 {
-	 class Player : AnimatedSprite
+	class Player : AnimatedSprite
 	{
 		// Variáveis
 		ContentManager Content;
@@ -20,9 +21,10 @@ namespace Sugar_Run
 		Sprite Collided;
 		Vector2 CollisionPoint;
 		private float fireCounter = 0f;
-		private float fireInterval = 0.2f;
+		private float fireInterval = 0.5f;
 		PowerUps lollipop;
 		public float timer = 0;
+		SoundEffect jumpSound;
 	   
 		// Construtor
 		public Player(ContentManager content, String textureName) : base(content, textureName, 1, 4)
@@ -40,6 +42,22 @@ namespace Sugar_Run
 			this.EnableCollisions();
 			this.name = "Girl";
 		}
+
+        // Load Content
+        public override void LoadContent()
+        {
+            //jumpSound = Content.Load<SoundEffect>("Sound Effects/Jump");
+
+            base.LoadContent();
+        }
+
+        // Unload Content
+        public override void UnloadContent()
+        {
+            //this.jumpSound.Dispose();
+
+            base.UnloadContent();
+        }
 	  
 		// Update
 		public override void Update(GameTime gameTime )
@@ -56,7 +74,7 @@ namespace Sugar_Run
 					if (Collided.name == "Plataforma" || Collided.name == "enemy")
 					{
 						AnimatedSprite e = new AnimatedSprite(Content, "explosion", 1, 12);
-						e.Loop = false;
+						e.loop = false;
 						e.SetPosition(this.position);
 						e.Scale(1.5f);
 						scene.AddSprite(e);
@@ -65,7 +83,7 @@ namespace Sugar_Run
 				}
 				if (!isJumping && Collided.name == "Plataforma")
 				{
-					 this.position.Y += 0.05f;
+					this.position.Y += 0.05f;
 
 					// se colidimos estamos no chao, logo, so nesta altura podemos ver se podemos saltar
 					if (keyState.IsKeyDown(Keys.Up))
@@ -79,7 +97,7 @@ namespace Sugar_Run
 					scene.AddSprite(sparkle);
 					sparkle.SetPosition(this.position);
 					sparkle.Scale(.7f);
-					sparkle.Loop = false;
+					sparkle.loop = false;
 					Collided.Destroy();
 					timer += 50;
 				}
@@ -91,7 +109,7 @@ namespace Sugar_Run
 			if (fireCounter >= fireInterval && keyState.IsKeyDown(Keys.Space))
 			{
 				Vector2 pos;
-				pos.X = this.position.X + 1f;
+				pos.X = this.position.X + 0.5f;
 				pos.Y = this.position.Y;
 				Burger bullet = new Burger(cManager, pos);
 				scene.AddSprite(bullet);
@@ -132,13 +150,13 @@ namespace Sugar_Run
 			base.Update(gameTime);
 		}
 
-        public override void Draw(GameTime gameTime)
-        {
-            if (isJumping)
-                currentFrame = new Point(0, 0);
+		public override void Draw(GameTime gameTime)
+		{
+			if (isJumping)
+				currentFrame = new Point(0, 0);
  
-            base.Draw(gameTime);
-        }
+			base.Draw(gameTime);
+		}
 
 		// Inicializa as variáveis a serem usadas para saltar
 		public void Jump()

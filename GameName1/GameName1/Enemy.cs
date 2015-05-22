@@ -35,17 +35,19 @@ namespace Sugar_Run
         }
 
         // Load Content
-        public void LoadContent()
+        public override void LoadContent()
         {
-
+            base.LoadContent();
         }
 
         // Unload Content
-        public void UnloadContent()
+        public override void UnloadContent()
         {
-            
+            base.UnloadContent();
         }
+
         int direção = -1;
+        
         // Update    
         public override void Update(GameTime gameTime)
         {
@@ -64,7 +66,7 @@ namespace Sugar_Run
                 if (Collided.name == "burger")
                 {
                     AnimatedSprite e = new AnimatedSprite(Content, "explosion", 1, 12);
-                    e.Loop = false;
+                    e.loop = false;
                     e.SetPosition(this.position);
                     e.Scale(1.5f);
                     scene.AddSprite(e);

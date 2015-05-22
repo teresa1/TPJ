@@ -35,7 +35,10 @@ namespace Sugar_Run
         }
 
         // Load Content
-        public void LoadContent() { }
+        public void LoadContent() 
+        { 
+        
+        }
 
         // Unload Content
         public void UnloadContent() 
@@ -68,7 +71,7 @@ namespace Sugar_Run
                 {
                     Rectangle drawDestination;
                     drawDestination = new Rectangle(destination.X + i * destination.Width, destination.Y + j * destination.Height, destination.Width, destination.Height);
-                    scene.SpriteBatch.Draw(texture, drawDestination, null, Color.White, 0f, origin, SpriteEffects.None, 0);
+                    scene.spriteBatch.Draw(texture, drawDestination, null, Color.White, 0f, origin, SpriteEffects.None, 0);
                 }
         }
 
@@ -76,46 +79,5 @@ namespace Sugar_Run
         {
             this.scene = scene;
         }
-
-        //public Texture2D texture1, texture2;
-        //public Vector2 posText1, posTex2;
-
-        //public ScrollingBackground(ContentManager content)
-        //{
-           
-        //    texture1 = content.Load<Texture2D>("Background");
-        //    texture2 = texture1; //poupar processamento ^_^
-
-        //    posText1 = new Vector2(0,0);
-        //    posTex2 = new Vector2(texture1.Width, 0); 
-        //}
-
-        //public void Update(GameTime gameTime)
-        //{
-
-        //    this.posText1.X -= 2; //isto faz andar os backgrounds
-        //    this.posTex2.X -= 2;
-              
-        //    // isto faz saltar imagens
-        //    if(posTex2.X == -texture1.Width ) 
-        //    {
-        //        posTex2.X = texture1.Width;
-        //    }
-        //    if (posText1.X == -texture2.Width) 
-        //    {
-        //        posText1.X = texture2.Width; 
-        //    }
-
-        //}
-
-        //public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
-        //{
-        //    spriteBatch.Begin();
-
-        //    spriteBatch.Draw(texture1, posText1, Color.White);
-        //    spriteBatch.Draw(texture2, posTex2, Color.White);
-
-        //    spriteBatch.End();
-        //}
     }
 }

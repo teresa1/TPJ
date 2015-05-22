@@ -6,67 +6,93 @@ using System.Linq;
 using System.Text;
 
 namespace Sugar_Run
-
 {
     public class Scene
     {
-        //Variáveis
-        public SpriteBatch SpriteBatch {get; private set;}
-        // Lists
-        public List<Sprite> spriteList;
+        // Variáveis
+        public SpriteBatch spriteBatch;
         private List<ScrollingBackground> backgroundList;
+        public List<Sprite> spriteList;
 
-        public Scene(SpriteBatch sb)
+        // Construtor
+        public Scene(SpriteBatch spriteBatch)
         {
-            this.SpriteBatch = sb;
+            this.spriteBatch = spriteBatch;
             this.spriteList = new List<Sprite>();
             this.backgroundList = new List<ScrollingBackground>();
         }
 
-        public void AddSprite(Sprite s)
+        // Load Content
+
+        public void LoadContent()
         {
-            this.spriteList.Add(s);
-            s.SetScene(this);
+            foreach (var background in backgroundList)
+                background.LoadContent();
+            foreach (var sprite in spriteList)
+                sprite.LoadContent();
         }
 
+        // Unload Content
+        public void UnloadContent()
+        {
+            foreach (var background in backgroundList)
+                background.UnloadContent();
+            foreach (var sprite in spriteList)
+                sprite.UnloadContent();
+        }
+
+        // Update
+        public void Update(GameTime gameTime)
+        {
+            foreach (var background in backgroundList)
+                background.Update();
+            foreach (var sprite in spriteList.ToList())
+                sprite.Update(gameTime);
+        }
+
+        // Draw
+        public void Draw(GameTime gameTime)
+        {
+            if (spriteList.Count > 0 || backgroundList.Count > 0)
+            {
+                this.spriteBatch.Begin();
+                // Desenha os fundos
+                foreach (var background in backgroundList)
+                    background.Draw(gameTime);
+
+                // Desenha as sprites
+                foreach (var sprite in spriteList)
+                    sprite.Draw(gameTime);
+
+                this.spriteBatch.End();
+            }
+        }
+        // Adiciona um novo fundo à cena
         public void AddBackground(ScrollingBackground background)
         {
             this.backgroundList.Add(background);
             background.SetScene(this);
         }
-
-        public void RemoveSprite(Sprite s)
+        // Adiciona uma nova sprite à cena
+        public void AddSprite(Sprite sprite)
         {
-            this.spriteList.Remove(s);
+            this.spriteList.Add(sprite);
+            sprite.SetScene(this);
         }
 
-        public void Update(GameTime gameTime)
+        // Remove uma sprite da cena
+        public void RemoveSprite(Sprite sprite)
         {
-            foreach (var sprite in spriteList.ToList())
-            {
-                sprite.Update(gameTime);
-            }
+            this.spriteList.Remove(sprite);
+        }
+        // Remove um  background da cena
+        public void RemoveBackgrond(ScrollingBackground background)
+        {
+            this.backgroundList.Remove(background);
         }
 
-        public void Draw(GameTime gameTime)
-        {
-            if (spriteList.Count > 0 || backgroundList.Count > 0)
-            {
-                this.SpriteBatch.Begin();
-                // Desenha os fundos
-                foreach (var background in backgroundList)
-                    background.Draw(gameTime);
-                
-                // Desenha as sprites
-                foreach (var sprite in spriteList)
-                    sprite.Draw(gameTime);
-
-                this.SpriteBatch.End();
-            }
-        }
-
-        public bool Collides(Sprite s, out Sprite collided,
-                                       out Vector2 collisionPoint)
+        // Calcula as colisões de todas as sprites da cena (com colisões ativas)
+        public bool Collides(Sprite s, out Sprite collided, out Vector2 collisionPoint)
         {
             bool collisionExists = false;
             collided = s;  // para calar o compilador
@@ -85,12 +111,11 @@ namespace Sugar_Run
             return collisionExists;
         }
 
-   
-
-        public void Dispose()
+        // Métodos get/set
+        public SpriteBatch SpriteBatch
         {
-            foreach (var sprite in spriteList)
-                sprite.Dispose();
+            get { return spriteBatch; }
+            private set { spriteBatch = value; }
         }
     }
 }

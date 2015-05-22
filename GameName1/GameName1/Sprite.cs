@@ -16,7 +16,7 @@ namespace Sugar_Run
 
         // So we can debug easily knowing which objects are being analysed...
         public string name;
-        protected Texture2D image;
+        protected Texture2D texture;
         public Vector2 position;
         protected float radius; // raio da "bounding box"
         public Vector2 size;
@@ -27,6 +27,7 @@ namespace Sugar_Run
         protected Color[] pixels;
         protected ContentManager cManager;
 
+        // Construtor
         public Sprite(ContentManager contents, String assetName)
         {
             this.name = assetName;
@@ -34,9 +35,21 @@ namespace Sugar_Run
             this.HasCollisions = false;
             this.rotation = 0f;
             this.position = Vector2.Zero;
-            this.image = contents.Load<Texture2D>(assetName);
-            this.pixelsize = new Vector2(image.Width, image.Height);
-            this.size = new Vector2(1f, (float)image.Height / (float)image.Width);
+            this.texture = contents.Load<Texture2D>(assetName);
+            this.pixelsize = new Vector2(texture.Width, texture.Height);
+            this.size = new Vector2(1f, (float)texture.Height / (float)texture.Width);
+        }
+
+        // Load Content
+        public virtual void LoadContent()
+        {
+           
+        }
+
+        // Unload Content
+        public virtual void UnloadContent()
+        {
+            this.texture.Dispose();
         }
 
         // Se houver colisao, collisionPoint é o ponto de colisão
@@ -62,7 +75,7 @@ namespace Sugar_Run
                                              Math.Pow(size.Y / 2, 2) );
 
             pixels = new Color[(int)(pixelsize.X * pixelsize.Y)];
-            image.GetData<Color>(pixels);
+            texture.GetData<Color>(pixels);
         }
 
         public Color GetColorAt(int x, int y)
@@ -149,7 +162,7 @@ namespace Sugar_Run
         {
             Rectangle pos = Camera.WorldSize2PixelRectangle(this.position, this.size);
            // scene.SpriteBatch.Draw(this.image, pos, Color.White);
-            scene.SpriteBatch.Draw(this.image, pos, source, Color.White,
+            scene.spriteBatch.Draw(this.texture, pos, source, Color.White,
                 this.rotation, new Vector2(pixelsize.X/ 2, pixelsize.Y / 2),
                 SpriteEffects.None, 0);
         }
@@ -160,11 +173,6 @@ namespace Sugar_Run
         }
 
         public virtual void Update(GameTime gameTime) { }
-
-        public virtual void Dispose()
-        {
-            this.image.Dispose();
-        }
 
         public virtual void Destroy()
         {
@@ -180,5 +188,6 @@ namespace Sugar_Run
             this.SetPosition(p);
             return this;
         }
+
     }
 }

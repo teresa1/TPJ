@@ -10,23 +10,36 @@ namespace Sugar_Run
 {
     class Burger : Sprite
     {
-        
-        public float maxDistance = 15;
-        public float velocity = 4;
+        // Variáveis
+        public float maxDistance = 15f;
+        public float velocity = 4f;
         private Vector2 sourcePosition;
         private Vector2 direction;
       
-
+        // Construtor
         public Burger(ContentManager cManager, Vector2 sourcePosition) : base(cManager, "burger")
         {
             this.position = sourcePosition;
-            this.EnableCollisions();
             this.sourcePosition = sourcePosition;
-            this.Scale(.5f);
             this.direction = new Vector2(1,0);
             this.name = "burger";
+            this.Scale(.5f);
+            this.EnableCollisions();
         }
 
+        // Load Content
+        public override void LoadContent()
+        {
+            base.LoadContent();
+        }
+
+        // Unload Cotent
+        public override void UnloadContent()
+        {
+            base.UnloadContent();
+        }
+
+        // Update
         public override void Update(GameTime gameTime)
         {
             position = position + direction * velocity *
@@ -48,7 +61,7 @@ namespace Sugar_Run
             scene.AddSprite(explosion);
             explosion.SetPosition(this.position);
             explosion.Scale(.3f);
-            explosion.Loop = false;
+            explosion.loop = false;
             base.Destroy();
         }
 
