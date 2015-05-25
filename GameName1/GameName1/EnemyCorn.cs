@@ -55,7 +55,7 @@ namespace Sugar_Run
 
             if (this.scene.Collides(this, out this.Collided, out this.CollisionPoint))
             {
-                if (Collided.name == "Plataforma" || Collided.name == "lollipop")
+                if (Collided.name == "Plataforma")
                 {
                     direction = -direction;
                 }
