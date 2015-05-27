@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Sugar_Run
 {
@@ -18,7 +19,7 @@ namespace Sugar_Run
         Sprite Collided;
         Vector2 CollisionPoint;
         Random random = new Random();
-
+        SoundEffect som;
         List<Platform> plataformas;
         public Platform p;
 
@@ -32,6 +33,7 @@ namespace Sugar_Run
             this.velocity = 1f;
             this.direction = Vector2.Zero;
             this.EnableCollisions();
+            som = Content.Load<SoundEffect>("Explosion1");
         }
 
         // Load Content
@@ -65,6 +67,7 @@ namespace Sugar_Run
 
                 if (Collided.name == "burger")
                 {
+                    som.Play();
                     AnimatedSprite e = new AnimatedSprite(Content, "explosion", 1, 12);
                     e.loop = false;
                     e.SetPosition(this.position);

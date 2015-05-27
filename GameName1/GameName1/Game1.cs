@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
+using Microsoft.Xna.Framework.Audio;
 //using Microsoft.Xna.Framework.GamerServices;
 #endregion
 
@@ -34,8 +35,8 @@ namespace Sugar_Run
         int randomLollipop;
         Texture2D start;
         SpriteFont font;
-       
 
+        
         enum GameStatus 
         {
             start, game
@@ -97,6 +98,7 @@ namespace Sugar_Run
             background = new ScrollingBackground(Content, "Backgrounds/Sky Clouds", 1 / 3f);
             scene.AddBackground(background);
 
+            
             scene.LoadContent();
         }
 

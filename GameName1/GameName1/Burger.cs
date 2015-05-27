@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -15,7 +16,7 @@ namespace Sugar_Run
         public float velocity = 4f;
         private Vector2 sourcePosition;
         private Vector2 direction;
-      
+        
         // Construtor
         public Burger(ContentManager cManager, Vector2 sourcePosition) : base(cManager, "burger")
         {
@@ -56,6 +57,7 @@ namespace Sugar_Run
 
         public override void Destroy()
         {
+            
             AnimatedSprite explosion;
             explosion = new AnimatedSprite(content, "explosion", 1, 12);
             scene.AddSprite(explosion);

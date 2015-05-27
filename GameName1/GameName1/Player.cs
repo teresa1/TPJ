@@ -26,7 +26,9 @@ namespace Sugar_Run
 		// Score
 		public float timer = 0;
 		// Sons
-		SoundEffect jumpSound;
+        SoundEffect JumpiT;
+        SoundEffect ExplodeIT;
+        SoundEffect Pickup;
 	   
 		// Construtor
 		public Player(ContentManager content) : base(content, "CandyGirl", 1, 4)
@@ -42,15 +44,14 @@ namespace Sugar_Run
 			this.direction = Vector2.Zero;
 			this.EnableCollisions();
 			this.name = "Girl";
+
+            JumpiT = Content.Load<SoundEffect>("Jump");
+            ExplodeIT = Content.Load<SoundEffect>("Explosion1");
+            Pickup = Content.Load<SoundEffect>("Pickup"); 
+
 		}
 
-		// Load Content
-		public override void LoadContent()
-		{
-			//jumpSound = Content.Load<SoundEffect>("Sound Effects/Jump");
-
-			base.LoadContent();
-		}
+		
 
 		// Unload Content
 		public override void UnloadContent()
@@ -79,6 +80,7 @@ namespace Sugar_Run
 					// Se colidir com uma plataforma ou inimigo, explode e game over
 					if (Collided.name == "Plataforma" || Collided.name == "enemy")
 					{
+                        ExplodeIT.Play();
 						AnimatedSprite explosion = new AnimatedSprite(Content, "explosion", 1, 12);
 						explosion.loop = false;
 						explosion.SetPosition(this.position);
@@ -102,6 +104,7 @@ namespace Sugar_Run
 					// Se colidir com um power up, ganha pontos
 					if (Collided.name == "lollipop")
 					{
+                        Pickup.Play();
 						AnimatedSprite sparkle;
 						sparkle = new AnimatedSprite(content, "sparkle", 4, 8);
 						scene.AddSprite(sparkle);
@@ -127,6 +130,7 @@ namespace Sugar_Run
 					this.position.Y += 0.05f;
                     else
                     {
+                        ExplodeIT.Play();
                         Collided.Destroy();
                         AnimatedSprite explosion = new AnimatedSprite(Content, "explosion", 1, 12);
 						explosion.loop = false;
@@ -174,6 +178,7 @@ namespace Sugar_Run
 			this.isJumping = true;
 			this.sourcePosition = position;
 			this.direction = new Vector2((float)Math.Sin(rotation), (float)Math.Cos(rotation));
+            JumpiT.Play();
 		}
 
 		// Dispara burgers
