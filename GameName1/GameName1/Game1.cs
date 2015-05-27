@@ -28,12 +28,21 @@ namespace Sugar_Run
         int platformCounter;
         int randomPlatformHeight;
         // Inimigos
-        float enemyTime;
+        float enemyTime1;
+        float enemyTime2;
         // Power-Ups
         int randomLollipop;
-
+        Texture2D start;
         SpriteFont font;
        
+
+        enum GameStatus 
+        {
+            start, game
+        }
+        GameStatus status;
+
+        
         // Construtor
         public Game1() : base()
         {
@@ -72,6 +81,8 @@ namespace Sugar_Run
             // Fontes
             font = Content.Load<SpriteFont>("SpriteFont1");
 
+            start = Content.Load<Texture2D>("start");
+
             // Fundos
             background = new ScrollingBackground(Content, "Backgrounds/Sky", -1f);
             scene.AddBackground(background);
@@ -103,40 +114,65 @@ namespace Sugar_Run
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // Geração de plataformas
-            platformTime += gameTime.ElapsedGameTime.Milliseconds;
-            if (platformTime >= 50)
+            if(Keyboard.GetState().IsKeyDown(Keys.Enter))
+            { status = GameStatus.game; }
+            if (status == GameStatus.game)
             {
-                platformTime = 0;
-                CreatePlatform();
+                // Geração de plataformas
+                platformTime += gameTime.ElapsedGameTime.Milliseconds;
+                if (platformTime >= 50)
+                {
+                    platformTime = 0;
+                    CreatePlatform();
+                }
+
+                // Geração de inimigos
+                enemyTime1 += gameTime.ElapsedGameTime.Milliseconds;
+                enemyTime2 += gameTime.ElapsedGameTime.Milliseconds;
+                if (enemyTime1 >= 5000)
+                {
+                    enemyTime1 = 0;
+                    CreateEnemyBroccoli();
+                }
+
+                if (enemyTime2 >= 7000)
+                {
+                    enemyTime2 = 0;
+                    CreateEnemyCorn();
+                }
+
+                if (platformPosition.X * Camera.Ratio < graphics.PreferredBackBufferWidth)
+                    CreatePlatform();
+
+                scene.Update(gameTime);
             }
-
-            // Geração de inimigos
-            enemyTime += gameTime.ElapsedGameTime.Milliseconds;
-            if(enemyTime >= 5000)
-            {
-                enemyTime = 0;
-                CreateEnemy();
-            }
-
-            if (platformPosition.X * Camera.Ratio < graphics.PreferredBackBufferWidth)
-                CreatePlatform();
-
-            scene.Update(gameTime);
-          
             base.Update(gameTime); 
         }
         
         // Draw
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            scene.Draw(gameTime);
-            
-            spriteBatch.Begin();
-            spriteBatch.DrawString(font, "Score: " + player.timer.ToString("0"), new Vector2(600, 10), Color.White);
-            spriteBatch.End();
+            if (status == GameStatus.start)
+            {
+                spriteBatch.Begin();
+
+                spriteBatch.Draw(start, new Vector2(0, 0), Color.White); 
+                spriteBatch.End(); }
+
+            if (status == GameStatus.game)
+            {
+                GraphicsDevice.Clear(Color.CornflowerBlue);
+
+                scene.Draw(gameTime);
+
+                spriteBatch.Begin();
+                spriteBatch.DrawString(font, "Score: " + player.timer.ToString("0"), new Vector2(600, 10), Color.White);
+                spriteBatch.End();
+
+
+            }
+
             base.Draw(gameTime);
         }
 
@@ -180,12 +216,15 @@ namespace Sugar_Run
         }
 
         // Geração aleatória de um inimigo
-        public void CreateEnemy()
+        public void CreateEnemyBroccoli()
         {
             enemyBroccoli = new EnemyBroccoli(Content);
             scene.AddSprite(enemyBroccoli);
             enemyBroccoli.position.X = player.position.X + 10;
 
+        }
+        public void CreateEnemyCorn()
+        {
             enemyCorn = new EnemyCorn(Content);
             scene.AddSprite(enemyCorn);
             enemyCorn.position.X = player.position.X + 10;

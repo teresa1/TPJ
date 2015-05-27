@@ -117,7 +117,7 @@ namespace Sugar_Run
 
             this.position.Y = p.position.Y;
 
-            int rand = (random.Next(4) - 2); // como chegar ao Lenght da plataformaaaaaaaaaaaaaaaaa? .-.
+            int rand = (random.Next(4) - 2);
 
             this.position.X = p.position.X + rand;
 

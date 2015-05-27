@@ -122,9 +122,19 @@ namespace Sugar_Run
 
 				if (this.scene.Collides(this, out this.Collided, out this.CollisionPoint))
 				{
-					// Oops, colidimos. Vamos regressar para cima    
+					// Oops, colidimos. Vamos regressar para cima 
+                    if(this.Collided.name == "Plataforma")
 					this.position.Y += 0.05f;
-					
+                    else
+                    {
+                        Collided.Destroy();
+                        AnimatedSprite explosion = new AnimatedSprite(Content, "explosion", 1, 12);
+						explosion.loop = false;
+						explosion.SetPosition(this.position);
+						explosion.Scale(1.5f);
+                        scene.AddSprite(explosion);
+                        
+                    }
 					// se colidimos estamos no chao, logo, so nesta altura podemos ver se podemos saltar
 					if (keyboardState.IsKeyDown(Keys.Up))
 						Jump();

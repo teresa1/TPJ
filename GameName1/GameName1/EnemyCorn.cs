@@ -17,6 +17,7 @@ namespace Sugar_Run
         // Colisões
         Sprite Collided;
         Vector2 CollisionPoint;
+        public bool isJumping;
 
         List<Platform> plataformas;
         public Platform platform;
@@ -60,6 +61,12 @@ namespace Sugar_Run
                     direction = -direction;
                 }
 
+                if (Collided.name == "lollipop")
+                {
+                    this.position.Y -= 0.05f;
+                    this.position.X += velocity * direction;
+                }
+
                 if (Collided.name == "burger")
                 {
                     AnimatedSprite explosion = new AnimatedSprite(Content, "explosion", 1, 12);
@@ -70,7 +77,17 @@ namespace Sugar_Run
                     this.Destroy();
                 }
             }
-            
+            if (!isJumping)
+            {
+                // Gravidade puxa para baixo
+                this.position.Y -= 0.05f;
+
+                if (this.scene.Collides(this, out this.Collided, out this.CollisionPoint))
+                {
+                    // Oops, colidimos. Vamos regressar para cima    
+                    this.position.Y += 0.05f;
+                }
+            }
             base.Update(gameTime);
         }
 
@@ -85,7 +102,7 @@ namespace Sugar_Run
             }
 
             this.position.Y = platform.position.Y - 2.5f;
-            int rand = (random.Next(4) - 2); // como chegar ao Lenght da plataformaaaaaaaaaaaaaaaaa? .-.
+            int rand = (random.Next(4) - 2); 
             this.position.X = platform.position.X + rand;
         }
     }
