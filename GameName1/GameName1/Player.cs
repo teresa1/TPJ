@@ -14,7 +14,7 @@ namespace Sugar_Run
 		// Variáveis
 		ContentManager Content;
 		private bool isJumping;
-		private float maxDistance, velocity;
+		public float maxDistance, velocity;
 		private Vector2 sourcePosition;
 		private Vector2 direction;
 		// Colisões
@@ -38,10 +38,7 @@ namespace Sugar_Run
 			this.isJumping = false;
 			this.position = new Vector2(4, 3);
 			this.maxDistance = 2f;
-			this.velocity = 0.6f;
-			this.position = new Vector2(4, 3);
-			this.maxDistance = 2f;
-			this.velocity = 3/2f;
+			this.velocity = 1.5f;
 			this.direction = Vector2.Zero;
 			this.EnableCollisions();
 			this.name = "Girl";
@@ -69,7 +66,7 @@ namespace Sugar_Run
 			KeyboardState keyboardState = Keyboard.GetState();
 
 			// Movimento para a direita automático
-			this.position.X += 0.05f;
+			this.position.X += 0.05f * velocity;
 			// Dispara burgers
 			this.Shoot(gameTime, keyboardState);
 
@@ -150,7 +147,7 @@ namespace Sugar_Run
 			{
 				if ((position - sourcePosition).Length() <= maxDistance)
 				{
-					position = position + direction * velocity * (float)gameTime.ElapsedGameTime.TotalSeconds * 5;
+					position = position + direction * /*velocity*/ 3/2f * (float)gameTime.ElapsedGameTime.TotalSeconds * 5;
 				}
 				else
 				{
@@ -190,7 +187,7 @@ namespace Sugar_Run
 			fireCounter += (float)gameTime.ElapsedGameTime.TotalSeconds;
 			if (fireCounter >= fireInterval && keyboardState.IsKeyDown(Keys.Space))
 			{
-				Vector2 burgerSourcePosition = new Vector2(this.position.X + 0.8f, this.position.Y);
+				Vector2 burgerSourcePosition = new Vector2(this.position.X + 0.9f, this.position.Y);
 				Burger burger = new Burger(content, burgerSourcePosition);
 				scene.AddSprite(burger);
 				fireCounter = 0f;

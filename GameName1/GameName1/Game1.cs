@@ -36,6 +36,9 @@ namespace Sugar_Run
         Texture2D start;
         SpriteFont font;
 
+        bool escPressed = false;
+        
+        KeyboardState keyboardState = Keyboard.GetState();
         
         public enum GameStatus 
         {
@@ -112,16 +115,36 @@ namespace Sugar_Run
         // Update
         protected override void Update(GameTime gameTime)
         {
-            // Saída do jogo
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape) && status == GameStatus.start)
-                Exit();
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape) && status == GameStatus.game)
-                Restart();
+            if (escPressed == true && Keyboard.GetState().IsKeyUp(Keys.Escape))
+            { escPressed = false; }
+            if (status == GameStatus.start)
+            {
 
-            if(Keyboard.GetState().IsKeyDown(Keys.Enter))
-            { status = GameStatus.game; }
+                // Saída do jogo
+                if (escPressed == false && Keyboard.GetState().IsKeyDown(Keys.Escape) && status == GameStatus.start)
+                    Exit();
+                if (Keyboard.GetState().IsKeyDown(Keys.Enter))
+                { status = GameStatus.game; }
+            }
+          
+
+
             if (status == GameStatus.game)
             {
+
+
+                if (player.timer >= 250) player.velocity = 1.6f;
+                if (player.timer >= 500) player.velocity = 1.8f;
+                if (player.timer >= 1000) player.velocity = 2f;
+
+               
+                if (escPressed == false  && Keyboard.GetState().IsKeyDown(Keys.Escape))
+                {
+                   
+                    escPressed = true;
+                    Restart();
+
+                }
                 // Geração de plataformas
                 platformTime += gameTime.ElapsedGameTime.Milliseconds;
                 if (platformTime >= 50)
@@ -185,7 +208,7 @@ namespace Sugar_Run
         public void CreatePlatform()
         {
             // Controla o número mínimo de plataformas por altura
-            if (platformCounter < 4)
+            if (platformCounter < 6)
             {
                 randomPlatformHeight = 0;
                 platformCounter++;

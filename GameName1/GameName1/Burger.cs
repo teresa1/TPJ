@@ -13,9 +13,10 @@ namespace Sugar_Run
     {
         // Variáveis
         public float maxDistance = 15f;
-        public float velocity = 4f;
+        public float velocity = 5f;
         private Vector2 sourcePosition;
         private Vector2 direction;
+
         
         // Construtor
         public Burger(ContentManager cManager, Vector2 sourcePosition) : base(cManager, "burger")
@@ -43,14 +44,12 @@ namespace Sugar_Run
         // Update
         public override void Update(GameTime gameTime)
         {
-            position = position + direction * velocity *
-                  (float)gameTime.ElapsedGameTime.TotalSeconds * 2;
+            position = position + direction * velocity * (float)gameTime.ElapsedGameTime.TotalSeconds * 2;
 
             if ((position - sourcePosition).Length() > maxDistance) 
             {
                 this.Destroy();
             }
-
 
             base.Update(gameTime);
         }
