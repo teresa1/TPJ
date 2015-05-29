@@ -105,7 +105,7 @@ namespace Sugar_Run
                 }
             }
 
-            this.position.Y = platform.position.Y - 2.5f;
+            this.position.Y = platform.position.Y + 2.5f;
             int rand = (random.Next(4) - 2); 
             this.position.X = platform.position.X + rand;
         }

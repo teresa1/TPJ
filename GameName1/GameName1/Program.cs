@@ -16,7 +16,7 @@ namespace Sugar_Run
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static public void Main()
         {
             using (var game = new Game1())
                 game.Run();

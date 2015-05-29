@@ -37,11 +37,11 @@ namespace Sugar_Run
         SpriteFont font;
 
         
-        enum GameStatus 
+        public enum GameStatus 
         {
             start, game
         }
-        GameStatus status;
+       public GameStatus status;
 
         
         // Construtor
@@ -76,7 +76,7 @@ namespace Sugar_Run
             scene = new Scene(spriteBatch);
 
             //scene.AddPlatform(new Plataform(Content));
-            player = new Player(Content);
+            player = new Player(Content, this);
             scene.AddSprite(player);
 
             // Fontes
@@ -230,6 +230,12 @@ namespace Sugar_Run
             enemyCorn = new EnemyCorn(Content);
             scene.AddSprite(enemyCorn);
             enemyCorn.position.X = player.position.X + 10;
+        }
+
+        public void Restart()
+        {
+            Initialize();
+            LoadContent();
         }
     }
 }

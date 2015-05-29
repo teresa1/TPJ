@@ -29,9 +29,10 @@ namespace Sugar_Run
         SoundEffect JumpiT;
         SoundEffect ExplodeIT;
         SoundEffect Pickup;
+        Game1 game1;
 	   
 		// Construtor
-		public Player(ContentManager content) : base(content, "CandyGirl", 1, 4)
+		public Player(ContentManager content, Game1 game1) : base(content, "CandyGirl", 1, 4)
 		{
 			this.Content = content;
 			this.isJumping = false;
@@ -44,7 +45,7 @@ namespace Sugar_Run
 			this.direction = Vector2.Zero;
 			this.EnableCollisions();
 			this.name = "Girl";
-
+            this.game1 = game1;
             JumpiT = Content.Load<SoundEffect>("Jump");
             ExplodeIT = Content.Load<SoundEffect>("Explosion1");
             Pickup = Content.Load<SoundEffect>("Pickup"); 
@@ -62,7 +63,7 @@ namespace Sugar_Run
 		}
 	  
 		// Update
-		public override void Update(GameTime gameTime )
+		public override void Update(GameTime gameTime)
 		{
 			timer += (float)gameTime.ElapsedGameTime.TotalSeconds * 10;
 			KeyboardState keyboardState = Keyboard.GetState();
@@ -86,8 +87,10 @@ namespace Sugar_Run
 						explosion.SetPosition(this.position);
 						explosion.Scale(1.5f);
 						scene.AddSprite(explosion);
-						this.Destroy();
+                        this.Destroy();
 
+                        this.game1.status = Game1.GameStatus.start;
+                        this.game1.Restart();
 						// GAME OVER
 					}
 
