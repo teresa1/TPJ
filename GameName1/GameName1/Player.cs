@@ -89,7 +89,6 @@ namespace Sugar_Run
 						scene.AddSprite(explosion);
                         this.Destroy();
 
-                        this.game1.status = Game1.GameStatus.start;
                         this.game1.Restart();
 						// GAME OVER
 					}

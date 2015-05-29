@@ -113,8 +113,10 @@ namespace Sugar_Run
         protected override void Update(GameTime gameTime)
         {
             // Saída do jogo
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape) && status == GameStatus.start)
                 Exit();
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape) && status == GameStatus.game)
+                Restart();
 
             if(Keyboard.GetState().IsKeyDown(Keys.Enter))
             { status = GameStatus.game; }
@@ -236,6 +238,7 @@ namespace Sugar_Run
         {
             Initialize();
             LoadContent();
+            status = GameStatus.start;
         }
     }
 }
