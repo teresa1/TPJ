@@ -46,10 +46,7 @@ namespace Sugar_Run
         {
             position = position + direction * velocity * (float)gameTime.ElapsedGameTime.TotalSeconds * 2;
 
-            //if ((position - sourcePosition).Length() > maxDistance) 
-            //{
-            //    this.Destroy();
-            //}
+         
 
             base.Update(gameTime);
         }

@@ -54,8 +54,7 @@ namespace Sugar_Run
 		// Unload Content
 		public override void UnloadContent()
 		{
-			//this.jumpSound.Dispose();
-
+			
 			base.UnloadContent();
 		}
 	  
