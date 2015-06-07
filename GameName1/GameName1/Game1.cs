@@ -52,6 +52,7 @@ namespace Sugar_Run
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            Window.Title = "Sugar Run - Kill Those Vegies";
         }
 
         protected override void Initialize()
