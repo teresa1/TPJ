@@ -23,9 +23,10 @@ namespace Pac_Man
             if (x > 21 || y > 20)
                 return false;
             if (board[y, x] != 0)
+            {
                 return true;
-        
-                
+            }
+
             else return false;
         }
     }
